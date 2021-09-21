@@ -5,11 +5,14 @@ Make your data processing easy.
 This package enables you to build pipelines for your data processing in a functional manner.
 
 ## Why functional?
-Functional programming is a data driven approach to building software. Pass your raw data objects through the steps necessary to reach the desired goal. The railway analogy used by Scott Wlaschin in [this talk](https://www.youtube.com/watch?v=Nrp_LZ-XGsY) is a good way of looking at functional programming. With `pypely` you can easily build a route from start to finish and you can easily see each step without caring about the stops in between.
+Functional programming is a data driven approach to building software. The railway analogy used by Scott Wlaschin in [this talk](https://youtu.be/Nrp_LZ-XGsY?t=2617) is a good way of looking at functional programming. With `pypely` you can easily build a route from start to finish without caring about the stops in between. :steam_locomotive:
 
 An even easier analogy might be this: 
-![alt text](https://github.com/stoney95/pype/blob/main/assets/git_branch.png?raw=true)
+![alt text](./assets/git_branch.png?raw=true)
+Our every day work is managed by `git` and hopefully you don't need to care about special commit hashes etc.. Shouldn't it be the same for intermediate results in data processing? :thinking:
 
-Add quotes and statistics of function popularity
+> "Design is separating into things that can be composed." - Rich Hickey
 
-## Comparison to git branches
+I guess you can merge every git branch into another and also create a new branch from every other branch - they should be in the same repository. And for merging you may want to think about merge conflicts. But still branches can be composed and each branch itself is composed of commits.
+
+## Examples
