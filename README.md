@@ -3,7 +3,7 @@ Make your data processing easy - build pipelines in a functional manner. In gene
 
 ![](https://media.giphy.com/media/SACoDGYTvVNhZYNb5a/giphy.gif)
 
-You are encouraged to write your data processing step by step - each step being a function. By naming each step with great awareness and chaining them together you will receive a consise and descriptive scheme of the process. This should give you and your colleagues a nice overview on how the process i structured and makes it easy to understand.
+You are encouraged to write your data processing step by step - each step being a function. By naming each step with great awareness and chaining them together you will receive a consise and descriptive scheme of the process. This should give you and your colleagues a nice overview on how the process is structured and makes it easy to understand.
  Addtionally you can test every small step easily.
 
 ## Why functional?
@@ -42,4 +42,42 @@ pipe = pipeline(
 )
 
 pipe() # -> 🥳
+```
+
+## Fork
+Sometimes you want to do multiple things with one intermediate result. `fork` allows you to do this. You can specify multiple functions inside `fork`. Each will receive the output of the previous function as the input. `fork` outputs a list with the result of each specified function in the order of the functions. You can use fork like this.
+
+```python
+morning_routine = pipeline(
+    wake_up,
+    go_to_kitchen,
+    fork(
+        make_tea,
+        fry_eggs,
+        cut_bread,
+        get_plate
+    )
+)
+
+morning_routine() # -> [🍵, 🍳, 🍞, 🍽️]
+```
+
+## Merge
+After you split your process into multiple branches, it is time to `merge`. You only have to specify a function that takes as many arguments as there are branches. `merge` will unpack the list calculated by a previous `fork` and forward it to the specified function. `merge` will return the output of the specified function. Use `merge` to have a lovily breakfast:
+
+
+```python
+morning_routine = pipeline(
+    wake_up,
+    go_to_kitchen,
+    fork(
+        make_tea,
+        fry_eggs,
+        cut_bread,
+        get_plate
+    ),
+    merge(set_table)
+)
+
+morning_routine() # -> 😋
 ```
