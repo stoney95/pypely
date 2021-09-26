@@ -132,3 +132,4 @@ dmypy.json
 #VS Code
 .vs_code
 .DS_Store
+notes.txt

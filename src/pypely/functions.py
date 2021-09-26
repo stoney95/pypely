@@ -17,8 +17,8 @@ def fork(*funcs: Callable) -> Callable:
 
 
 def merge(func: Callable[[Any, Any], Any]) -> Callable:
-    return lambda branches: reduce(lambda x, y: func(x, y), branches)
+    return lambda branches: func(*branches)
+    # return lambda branches: reduce(lambda x, y: func(x, y), branches)
 
 
-def identity():
-    lambda x: x
+identity = lambda x: x
