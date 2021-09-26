@@ -11,6 +11,7 @@ Functional programming is a data driven approach to building software. The railw
 
 `git` branching might be an even easier analogy: 
 ![alt text](./assets/git_branch.png?raw=true)
+
 Our every day work is managed by `git` and hopefully you don't need to care about special commit hashes etc.. "Shouldn't it be the same for intermediate results in data processing?" :thinking: - "I guess I just care about raw data and processing results". 
 
 ### Cites by smart people (Who use functional programming) 
@@ -27,13 +28,13 @@ The package consists of four functions:
 * `identity`
 
 ## Identity
-Let's start with the simplest one first. The only purpose of this function is to forward the input. This can be used for intermediate results to bypass other steps. This makes them available in later steps.
+Let's start with the simplest one first. The only purpose of this function is to forward the input. This can be used for intermediate results to bypass other steps and make them available in later steps.
 
 ## Pipeline
 This is the core of the package. `pipeline` allows you to chain defined functions together. The output of a function will be passed as the input to the following function. `pipeline` can be used like the following:
 
 ```python
-pipe = pipeline(
+use_pypely = pipeline(
     open_favourite_ide,
     create_new_conda_environment,
     activate_environment,
@@ -41,7 +42,7 @@ pipe = pipeline(
     have_fun_building_pipelines 
 )
 
-pipe() # -> 🥳
+use_pypely() # -> 🥳
 ```
 
 ## Fork
