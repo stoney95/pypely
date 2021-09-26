@@ -1,8 +1,10 @@
 # pypely
 Make your data processing easy - build pipelines in a functional manner. In general this package will not make your code faster or necessarily make you write less code. The purpose of this package is to make you think differently about data processing. 
+
 ![](https://media.giphy.com/media/SACoDGYTvVNhZYNb5a/giphy.gif)
 
-You are encouraged to write your data processing step by step - each step being a function. By naming each step with great awareness and chaining them together you will receive a consise and descriptive scheme of the process. Addtionally you can test every small step easily.
+You are encouraged to write your data processing step by step - each step being a function. By naming each step with great awareness and chaining them together you will receive a consise and descriptive scheme of the process. This should give you and your colleagues a nice overview on how the process i structured and makes it easy to understand.
+ Addtionally you can test every small step easily.
 
 ## Why functional?
 Functional programming is a data driven approach to building software. The railway analogy used by Scott Wlaschin in [this talk](https://youtu.be/Nrp_LZ-XGsY?t=2617) is a good way of looking at functional programming. With `pypely` you can easily build a route from start to finish without caring about the stops in between. :steam_locomotive:

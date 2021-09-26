@@ -10,13 +10,13 @@ The following graphic demonstrates the pipeline that is built in [outlier_handli
 # Level of abstraction
 Functional programming provides multiple ways of abstraction. Choose the level of abstraction that is applicable for your problem. Mostly you might want to choose between 
 
->"Configurable & Reusability" vs "Simplicity & Readability"
+>"Configurable & Reusable" vs "Simple & Readable"
 
 ## Everything in `pypely` mode
-Of course it is possible to go fully functional and using `pypely` therefore. The function `calculate_fences` could have also been defined as shown in the following:
+Of course it is possible to go fully functional and using `pypely` therefore. The function `outlier_boundaries` could have also been defined as shown in the following:
 
 ```python
-def calculate_fences_hard(df):
+def outlier_boundaries_hard(df):
     def __fences(lower_fence, upper_fence):
         return lambda quantiles, IQR: Fences(
             lower=lower_fence(quantiles[0], IQR), 

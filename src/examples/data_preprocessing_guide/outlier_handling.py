@@ -1,24 +1,24 @@
 """
-This script will apply the pypely approach the code of the referenced guide
-that can be found in the section: Data Cleaning -> Outlier Detection
+This script will apply the pypely approach to the code 
+in the section: Data Cleaning -> Outlier Detection
+of the referenced guide
 """
-
 
 from pypely import pipeline, fork, merge, identity
 import seaborn as sns
 from collections import namedtuple
 
-Fences = namedtuple('Fences', ['lower', 'upper'])
+Boundaries = namedtuple('Boundaries', ['lower', 'upper'])
 
 def main():
-    fill_with_fences = fill_outliers(
-        fill_lower=lambda df, fences: fences.lower,
-        fill_upper=lambda df, fences: fences.upper,
+    fill_with_boundary_value = fill_outliers(
+        fill_lower=lambda df, boundaries: boundaries.lower,
+        fill_upper=lambda df, boundaries: boundaries.upper,
     )
 
     fill_with_mean = fill_outliers(
-        fill_lower=lambda df, fences: df.mean,
-        fill_upper=lambda df, fences: df.mean,
+        fill_lower=lambda df, boundaries: df.mean,
+        fill_upper=lambda df, boundaries: df.mean,
     )
 
     pipe = pipeline(
@@ -26,11 +26,11 @@ def main():
         select_numeric_columns,
         fork(
             identity,
-            calculate_fences
+            outlier_boundaries
         ),
         fork(
             merge(delete_outliers),
-            merge(fill_with_fences),
+            merge(fill_with_boundary_value),
             merge(fill_with_mean),
         ),
         merge(print_results)
@@ -39,18 +39,18 @@ def main():
     pipe()
 
 
-def print_results(no_outliers, outliers_as_fences, outliers_as_mean):
+def print_results(no_outliers, outliers_as_boundaries, outliers_as_mean):
     print(f"No outliers shape: {no_outliers.shape}")
-    print(f"Outliers as fences shape: {outliers_as_fences.shape}")
+    print(f"Outliers as boundaries shape: {outliers_as_boundaries.shape}")
     print(f"Outliers as mean shape: {outliers_as_mean.shape}")
 
 
-def calculate_fences(df):
+def outlier_boundaries(df):
     quantile_1 = df.quantile(0.25)
     quantile_3 = df.quantile(0.75)
     IQR = quantile_3 - quantile_1
 
-    return Fences(
+    return Boundaries(
         lower=quantile_1 - 1.5 * IQR,
         upper=quantile_3 + 1.5 * IQR
     )
@@ -66,30 +66,30 @@ def select_numeric_columns(df):
         .dropna()
 
 
-def delete_outliers(df, fences: Fences):
+def delete_outliers(df, boundaries: Boundaries):
     return df[~(
-        (df < fences.lower) | 
-        (df > fences.upper)
+        (df < boundaries.lower) | 
+        (df > boundaries.upper)
     ).any(axis=1)]
 
 
 def fill_outliers(fill_lower, fill_upper):
-    def __fill_outliers(df, fences, fill_lower, fill_upper):
-        df[(df < fences.lower).any(axis=1)] = fill_lower(df, fences)
-        df[(df > fences.upper).any(axis=1)] = fill_upper(df, fences)
+    def __fill_outliers(df, boundaries, fill_lower, fill_upper):
+        df[(df < boundaries.lower).any(axis=1)] = fill_lower(df, boundaries)
+        df[(df > boundaries.upper).any(axis=1)] = fill_upper(df, boundaries)
 
         return df
 
-    return lambda df, fences: __fill_outliers(df, fences, fill_lower, fill_upper)
+    return lambda df, boundaries: __fill_outliers(df, boundaries, fill_lower, fill_upper)
 
 
 """
 Less readable stuff
 """
 
-def calculate_fences_hard(df):
-    def __fences(lower_fence, upper_fence):
-        return lambda quantiles, IQR: Fences(
+def oulier_boundaries_hard(df):
+    def __boundaries(lower_fence, upper_fence):
+        return lambda quantiles, IQR: Boundaries(
             lower=lower_fence(quantiles[0], IQR), 
             upper=upper_fence(quantiles[1], IQR)
         )
@@ -104,7 +104,7 @@ def calculate_fences_hard(df):
             lambda x: x[1] - x[0]
         ),
         merge(
-            __fences(
+            __boundaries(
                 calculate_fence(aggregation=lambda x, y: x - y, factor=1.5),
                 calculate_fence(aggregation=lambda x, y: x + y, factor=1.5),
             )
