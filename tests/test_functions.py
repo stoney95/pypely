@@ -62,7 +62,7 @@ def test_merge():
         lambda x, y, z: x*y+z
     )
 
-    to_test = single([1,2,3])
+    to_test = single([1,[2,3]])
     assert to_test == 5
 
 

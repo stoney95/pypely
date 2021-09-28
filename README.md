@@ -33,12 +33,14 @@ In this analogy you should translate:
 To see `pypely` in action please check out the [expamples](https://github.com/stoney95/pype/tree/main/src/examples) directory.
 
 # Documentation
-The package consists of four functions:
+The package consists of these functions:
 * `pipeline`
 * `fork`
 * `merge`
 * `reduce_by`
 * `identity`
+
+In the following the functions will be described and some example code is given. Please also refer to the [tests](https://github.com/stoney95/pype/tree/main/tests/test_functions.py) for a better understaning of each function.
 
 ## Identity
 Let's start with the simplest one first. The only purpose of this function is to forward the input. This can be used for intermediate results to bypass other steps and make them available in later steps.
