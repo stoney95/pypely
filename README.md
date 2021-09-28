@@ -30,7 +30,7 @@ In this analogy you should translate:
 > "Design is separating into things that can be composed." - Rich Hickey
 
 ## Examples
-To see `pypely` in action please check out the [expamples](./src/examples) directory.
+To see `pypely` in action please check out the [expamples](https://github.com/stoney95/pype/tree/main/src/examples) directory.
 
 # Documentation
 The package consists of four functions:
@@ -76,7 +76,7 @@ morning_routine() # -> [🍵, 🍳, 🍞, 🍽️]
 ```
 
 ## Merge
-After you split your process into multiple branches, it is time to `merge`. You only have to specify a function that takes as many arguments as there are branches. `merge` will unpack the list calculated by a previous `fork` and forward it to the specified function. `merge` will return the output of the specified function. Use `merge` to have a lovily breakfast:
+After you split your process into multiple branches, it is time to `merge`. You only have to specify a function that takes as many arguments as there are branches. `merge` will flatten and unpack the list calculated by a previous `fork` and forward it to the specified function. `merge` return the output of the specified function. Use `merge` to have a lovily breakfast:
 
 
 ```python
