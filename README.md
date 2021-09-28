@@ -7,12 +7,24 @@ You are encouraged to write your data processing step by step - each step being 
  Addtionally you can test every small step easily.
 
 ## Why functional?
-Functional programming is a data driven approach to building software. The railway analogy used by Scott Wlaschin in [this talk](https://youtu.be/Nrp_LZ-XGsY?t=2617) is a good way of looking at functional programming. With `pypely` you can easily build a route from start to finish without caring about the stops in between. :steam_locomotive:
+Functional programming is a data driven approach to building software - so let's move data to the center of our thinking when build data processing pipelines. To ilustrate the idea a little more two analogies will be used
 
+### Railway
+The railway analogy used by Scott Wlaschin in [this talk](https://youtu.be/Nrp_LZ-XGsY?t=2617) is a good way of looking at functional programming. With `pypely` you can easily build a route from start to finish without caring about the stops in between. :steam_locomotive: 
+
+In this analogy you should translate:
+* **railway stop** to **intermediate result**
+* **railway** to **tranformative function**
+
+### Git 
 `git` branching might be an even easier analogy: 
 ![alt text](./assets/git_branch.png?raw=true)
 
 Our every day work is managed by `git` and hopefully you don't need to care about special commit hashes etc.. "Shouldn't it be the same for intermediate results in data processing?" :thinking: - "I guess I just care about raw data and processing results". 
+
+In this analogy you should translate:
+* **git commit** to **intermediate result**
+* **you writing & commiting code** to **tranformative function**
 
 ### Cites by smart people (Who use functional programming) 
 > "Design is separating into things that can be composed." - Rich Hickey
