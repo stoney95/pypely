@@ -1,5 +1,5 @@
 import pytest
-from pypely import pipeline, merge, fork, identity, partial_apply
+from pypely import pipeline, merge, fork, identity, reduce_by
 from pypely.functions import flatten
 
 add = lambda x, y: x + y
@@ -17,7 +17,7 @@ def test_pypely():
     )
 
     pipe = pipeline(
-        partial_apply(add),
+        reduce_by(add),
         fork(quadratic_pipe, rest),
         merge(sub)
     )
@@ -41,8 +41,8 @@ def test_pipeline():
     assert to_test == 15
 
 
-def test_partial_apply():
-    partial_add = partial_apply(add)
+def test_reduce_by():
+    partial_add = reduce_by(add)
 
     to_test = partial_add(1,2,3,4,5)
     assert to_test == (3, (3,4,5))

@@ -38,7 +38,7 @@ def flatten(_list: List[Any]) -> List[Any]:
     return result
 
 
-def partial_apply(func: Callable) -> Callable:
+def reduce_by(func: Callable) -> Callable:
     num_args = len(getfullargspec(func).args)
     return lambda *x: (func(*x[:num_args]), x[num_args:])
 

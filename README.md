@@ -37,6 +37,7 @@ The package consists of four functions:
 * `pipeline`
 * `fork`
 * `merge`
+* `reduce_by`
 * `identity`
 
 ## Identity
