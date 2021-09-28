@@ -1,4 +1,3 @@
-import pytest
 from pypely import pipeline, merge, fork, identity, reduce_by
 from pypely.functions import flatten
 
