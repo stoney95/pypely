@@ -27,7 +27,14 @@ In this analogy you should translate:
 * **you writing & commiting code** to **tranformative function**
 
 ### Cites by smart people (Who use functional programming) 
-> "Design is separating into things that can be composed." - Rich Hickey
+> "Design is separating into things that can be composed." - Rich Hickey 
+
+## What can I use this for?
+So this may be the main question that should be answered. This library focuses on structuring data processing, so consider it for dataframes operations. There are two libraries that need to be mentioned:
+* pandas
+* pyspark
+
+But :point_up:.. if you want to build your whole application in a functional style, `pypely` provides you with the basics for this. So get creative 🤩 
 
 ## Examples
 To see `pypely` in action please check out the [expamples](https://github.com/stoney95/pype/tree/main/src/examples) directory.
