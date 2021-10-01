@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setuptools.setup(
     name="pypely",
     version="0.0.1",
-    description="Make your data processing easy",
+    description="Make data processing easy",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/stoney95/pypely",
