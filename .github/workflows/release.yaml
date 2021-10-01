@@ -1,0 +1,33 @@
+on:
+  merge:
+    branches: [main]
+
+name: Create Release
+
+jobs:
+  build:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - uses: 8BitJonny/gh-get-current-pr@1.2.0
+        id: PR
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # Verbose setting SHA when using Pull_Request event trigger to fix #16
+          sha: ${{ github.event.pull_request.head.sha }}
+          # Only return if PR is still open
+          filterOutClosed: true
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          #TODO: how can this be set in pull request
+          body: ${{ steps.PR.outputs.pr_body }}
+          draft: false
+          prerelease: false
