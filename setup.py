@@ -9,7 +9,7 @@ setuptools.setup(
     description="Make your data processing easy",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/stoney95/pype",
+    url="https://github.com/stoney95/pypely",
     author="Stoney95",
     author_email="simon@steinheber.info",
     license="MIT",
