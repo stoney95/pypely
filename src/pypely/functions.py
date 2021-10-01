@@ -1,8 +1,6 @@
 from functools import reduce
-from typing import Callable, Any, List
-from inspect import getfullargspec
-from collections.abc import Iterable
-
+from typing import Callable
+from .helpers import flatten
 
 
 def pipeline(*funcs: Callable) -> Callable:
@@ -22,25 +20,6 @@ def fork(*funcs: Callable) -> Callable:
 def merge(func: Callable) -> Callable:
     return lambda branches: func(*flatten(branches))
     # return lambda branches: reduce(lambda x, y: func(x, y), branches)
-
-
-def flatten(_list: List[Any]) -> List[Any]:
-    result = []
-    for elem in _list:
-        if isinstance(elem, Iterable):
-            if any(isinstance(x, Iterable) for x in elem):
-                result += flatten(elem)
-            else:
-                result += elem
-        else:
-            result.append(elem)
-
-    return result
-
-
-def reduce_by(func: Callable) -> Callable:
-    num_args = len(getfullargspec(func).args)
-    return lambda *x: (func(*x[:num_args]), x[num_args:])
 
 
 identity = lambda x: x

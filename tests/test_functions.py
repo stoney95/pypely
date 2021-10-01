@@ -1,14 +1,8 @@
-from pypely import pipeline, merge, fork, identity, reduce_by
-from pypely.functions import flatten
-
-add = lambda x, y: x + y
-mul = lambda x, y: x * y
-sub = lambda x, y: x - y
-head = lambda x: x[0]
-rest = lambda x: x[1:]
+from pypely import pipeline, merge, fork, identity
+from pypely.helpers import head, rest, reduce_by
 
 
-def test_pypely():
+def test_pypely(add, mul, sub):
     quadratic_pipe = pipeline(
         head,
         fork(identity, identity),
@@ -40,14 +34,7 @@ def test_pipeline():
     assert to_test == 15
 
 
-def test_reduce_by():
-    partial_add = reduce_by(add)
-
-    to_test = partial_add(1,2,3,4,5)
-    assert to_test == (3, (3,4,5))
-
-
-def test_fork():
+def test_fork(add, mul, sub):
     multiple = fork(
         add, mul, sub
     )
@@ -65,10 +52,3 @@ def test_merge():
     assert to_test == 5
 
 
-def test_flatten():
-    nested_list = [1, 2, [3, [4, 5], 6], 7, [8, [9]]]
-    expected = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-    to_test = flatten(nested_list)
-
-    assert to_test == expected
