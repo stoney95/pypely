@@ -21,6 +21,14 @@ def flatten(_list: List[Any]) -> List[Any]:
     return result
 
 
+def side_effect(func: Callable):
+    def __run_func(*_input):
+        func(*_input)
+        return _input
+
+    return lambda *x: __run_func(*x)
+
+
 
 head = lambda x: x[0]
 rest = lambda x: x[1:]

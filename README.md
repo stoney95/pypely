@@ -44,8 +44,9 @@ The package consists of these functions:
 * `pipeline`
 * `fork`
 * `merge`
-* `reduce_by`
 * `identity`
+
+and a `helpers` module which provides useful helper functions. Take a look at them an be inspired to write your own - with a perfect fit on your demand. For documentation of the `helpers` module please refer to the [tests]((https://github.com/stoney95/pype/tree/main/tests/test_helpers.py)
 
 In the following the functions will be described and some example code is given. Please also refer to the [tests](https://github.com/stoney95/pype/tree/main/tests/test_functions.py) for a better understaning of each function.
 
