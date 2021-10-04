@@ -3,9 +3,11 @@ import setuptools
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
+__version__ = "0.0.1"
+
 setuptools.setup(
     name="pypely",
-    version="0.0.1",
+    version=__version__,
     description="Make data processing easy",
     long_description=long_description,
     long_description_content_type="text/markdown",
