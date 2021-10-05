@@ -35,14 +35,14 @@ In this analogy you should translate:
 > "Design is separating into things that can be composed." - Rich Hickey 
 
 ## What can I use this for?
-So this may be the main question that should be answered. This library focuses on structuring data processing, so consider it for dataframes operations. There are two libraries that need to be mentioned:
-* pandas
-* pyspark
+This may be the main question that should be answered. This library focuses on structuring data processing, so consider it for dataframes operations. There are two libraries that need to be mentioned:
+* [pandas](https://pandas.pydata.org/)
+* [pyspark](http://spark.apache.org/docs/latest/api/python/)
 
 But :point_up:.. if you want to build your whole application in a functional style, `pypely` provides you with the basics for this. So get creative 🤩 
 
 ## Examples
-If you want to get inspired or want to see `pypely` in action please check out the [expamples](https://github.com/stoney95/pype/tree/main/src/examples) directory.
+If you want to get inspired or want to see `pypely` in action please check out the [expamples](https://github.com/stoney95/pypely/tree/main/src/examples) directory.
 
 # Documentation
 The package consists of these functions:
@@ -51,9 +51,9 @@ The package consists of these functions:
 * `merge`
 * `identity`
 
-and a `helpers` module which provides useful helper functions. Take a look at them an be inspired to write your own - with a perfect fit on your demand. For documentation of the `helpers` module please refer to the [tests]((https://github.com/stoney95/pype/tree/main/tests/test_helpers.py)
+and a `helpers` module which provides useful helper functions. Take a look at them an be inspired to write your own - with a perfect fit on your demand. For documentation of the `helpers` module please refer to the [tests](https://github.com/stoney95/pypely/tree/main/tests/test_helpers.py)
 
-In the following the functions will be described and some example code is given. Please also refer to the [tests](https://github.com/stoney95/pype/tree/main/tests/test_functions.py) for a better understaning of each function.
+In the following the functions will be described and some example code is given. Please also refer to the [tests](https://github.com/stoney95/pypely/tree/main/tests/test_functions.py) for a better understaning of each function.
 
 ## Identity
 Let's start with the simplest one first. The only purpose of this function is to forward the input. This can be used for intermediate results to bypass other steps and make them available in later steps.
@@ -113,3 +113,8 @@ morning_routine = pipeline(
 
 morning_routine() # -> 😋
 ```
+
+# Contribution
+If you want to contribute:
+1. I'm super happy 🥳
+2. Please check out the [contribution guide](https://github.com/stoney95/pypely/tree/main/assets/CONTRIBUTION.md)
