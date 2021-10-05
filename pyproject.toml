@@ -1,0 +1,8 @@
+[tool.semantic_release]
+version_variable = [
+    "setup.py:__version__"
+]
+branch = "main"
+upload_to_pypi = true
+upload_to_release = true
+build_command = "python setup.py sdist bdist_wheel"

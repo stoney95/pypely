@@ -1,3 +1,5 @@
+import pytest
+
 from pypely import pipeline, merge, fork, identity
 from pypely.helpers import head, rest, reduce_by
 
@@ -34,6 +36,27 @@ def test_pipeline():
     assert to_test == 15
 
 
+def test_pipeline_single_function(add):
+    pipe = pipeline(
+        add
+    )
+
+    to_test = pipe(1,2)
+    assert to_test == 3
+
+
+def test_fail_pipeline(add):
+    add_to_5 = lambda x: x+5
+
+    pipe = pipeline(
+        add_to_5,
+        add
+    )
+
+    with pytest.raises(Exception):
+        pipe(1)
+
+
 def test_fork(add, mul, sub):
     multiple = fork(
         add, mul, sub
@@ -52,3 +75,7 @@ def test_merge():
     assert to_test == 5
 
 
+def test_identity():
+    to_test = identity(1, 2)
+
+    assert to_test == (1, 2)

@@ -6,6 +6,11 @@ Make your data processing easy - build pipelines in a functional manner. In gene
 You are encouraged to write your data processing step by step - each step being a function. By naming each step with great awareness and chaining them together you will receive a consise and descriptive scheme of the process. This should give you and your colleagues a nice overview on how the process is structured and makes it easy to understand.
  Addtionally you can test every small step easily.
 
+## Installation
+```shell
+pip install pypely
+```
+
 ## Why functional?
 Functional programming is a data driven approach to building software - so let's move data to the center of our thinking when building data processing pipelines. To ilustrate the idea a little more two analogies will be used
 
@@ -37,7 +42,7 @@ So this may be the main question that should be answered. This library focuses o
 But :point_up:.. if you want to build your whole application in a functional style, `pypely` provides you with the basics for this. So get creative 🤩 
 
 ## Examples
-To see `pypely` in action please check out the [expamples](https://github.com/stoney95/pype/tree/main/src/examples) directory.
+If you want to get inspired or want to see `pypely` in action please check out the [expamples](https://github.com/stoney95/pype/tree/main/src/examples) directory.
 
 # Documentation
 The package consists of these functions:
@@ -91,6 +96,9 @@ After you split your process into multiple branches, it is time to `merge`. You 
 
 
 ```python
+def set_table(tea: 🍵, eggs: 🍳, bread: 🍞, plate: 🍽️):
+    ...
+
 morning_routine = pipeline(
     wake_up,
     go_to_kitchen,
