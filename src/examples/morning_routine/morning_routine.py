@@ -1,7 +1,7 @@
 from pypely import pipeline, fork, merge, identity
 from pypely.helpers import head
 
-import data
+from examples.morning_routine import data
 
 
 def main(): 
