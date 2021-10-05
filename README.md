@@ -113,3 +113,8 @@ morning_routine = pipeline(
 
 morning_routine() # -> 😋
 ```
+
+# Contribution
+If you want to contribute:
+1. I'm super happy 🥳
+2. Please check out the [contribution guide](https://github.com/stoney95/pypely/tree/main/assets/CONTRIBUTION.md)
