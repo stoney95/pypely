@@ -6,8 +6,6 @@ name: Python application
 on:
   pull_request:
     branches: [ main ]
-  merge:
-    branches: [ main ]
 
 jobs:
   lint-and-test:
@@ -43,7 +41,7 @@ jobs:
   release:
     needs: lint-and-test
     # https://github.community/t/how-do-i-specify-job-dependency-running-in-another-workflow/16482
-    if: github.event_name == 'merge' && github.ref == 'refs/heads/master' && !contains(github.event.head_commit.message, 'chore(release):')
+    #  if: github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, 'chore(release):')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-python@v2
@@ -51,9 +49,10 @@ jobs:
           python-version: 3.8
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Semantic Release
-        run: |
-          pip install python-semantic-release
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          semantic-release publish
+        with:
+          fetch-depth: 0
+      - name: Python Semantic Release
+        uses: relekang/python-semantic-release@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pypi_token: ${{ secrets.PYPI_TOKEN }}
