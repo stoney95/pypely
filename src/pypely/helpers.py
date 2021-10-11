@@ -31,4 +31,5 @@ def side_effect(func: Callable):
 
 
 head = lambda x: x[0]
+last = lambda x: x[-1]
 rest = lambda x: x[1:]

@@ -6,3 +6,12 @@ dependencies:
     - seaborn
     - pytest
     - "."
+    - torch
+    - numpy
+    - pandas
+    - scikit-learn
+    - matplotlib
+    - tensorboard
+    - mlflow
+    - tqdm
+    - pillow
