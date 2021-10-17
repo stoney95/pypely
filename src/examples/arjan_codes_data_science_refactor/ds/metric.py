@@ -3,21 +3,20 @@ from typing import list
 
 
 @dataclass(frozen=True)
-class Metric:
-    values: list[float] = field(default_factory=list)
-    running_total: float = 0.0
-    num_updates: float = 0.0
-    average: float = 0.0
+class BatchMetric:
+    value: float
+    batch_size: int 
 
 
-def update(metric: Metric, value: float, batch_size: int):
-    running_total = value * batch_size
-    num_updates = metric.num_updates + batch_size
-    average = running_total / num_updates
+@dataclass(frozen=True)
+class EpochMetric:
+    avg_value: float
 
-    return Metric(
-        values=metric.values.append(value),
-        running_total=running_total,
-        num_updates=num_updates,
-        average=average,
-    )
+
+def batches_to_epoch(batches: list[BatchMetric]) -> EpochMetric:
+    total_value = sum([batch.values * batch.batch_size for batch in batches])
+    total_size = sum(map(lambda batch: batch.batch_size, batches))
+
+    avg = total_value / total_size
+    return EpochMetric(avg)
+
