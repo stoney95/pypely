@@ -1,21 +1,41 @@
-from typing import Any, Callable, list, Iterable, Tuple
 import torch
+from torch.utils.data import DataLoader
 import numpy as np
 from sklearn.metrics import accuracy_score
 from tqdm import tqdm
 
-from pypely import pipeline, fork, to, merge
-from pypely.helpers import side_effect, select
+from pypely import pipeline, fork, to
+from pypely.helpers import side_effect
 
+from typing import Any, Callable, list, Iterable, Tuple
 from collections import namedtuple
 from dataclasses import dataclass, field, asdict
 from functools import partial
 
 from .metric import BatchMetric, EpochMetric, batches_to_epoch
+from .tracking import ExperimentTracker, Stage
 
 #TODO: renaming
-RawInput = namedtuple('RawInput', ["model", "x", "y"])
 PredictionWithLabels = namedtuple('PredictionWithLabels', ["prediction", "label"])
+
+
+@dataclass(frozen=True)
+class Epoch:
+    experiment: ExperimentTracker
+    train_batches: DataLoader
+    test_batches: DataLoader
+    model: torch.nn.Module
+    optimizer: torch.optim.Optimizer
+    loss_function: torch.nn.modules.loss._Loss
+    id: int = 0
+    test_accuracy: float = 0.0
+    train_accuracy: float = 0.0
+
+
+@dataclass(frozen=True)
+class Batch:
+    x: torch.Tensor
+    y: torch.Tensor
 
 
 @dataclass(frozen=True)
@@ -34,40 +54,51 @@ class EpochResult:
     y_pred_batches: list[np.ndarray] = field(default_factory=list)
 
 
-def run_epoch(model, batches, optimizer, loss):
-    train = partial(train_model, optimizer=optimizer, loss=loss)
-    epoch_train = run_batches(model, batches, train, "Train Batches")
+#TODO: is code duplicated?
+def run_epoch(epoch: Epoch) -> Epoch:
+    train_stage = Stage.TRAIN
+    test_stage = Stage.VAL
 
-    test = partial(test_model, loss=loss)
-    epoch_test = run_batches(model, batches, test, "Validation Batches")
+    train = partial(train_model, optimizer=epoch.optimizer, loss=epoch.loss_function)
+    add_batch_metric = lambda metric, value, step: epoch.experiment.add_batch_metric(epoch.experiment.writer, train_stage, metric, value, step)
+    epoch_train = run_batches(epoch.model, epoch.train_batches, train, "Train Batches", add_batch_metric)
 
-    #TODO: experiment.add_epoch_metric("accuracy", epoch_avg_accuracy, epoch_id)
-    #TODO: experiment.add_epoch_metric("accuracy", epoch_avg_accuracy, epoch_id)
-    #TODO: experiment.add_confusion_matrix(y_true_batches, y_pred_batchs, epoch_id)
+    test = partial(test_model, loss=epoch.loss_function)
+    add_batch_metric = lambda metric, value, step: epoch.experiment.add_batch_metric(epoch.experiment.writer, test_stage, metric, value, step)
+    epoch_test = run_batches(epoch.model, epoch.test_batches, test, "Validation Batches", add_batch_metric)
+
+    epoch.experiment.add_epoch_metric(epoch.experiment.writer, train_stage, "accuracy", epoch_train.metric.avg_value, epoch.id)
+    epoch.experiment.add_epoch_metric(epoch.experiment.writer, test_stage, "accuracy", epoch_test.metric.avg_value, epoch.id)
+    epoch.experiment.add_confusion_matrix(epoch.experiment.writer, test_stage, epoch_test.y_true_batches, epoch_test.y_pred_batches, epoch.id)
+
+    return Epoch(
+        **asdict(epoch),
+        test_accuracy=epoch_test.metric.avg_value, 
+        train_accuracy=epoch_train.metric.avg_value
+    )
 
 
 def run_batches(
     model: torch.nn.Module, 
     batches: Iterable[Tuple[torch.Tensor, torch.Tensor]], 
-    batch_func: Callable[[torch.nn.Module, torch.Tensor, torch.Tensor], BatchResult], 
-    desc: str
+    batch_func: Callable[[Batch], BatchResult], 
+    desc: str,
+    add_batch_metric: Callable[[str, float, int], None]
 ) -> EpochResult:
 
-    batch_size = lambda model, x, y: x.shape[0]
     add_metric_to_result = lambda batch_result, batch_size: BatchResult(**asdict(batch_result), metric=BatchMetric(batch_result.accuracy, batch_size))
 
-    run_batch = pipeline(
-        fork(
-            batch_func,
-            batch_size
-        ),
-        merge(add_metric_to_result)
-        # TODO: side_effect(add_batch_metric)
-    )
+    def run_batch(model, x, y, step):
+        batch = Batch(x, y)
+        batch_result = batch_func(model, batch)
+        add_batch_metric("accuracy", batch_result.accuracy, step)
+        
+        return add_metric_to_result(batch_result, x.shape[0])
 
-    batch_results: list[BatchResult] = [run_batch(model, x, y) for x, y in tqdm(batches, ncols=80, desc=desc)]
+    get_batch_results = lambda batches: [run_batch(model, x, y, i) for i, (x, y) in enumerate(tqdm(batches, ncols=80, desc=desc))]
 
-    gather_epoch = pipeline(
+    as_epoch = pipeline(
+        get_batch_results,
         fork(
             lambda batch_results: batches_to_epoch([batch.metric for batch in batch_results]),
             lambda batch_results: [batch.y_true_batch for batch in batch_results],
@@ -76,11 +107,11 @@ def run_batches(
         to(EpochResult)
     )
 
-    return gather_epoch(batch_results)
+    return as_epoch(batches)
 
 
 def train_model(
-    model: torch.nn.Module, x: torch.Tensor, y: torch.Tensor, optimizer: torch.optim.Optimizer, loss: torch.nn.modules.loss._Loss
+    model: torch.nn.Module, batch: Batch, optimizer: torch.optim.Optimizer, loss: torch.nn.modules.loss._Loss
 ) -> BatchResult:
 
     train = pipeline(
@@ -93,12 +124,11 @@ def train_model(
         side_effect(optimize(optimizer))
     )
 
-    raw_input = RawInput(model, x, y)
-    return train(raw_input)
+    return train(model, batch)
 
 
 def test_model(
-    model: torch.nn.Module, x: torch.Tensor, y: torch.Tensor, loss: torch.nn.modules.loss._Loss
+    model: torch.nn.Module, batch: Batch, loss: torch.nn.modules.loss._Loss
 ) -> BatchResult:
 
     label_to_numpy = lambda data: data.y.detach.numpy()
@@ -115,8 +145,7 @@ def test_model(
         to(BatchResult, "loss", "accuracy", "y_true_batch", "y_pred_batch")
     )
 
-    raw_input = RawInput(model, x, y)
-    return test(raw_input)
+    return test(model, batch)
 
 
 def get_accuracy_score(data: PredictionWithLabels) -> float:
@@ -126,12 +155,12 @@ def get_accuracy_score(data: PredictionWithLabels) -> float:
     return accuracy_score(y_np, y_prediction_np)
 
 
-def forward(train: bool) -> Callable[[RawInput], PredictionWithLabels]: 
-    def inner(raw_input: RawInput):
-        raw_input.model.train(train)
-        prediction = raw_input.model(raw_input.x)
+def forward(train: bool) -> Callable[[Batch], PredictionWithLabels]: 
+    def inner(model: torch.nn.Module, batch: Batch):
+        model.train(train)
+        prediction = model(batch.x)
 
-        return PredictionWithLabels(prediction=prediction, label=raw_input.y)
+        return PredictionWithLabels(prediction=prediction, label=batch.y)
 
     return inner
 
