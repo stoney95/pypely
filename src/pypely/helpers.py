@@ -29,6 +29,9 @@ def side_effect(func: Callable):
     return lambda *x: __run_func(*x)
 
 
+def optional(func: Callable, cond: bool):
+    return lambda *x:  func(*x) if cond else x
+
 
 head = lambda x: x[0]
 last = lambda x: x[-1]
