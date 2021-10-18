@@ -4,24 +4,24 @@ from matplotlib import pyplot as plt
 from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix
 import numpy as np
 
-from .tracking import Stage
+from .tracking import StageName
 
 
 def flush(writer: SummaryWriter):
     writer.flush()
 
 
-def add_batch_metric(writer: SummaryWriter, stage: Stage, name: str, value: float, step: int):
+def add_batch_metric(writer: SummaryWriter, stage: StageName, name: str, value: float, step: int):
     tag = f"{stage.name}/batch/{name}"
     writer.add_scalar(tag, value, step)
 
 
-def add_epoch_metric(writer: SummaryWriter, stage: Stage, name: str, value: float, step: int):
+def add_epoch_metric(writer: SummaryWriter, stage: StageName, name: str, value: float, step: int):
     tag = f"{stage.name}/epoch/{name}"
     writer.add_scalar(tag, value, step)
 
 
-def add_epoch_confusion_matrix(writer: SummaryWriter, stage: Stage, y_true: list[np.ndarray], y_pred: list[np.ndarray], step: int):
+def add_epoch_confusion_matrix(writer: SummaryWriter, stage: StageName, y_true: list[np.ndarray], y_pred: list[np.ndarray], step: int):
     def _collapse_batch(batch_list: list[np.ndarray]) -> np.ndarray:
         return np.concatenate(batch_list)
 
