@@ -9,10 +9,10 @@ def test_reduce_by(add):
 
 
 def test_flatten():
-    nested_list = [1, 2, [3, [4, 5], 6], 7, [8, [9]]]
-    expected = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    nested_tuple = (1, 2, (3, (4, 5), 6), 7, (8, (9)))
+    expected = (1, 2, 3, 4, 5, 6, 7, 8, 9)
 
-    to_test = flatten(nested_list)
+    to_test = flatten(nested_tuple)
 
     assert to_test == expected
 
@@ -27,6 +27,19 @@ def test_side_effect():
     to_test = test_function("Can't", "touch", "me")
 
     assert to_test == ("Can't", "touch", "me")
+
+
+def test_side_effect_single_argument():
+    def __print(*x):
+        message = ' '.join(x)
+        print(message)
+        return 5000
+
+    test_function = side_effect(__print)
+    to_test = test_function("Test")
+
+    assert to_test == "Test"
+    
 
 
 def test_head():
