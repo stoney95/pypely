@@ -10,3 +10,4 @@ class TrainingDependencies:
     optimizer: torch.optim.Optimizer
     loss: torch.nn.modules.loss._Loss
     experiment: ExperimentTracker
+    
