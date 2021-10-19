@@ -20,7 +20,7 @@ class BatchData:
 
 @dataclass(frozen=True)
 class BatchResult:
-    pred: np.ndarray
+    pred: torch.Tensor
 
 
 @dataclass(frozen=True)
@@ -48,6 +48,7 @@ def optimize(optimizer: torch.optim.Optimizer) -> Callable[[Batch], None]:
 
 def batch(training_dependencies: TrainingDependencies, batch_data: BatchData, stage: StageName, step: int) -> Batch:
     _optimize = optional(optimize(training_dependencies.optimizer), stage == StageName.TRAIN)
+    _add_batch_metric = lambda batch: training_dependencies.experiment.add_batch_metric(stage, "accuracy", batch.metric.accuracy, step)
 
     process = pipeline(
         fork(
@@ -56,11 +57,11 @@ def batch(training_dependencies: TrainingDependencies, batch_data: BatchData, st
         ),
         fork(
             identity,
-            merge(batch_metric(training_dependencies.loss, get_accuracy_score))
+            merge(get_batch_metrics(training_dependencies.loss, get_accuracy_score))
         ),
         to(Batch),
         side_effect(_optimize),
-        side_effect(lambda batch: training_dependencies.experiment.add_batch_metric(stage, "accuracy", batch.accuracy, step))
+        side_effect(_add_batch_metric)
     )
     
     return process(training_dependencies.model, batch_data)
@@ -69,18 +70,17 @@ def batch(training_dependencies: TrainingDependencies, batch_data: BatchData, st
 def run_batch(model: torch.nn.Module, batch_data: BatchData) -> BatchResult:
     process = pipeline(
         lambda model, batch_data: model(batch_data.x),
-        lambda pred: np.argmax(pred.detach().numpy(), axis=1),
-        lambda pred_np: BatchResult(pred_np)
+        to(BatchResult)
     )
 
     return process(model, batch_data)
 
 
 def calculate_metric(metric: Callable[[torch.Tensor, torch.Tensor], float]) -> Callable[[BatchData, BatchResult], float]:
-    lambda batch_data, batch_result: metric(batch_result.pred, batch_data.y)
+    return lambda batch_data, batch_result: metric(batch_result.pred, batch_data.y)
         
 
-def batch_metric(*metrics: Callable[[torch.Tensor, torch.Tensor], float]) -> Callable[[BatchData, BatchResult], BatchMetric]:
+def get_batch_metrics(*metrics: Callable[[torch.Tensor, torch.Tensor], float]) -> Callable[[BatchData, BatchResult], BatchMetric]:
     get_batch_size = lambda batch_data, _: batch_data.x.shape[0]
 
     return pipeline(
