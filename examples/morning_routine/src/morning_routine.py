@@ -1,7 +1,9 @@
+import time
+
 from pypely import pipeline, fork, merge, identity
 from pypely.helpers import head
 
-from examples.morning_routine import data
+import data
 
 
 def main(): 
@@ -62,7 +64,7 @@ def cut_bread(me: data.Me) -> data.Bread:
     __check_me(me)
     bread = data.Bread()
     new_me = data.Me(position=me.position, awake=me.awake, hungry=me.hungry, preparing=bread)
-    __tab_print("fry_eggs:", new_me)
+    __tab_print("cut_bread:", new_me)
     return bread
 
 
@@ -104,6 +106,8 @@ def __tab_print(first, second):
     message = f"{first}{tabs}{second}"
     message = message.expandtabs(8)
     print(message)
+
+    time.sleep(1)
 
 
 if __name__ == '__main__':

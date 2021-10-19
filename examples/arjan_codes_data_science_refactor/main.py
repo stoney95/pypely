@@ -1,10 +1,12 @@
 from pypely import pipeline, fork, to, identity, merge
+from pypely.functions import T
 from pypely.helpers import side_effect, reduce_by
 
 import torch
 from typing import Any, Iterable
 from torch.utils.tensorboard import SummaryWriter
 from pathlib import Path
+from datetime import datetime
 
 from ds.dataset import create_dataloader
 from ds.models import LinearNet
@@ -18,6 +20,8 @@ EPOCHS = 20
 BATCH_SIZE = 128
 
 HERE = Path(__file__).parent
+LOG_DIR = HERE.parent.parent / "runs" / datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+LOG_DIR.mkdir(parents=True, exist_ok=True)
 
 DATA_DIR = HERE / "data"
 TRAIN_DATA = DATA_DIR / "train-images-idx3-ubyte.gz"
@@ -38,7 +42,7 @@ create_training_dependencies = pipeline(
     fork(
         create_model,
         lambda: torch.nn.CrossEntropyLoss(reduction="mean"),
-        lambda: ExperimentTracker[SummaryWriter](SummaryWriter(), tb_tracking.flush, tb_tracking.add_batch_metric, tb_tracking.add_epoch_metric, tb_tracking.add_epoch_confusion_matrix),
+        lambda: ExperimentTracker[SummaryWriter](SummaryWriter(log_dir=str(LOG_DIR)), tb_tracking.flush, tb_tracking.add_batch_metric, tb_tracking.add_epoch_metric, tb_tracking.add_epoch_confusion_matrix),
     ),
     to(TrainingDependencies)
 )

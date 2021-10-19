@@ -1,7 +1,7 @@
 import pytest
 
-from examples.morning_routine import *
-from examples.morning_routine.data import *
+from morning_routine.src import *
+from morning_routine.src.data import *
 
 
 def test_main():

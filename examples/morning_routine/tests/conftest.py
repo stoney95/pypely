@@ -1,5 +1,5 @@
 from pytest import fixture
-from examples.morning_routine.data import *
+from morning_routine import *
 
 @fixture
 def sleeping_me() -> Me:
