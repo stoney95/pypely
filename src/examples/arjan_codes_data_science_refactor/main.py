@@ -2,7 +2,7 @@ from pypely import pipeline, fork, to, identity, merge
 from pypely.helpers import side_effect, reduce_by
 
 import torch
-from typing import Any
+from typing import Any, Iterable
 from torch.utils.tensorboard import SummaryWriter
 from pathlib import Path
 
@@ -17,11 +17,13 @@ LR = 5e-5
 EPOCHS = 20
 BATCH_SIZE = 128
 
-DATA_DIR = Path("data")
-TRAIN_DATA = DATA_DIR / "data/train-images-idx3-ubyte.gz"
-TRAIN_LABELS = DATA_DIR / "data/train-labels-idx1-ubyte.gz"
-TEST_DATA = DATA_DIR / "data/t10k-images-idx3-ubyte.gz"
-TEST_LABELS = DATA_DIR / "data/t10k-labels-idx1-ubyte.gz"
+HERE = Path(__file__).parent
+
+DATA_DIR = HERE / "data"
+TRAIN_DATA = DATA_DIR / "train-images-idx3-ubyte.gz"
+TRAIN_LABELS = DATA_DIR / "train-labels-idx1-ubyte.gz"
+TEST_DATA = DATA_DIR / "t10k-images-idx3-ubyte.gz"
+TEST_LABELS = DATA_DIR / "t10k-labels-idx1-ubyte.gz"
 
 
 create_model = pipeline(
@@ -62,7 +64,7 @@ def print_summary(epoch: Epoch, epoch_id: int, *_: Any) -> None:
     print("\n" + summary + "\n")
 
 
-def log_epoch(epoch: Epoch, i: int, training_dependencies: TrainingDependencies):
+def log_metrics(epoch: Epoch, i: int, training_dependencies: TrainingDependencies):
     experiment = training_dependencies.experiment
 
     experiment.add_epoch_metric(StageName.TRAIN, "accuracy", epoch.train.metric.accuracy, i)
@@ -71,24 +73,30 @@ def log_epoch(epoch: Epoch, i: int, training_dependencies: TrainingDependencies)
 
     experiment.flush()
 
-#TODO: increase readability with iterator
-epoch = pipeline(
-    fork(
-        reduce_by(run_epoch),
-        lambda training_dependencies, *_: training_dependencies, 
-    ),
-    side_effect(merge(log_epoch)),
-    side_effect(merge(print_summary)),
-)
 
-epochs = lambda training_dependencies, epoch_data: [epoch(training_dependencies, epoch_data, i) for i in range(EPOCHS)]
+def run_epochs(training_dependencies: TrainingDependencies, epoch_data: EpochData) -> Iterable[Epoch]:
+    for __name__ in range(EPOCHS):
+        yield run_epoch(training_dependencies, epoch_data)
+
+
+def log_epoch(epoch: Epoch, epoch_id: int, training_dependencies: TrainingDependencies):
+    log_metrics(epoch, epoch_id, training_dependencies)
+    print_summary(epoch, epoch_id)
+
+
+log_epochs = lambda epochs, training_dependencies: [log_epoch(epoch, i, training_dependencies) for i, epoch in enumerate(epochs)]
+
 
 main = pipeline(
     fork(
         create_training_dependencies,
         create_epoch_data
     ),
-    merge(epochs)
+    fork(
+        merge(run_epochs),
+        merge(lambda training_dependencies, _: training_dependencies),
+    ),
+    merge(log_epochs)
 )
 
 if __name__ == '__main__':
