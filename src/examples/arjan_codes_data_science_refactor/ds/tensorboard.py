@@ -1,4 +1,4 @@
-from typing import list
+from typing import List
 from torch.utils.tensorboard import SummaryWriter
 from matplotlib import pyplot as plt
 from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix
@@ -21,14 +21,14 @@ def add_epoch_metric(writer: SummaryWriter, stage: StageName, name: str, value: 
     writer.add_scalar(tag, value, step)
 
 
-def add_epoch_confusion_matrix(writer: SummaryWriter, stage: StageName, y_true: list[np.ndarray], y_pred: list[np.ndarray], step: int):
-    def _collapse_batch(batch_list: list[np.ndarray]) -> np.ndarray:
+def add_epoch_confusion_matrix(writer: SummaryWriter, stage: StageName, y_true: List[np.ndarray], y_pred: List[np.ndarray], step: int):
+    def _collapse_batch(batch_list: List[np.ndarray]) -> np.ndarray:
         return np.concatenate(batch_list)
 
     def _create_confusion_matrix(y_true: np.ndarray, y_pred: np.ndarray) -> plt.Figure:
-        cm = ConfusionMatrixDisplay(confusion_matrix(y_true, y_pred))
+        cm = ConfusionMatrixDisplay(confusion_matrix(y_true, y_pred)).plot(cmap="Blues")
         cm.ax_.set_title(f"{stage.name} Epoch: {step}")
-        return cm
+        return cm.figure_
 
     y_true = _collapse_batch(y_true)
     y_pred = _collapse_batch(y_pred)
