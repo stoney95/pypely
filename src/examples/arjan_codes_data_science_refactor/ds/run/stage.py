@@ -1,6 +1,6 @@
 from pypely import pipeline, fork, to, identity
 from dataclasses import dataclass
-from typing import list, Iterable
+from typing import List, Iterable
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from functools import reduce
@@ -16,8 +16,8 @@ from ds.run.batch import batch, Batch, BatchData, BatchMetric
 
 @dataclass(frozen=True)
 class StageResult:
-    true: list[np.ndarray]
-    pred: list[np.ndarray]
+    true: List[np.ndarray]
+    pred: List[np.ndarray]
 
 
 @dataclass(frozen=True)
@@ -27,7 +27,7 @@ class StageMetric:
 
 @dataclass(frozen=True)
 class Stage:
-    batches: list[Batch]
+    batches: List[Batch]
     result: StageResult
     metric: StageMetric
 
