@@ -83,43 +83,8 @@ def fill_outliers(fill_lower, fill_upper):
     return lambda df, boundaries: __fill_outliers(df, boundaries, fill_lower, fill_upper)
 
 
-"""
-Less readable stuff
-"""
-
-def oulier_boundaries_hard(df):
-    def __boundaries(lower_fence, upper_fence):
-        return lambda quantiles, IQR: Boundaries(
-            lower=lower_fence(quantiles[0], IQR), 
-            upper=upper_fence(quantiles[1], IQR)
-        )
-
-    pipe = pipeline(
-        fork(
-            calculate_quantile(0.25),
-            calculate_quantile(0.75)
-        ),
-        fork(
-            identity,
-            lambda x: x[1] - x[0]
-        ),
-        merge(
-            __boundaries(
-                calculate_fence(aggregation=lambda x, y: x - y, factor=1.5),
-                calculate_fence(aggregation=lambda x, y: x + y, factor=1.5),
-            )
-        )
-    )
-
-    return pipe(df)
-
-
 def calculate_quantile(quantile):
     return lambda df: df.quantile(quantile)
-
-
-def calculate_fence(aggregation, factor):
-    return lambda quantile, _range: aggregation(quantile,  factor * _range)
 
 
 if __name__ == "__main__":
