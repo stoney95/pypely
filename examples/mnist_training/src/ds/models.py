@@ -1,5 +1,5 @@
 import torch
-
+from pypely import pipeline, fork, identity
 
 class LinearNet(torch.nn.Module):
     def __init__(self):
@@ -15,3 +15,15 @@ class LinearNet(torch.nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.network(x)
+
+
+def create_linear_net(optimizer, learning_rate):
+    process = pipeline(
+        lambda: LinearNet(),
+        fork(
+            identity,
+            lambda model: optimizer(model.parameters(), lr=learning_rate)
+        )
+    )
+
+    return process
