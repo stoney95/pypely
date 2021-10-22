@@ -1,17 +1,25 @@
-import pytest
+from pytest import fixture
 
-def pytest_sessionstart(session, mocker):
+from torch.utils.tensorboard import SummaryWriter
+
+@fixture(autouse=True)
+def mock_summary_writer(mocker):
     mocker.patch(
         'torch.utils.tensorboard.SummaryWriter.add_scalar',
-        lambda tag, value, step: print(f"{tag}, {value}, {step}")
+        lambda self, tag, value, step: print(f"{tag}, {value}, {step}")
     )
 
     mocker.patch(
         'torch.utils.tensorboard.SummaryWriter.add_figure',
-        lambda tag, fig, step: print(f"{tag}, {step}")
+        lambda self, tag, fig, step: print(f"{tag}, {step}")
     )
 
     mocker.patch(
         'torch.utils.tensorboard.SummaryWriter.flush',
-        lambda: print("flushing...")
+        lambda self: print("flushing...")
     )
+
+
+@fixture()
+def writer(): 
+    return SummaryWriter()
