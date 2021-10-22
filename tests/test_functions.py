@@ -2,6 +2,7 @@ import pytest
 
 from pypely import pipeline, merge, fork, identity, to
 from pypely.helpers import head, rest, reduce_by
+from pypely.types import PypelyTuple
 
 from collections import namedtuple
 
@@ -65,7 +66,7 @@ def test_fork(add, mul, sub):
     )
 
     to_test = multiple(2, 1)
-    assert to_test == (3, 2, 1)
+    assert to_test == PypelyTuple(3, 2, 1)
 
 
 def test_to(add, mul, sub):
