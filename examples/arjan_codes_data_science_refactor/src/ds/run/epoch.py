@@ -1,6 +1,7 @@
 from pypely import pipeline, fork, to
 from dataclasses import dataclass
 from torch.utils.data import DataLoader
+from typing import Callable, Iterable
 
 from ds.training import TrainingDependencies
 from ds.tracking import StageName
@@ -32,3 +33,11 @@ def run_epoch(training_dependencies: TrainingDependencies, epoch_data: EpochData
     )
 
     return process()
+
+
+def run_epochs(epochs: int) -> Callable[[TrainingDependencies, EpochData], Iterable[Epoch]]:
+    def _inner(training_dependencies: TrainingDependencies, epoch_data: EpochData) -> Iterable[Epoch]:
+        for _ in range(epochs):
+            yield run_epoch(training_dependencies, epoch_data)
+    
+    return _inner
