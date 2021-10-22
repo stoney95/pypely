@@ -21,6 +21,6 @@ def me_in_kitchen() -> Me:
 def table() -> Table:
     return Table([Tea(), Eggs(), Bread(), Plate()])
 
-
-def pytest_sessionstart(session, mocker):
+@fixture(autouse=True)
+def set_sleep_time_to_zero(mocker):
     mocker.patch.object(data_objects.src.morning_routine, "TIME_BETWEEN_STEPS", 0)
