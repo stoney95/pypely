@@ -37,8 +37,9 @@ jobs:
         flake8 . --exclude .venv --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pip install pytest pytest-cov
-        pytest --cov-report term-missing --cov=src
+        pip install pytest pytest-cov pytest-html
+        source .env
+        pytest --cov-report html --cov=src --cov=examples
 
   release:
     needs: lint-and-test
