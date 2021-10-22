@@ -1,8 +1,10 @@
 # Examples
-In this directory are some examples that will showcase how to apply `pypely`. For this three kaggle challenges will be used as a base. The code written in the examples is inspired by the referenced notebooks. The purpose of the examples ca not be compared with the original purpose of the notebook code. All visualizations will be left out. You can understand the translation from the notebook to the example as if you did exploration and want to transform your code into a productive, reusable and extendable setup. 
+In this directory are some examples that will showcase how to apply `pypely`. To show different use cases `pypely` can be applied to there are three different types of examples:
 
-# Challenges
-The three used challenges are:
- * [Step by Step Data Preprocessing](https://www.kaggle.com/agrawaladitya/step-by-step-data-preprocessing-eda)
- * [Toxic Data Preprocessing](https://www.kaggle.com/fizzbuzz/toxic-data-preprocessing)
- * [Data Preprocessing Guide](https://www.kaggle.com/berkayalan/data-preprocessing-a-complete-guide)
+* [mnist_training](./mnist_training/): The example is referencing [Arjan Codes YouTube tutorials](https://youtu.be/ka70COItN40), where he takes the codebase of a data science project and refactors it. The project trains a simple torch model on mnist data. The example here provides an alternative implementation using `pypely`. 
+* [data_object](./data_objects/): This example is the implementation of the documentation code snippets. It showcases how `pypely` can be used in combination with custom created immutable data objects.
+* [preprocessing](.preprocessing/): This example applies the `pypely` approach to different kaggle data preprocessing examples.
+
+
+> :mailbox: If you find the approaches in the examples interesting but have feedback, criticisms or questions please feel free to open an issue or contact me directly. 
+

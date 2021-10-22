@@ -1,3 +1,10 @@
+ * [Step by Step Data Preprocessing](https://www.kaggle.com/agrawaladitya/step-by-step-data-preprocessing-eda)
+ * [Toxic Data Preprocessing](https://www.kaggle.com/fizzbuzz/toxic-data-preprocessing)
+ * [Data Preprocessing Guide](https://www.kaggle.com/berkayalan/data-preprocessing-a-complete-guide)
+
+The code written in the examples is inspired by the referenced notebooks. The purpose of the examples ca not be compared with the original purpose of the notebook code. All visualizations will be left out. You can understand the translation from the notebook to the example as if you did exploration and want to transform your code into a productive, reusable and extendable setup. 
+
+
 # Data Preprocessing- A Complete Guide 💯✔️ 
 
 Here we will use this [kaggle guide](https://www.kaggle.com/berkayalan/data-preprocessing-a-complete-guide) and try to apply the `pypely` approach for the described data processing. Please take a look at the guide so that you will know why the data preprocessing is done. This guide here only focuses on applying the `pypely` approach.
@@ -16,9 +23,9 @@ Functional programming provides multiple ways of abstraction. Choose the level o
 Of course it is possible to go fully functional and using `pypely` therefore. The function `outlier_boundaries` could have also been defined as shown in the following:
 
 ```python
-def outlier_boundaries_hard(df):
+def outlier_boundaries(df):
     def __fences(lower_fence, upper_fence):
-        return lambda quantiles, IQR: Fences(
+        return lambda quantiles, IQR: Boundaries(
             lower=lower_fence(quantiles[0], IQR), 
             upper=upper_fence(quantiles[1], IQR)
         )
@@ -57,12 +64,12 @@ def calculate_fence(aggregation, factor):
 The advantage of this approach is to have the calculations of the quantile and the fences in one place and configurable. But of course does the readability suffer compared to the chosen definition:
 
 ```python
-def calculate_fences(df):
+def outlier_boundaries(df):
     quantile_1 = df.quantile(0.25)
     quantile_3 = df.quantile(0.75)
     IQR = quantile_3 - quantile_1
 
-    return Fences(
+    return Boundaries(
         lower=quantile_1 - 1.5 * IQR,
         upper=quantile_3 + 1.5 * IQR
     )
