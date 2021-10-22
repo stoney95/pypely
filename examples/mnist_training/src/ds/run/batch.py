@@ -68,12 +68,8 @@ def batch(training_dependencies: TrainingDependencies, batch_data: BatchData, st
 
 
 def run_batch(model: torch.nn.Module, batch_data: BatchData) -> BatchResult:
-    process = pipeline(
-        lambda model, batch_data: model(batch_data.x),
-        to(BatchResult)
-    )
-
-    return process(model, batch_data)
+    pred = model(batch_data.x)
+    return BatchResult(pred)
 
 
 def calculate_metric(metric: Callable[[torch.Tensor, torch.Tensor], float]) -> Callable[[BatchData, BatchResult], float]:
