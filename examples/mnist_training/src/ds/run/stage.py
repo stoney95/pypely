@@ -9,9 +9,9 @@ from collections import namedtuple
 import numpy as np
 import torch
 
-from ds.tracking import StageName
-from ds.training import TrainingDependencies
-from ds.run.batch import batch, Batch, BatchData, BatchMetric
+from mnist_training.src.ds.tracking import StageName
+from mnist_training.src.ds.training import TrainingDependencies
+from mnist_training.src.ds.run.batch import batch, Batch, BatchData, BatchMetric
 
 
 @dataclass(frozen=True)

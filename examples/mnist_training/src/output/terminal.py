@@ -1,6 +1,6 @@
 from typing import Callable, Any
 
-from ds.run.epoch import Epoch
+from mnist_training.src.ds.run.epoch import Epoch
 
 def print_summary(epochs: int) -> Callable[[Epoch, int, Any], None]:
     def _inner(epoch: Epoch, epoch_id: int, *_: Any) -> None:

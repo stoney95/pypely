@@ -1,6 +1,6 @@
-from ds.training import TrainingDependencies
-from ds.tracking import StageName
-from ds.run.epoch import Epoch
+from mnist_training.src.ds.training import TrainingDependencies
+from mnist_training.src.ds.tracking import StageName
+from mnist_training.src.ds.run.epoch import Epoch
 
 
 def log_metrics(epoch: Epoch, i: int, training_dependencies: TrainingDependencies):

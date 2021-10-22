@@ -5,6 +5,7 @@ dependencies:
     - twine
     - seaborn
     - pytest
+    - pytest-mock
     - "."
     - torch
     - numpy

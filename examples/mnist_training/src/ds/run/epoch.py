@@ -3,9 +3,9 @@ from dataclasses import dataclass
 from torch.utils.data import DataLoader
 from typing import Callable, Iterable
 
-from ds.training import TrainingDependencies
-from ds.tracking import StageName
-from ds.run.stage import run_stage, Stage
+from mnist_training.src.ds.training import TrainingDependencies
+from mnist_training.src.ds.tracking import StageName
+from mnist_training.src.ds.run.stage import run_stage, Stage
 
 
 @dataclass(frozen=True)

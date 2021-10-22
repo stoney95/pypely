@@ -1,5 +1,6 @@
 from pytest import fixture
-from morning_routine import *
+from data_objects.src.data import *
+import data_objects.src.morning_routine
 
 @fixture
 def sleeping_me() -> Me:
@@ -19,3 +20,7 @@ def me_in_kitchen() -> Me:
 @fixture
 def table() -> Table:
     return Table([Tea(), Eggs(), Bread(), Plate()])
+
+
+def pytest_sessionstart(session, mocker):
+    mocker.patch.object(data_objects.src.morning_routine, "TIME_BETWEEN_STEPS", 0)

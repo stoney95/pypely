@@ -7,9 +7,9 @@ from typing import Callable
 import numpy as np
 import torch
 
-from ds.metric import get_accuracy_score
-from ds.tracking import StageName
-from ds.training import TrainingDependencies
+from mnist_training.src.ds.metric import get_accuracy_score
+from mnist_training.src.ds.tracking import StageName
+from mnist_training.src.ds.training import TrainingDependencies
 
 
 @dataclass(frozen=True)

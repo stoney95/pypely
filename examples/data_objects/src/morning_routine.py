@@ -3,7 +3,9 @@ import time
 from pypely import pipeline, fork, merge, identity
 from pypely.helpers import head
 
-import data
+from . import data
+
+TIME_BETWEEN_STEPS = 1
 
 
 def main(): 
@@ -107,7 +109,7 @@ def __tab_print(first, second):
     message = message.expandtabs(8)
     print(message)
 
-    time.sleep(1)
+    time.sleep(TIME_BETWEEN_STEPS)
 
 
 if __name__ == '__main__':

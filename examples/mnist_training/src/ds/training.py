@@ -1,7 +1,7 @@
 import torch
 
 from dataclasses import dataclass
-from ds.tracking import ExperimentTracker
+from mnist_training.src.ds.tracking import ExperimentTracker
 
 
 @dataclass(frozen=True)
