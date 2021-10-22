@@ -6,6 +6,7 @@ dependencies:
     - seaborn
     - pytest
     - pytest-mock
+    - pytest-html
     - "."
     - torch
     - numpy
