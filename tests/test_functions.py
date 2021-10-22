@@ -1,7 +1,9 @@
 import pytest
 
-from pypely import pipeline, merge, fork, identity
+from pypely import pipeline, merge, fork, identity, to
 from pypely.helpers import head, rest, reduce_by
+
+from collections import namedtuple
 
 
 def test_pypely(add, mul, sub):
@@ -65,6 +67,21 @@ def test_fork(add, mul, sub):
     to_test = multiple(2, 1)
     assert to_test == (3, 2, 1)
 
+
+def test_to(add, mul, sub):
+    Triple = namedtuple('Triple', ['x', 'y', 'z'])
+
+    to_triple = pipeline(
+        fork(
+            add, mul, sub
+        ),
+        to(Triple, "x", "y", "z")
+    )
+
+    to_test = to_triple(2,1)
+    expected = Triple(3, 2, 1)
+
+    assert to_test == expected
 
 def test_merge():
     single = merge(
