@@ -1,24 +1,26 @@
 from typing import Callable, List, Any, Tuple
 from inspect import getfullargspec
+from .types import PypelyTuple
 
 
 def reduce_by(func: Callable) -> Callable:
     num_args = len(getfullargspec(func).args)
-    return lambda *x: (func(*x[:num_args]), x[num_args:])
+    return lambda *x: flatten(PypelyTuple(func(*x[:num_args]), *x[num_args:]))
 
 
-def flatten(_tuple: Tuple[Any]) -> Tuple[Any]:
+def flatten(_tuple: PypelyTuple) -> PypelyTuple:
     result = []
-    for elem in _tuple:
-        if isinstance(elem, Tuple):
-            if any(isinstance(x, Tuple) for x in elem):
-                result += flatten(elem)
+    if isinstance(_tuple, PypelyTuple):
+        for elem in _tuple:
+            if isinstance(elem, PypelyTuple):
+                if any(isinstance(x, PypelyTuple) for x in elem):
+                    result += list(flatten(elem))
+                else:
+                    result += list(elem)
             else:
-                result += elem
-        else:
-            result.append(elem)
-
-    return tuple(result)
+                result.append(elem)
+        return PypelyTuple(*result)
+    raise ValueError(f"You can use flatten only with 'PypelyTuple'. Input is of type: {type(_tuple)}")
 
 
 def side_effect(func: Callable):
@@ -39,4 +41,4 @@ def optional(func: Callable, cond: bool):
 
 head = lambda x: x[0]
 last = lambda x: x[-1]
-rest = lambda x: x[1:]
+rest = lambda x: PypelyTuple(*x[1:])

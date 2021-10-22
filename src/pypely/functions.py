@@ -1,6 +1,7 @@
 from functools import reduce
 from typing import Callable, Tuple, TypeVar
 from .helpers import flatten
+from .types import PypelyTuple
 
 T = TypeVar("T")
 
@@ -12,11 +13,11 @@ def pipeline(*funcs: Callable) -> Callable:
 
 
 def fork(*funcs: Callable) -> Callable[..., Tuple]:
-    return lambda *x: tuple(func(*x) for func in funcs)
+    return lambda *x: PypelyTuple(*[func(*x) for func in funcs])
 
 
 def to(obj: T, *set_fields) -> Callable[..., T]:
-    def _inner(*vals) -> T:
+    def _inner(vals: PypelyTuple) -> T:
         vals_flattened = flatten(vals)
         if not set_fields == ():
             assert len(vals_flattened) == len(set_fields)
@@ -32,4 +33,7 @@ def merge(func: Callable[..., T]) -> Callable[[Tuple], T]:
     return lambda branches: func(*flatten(branches))
 
 
-identity = lambda *x: x
+def identity(*x):
+    if len(x) == 1:
+        return x[0]
+    return x
