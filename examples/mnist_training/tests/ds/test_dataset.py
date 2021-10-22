@@ -4,15 +4,10 @@ from functools import reduce
 from pathlib import Path
 import math
 
-def test_create_dataloader():
-    HERE = Path(__file__).parent.resolve()
-    DATA_DIR = HERE.parent.parent
+def test_create_dataloader(test_files, test_labels):
     BATCH_SIZE = 128
 
-    TEST_FILES = DATA_DIR / "data/t10k-images-idx3-ubyte.gz"
-    TEST_LABELS = DATA_DIR / "data/t10k-labels-idx1-ubyte.gz"
-
-    test_data = create_dataloader(BATCH_SIZE, TEST_FILES, TEST_LABELS)
+    test_data = create_dataloader(BATCH_SIZE, test_files, test_labels)
 
     batches = [(x,y) for x, y in test_data]
     assert len(batches) == math.ceil(10000 / BATCH_SIZE)
