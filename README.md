@@ -42,7 +42,7 @@ This may be the main question that should be answered. This library focuses on s
 But :point_up:.. if you want to build your whole application in a functional style, `pypely` provides you with the basics for this. So get creative 🤩 
 
 ## Examples
-If you want to get inspired or want to see `pypely` in action please check out the [expamples](https://github.com/stoney95/pypely/tree/main/src/examples) directory.
+If you want to get inspired or want to see `pypely` in action please check out the [expamples](https://github.com/stoney95/pypely/tree/main/src/examples) directory. Next to `pandas` examples this directory showcases other applications of `pypely`. 
 
 # Documentation
 The package consists of these functions:
