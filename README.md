@@ -94,7 +94,7 @@ morning_routine() # -> PypelyTuple(🍵, 🍳, 🍞, 🍽️)
 
 
 ## Merge
-After you split your process into multiple branches, it is time to `merge`. You only have to specify a function that takes as many arguments as there are branches. `merge` will flatten and unpack the list calculated by a previous `fork` and forward it to the specified function. `merge` return the output of the specified function. Use `merge` to have a lovily breakfast:
+After you split your process into multiple branches, it is time to `merge`. You only have to specify a function that takes as many arguments as there are branches. `merge` will flatten and unpack the `PypelyTuple` calculated by a previous `fork` and forward it to the specified function. `merge` returns the output of the specified function. Use `merge` to have a lovily breakfast:
 
 
 ```python
