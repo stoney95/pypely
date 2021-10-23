@@ -1,14 +1,16 @@
 from pytest import fixture
-from pathlib import Path
+import tempfile
 from mnist_training.src.ds.tracking import StageName
+
 
 from torch.utils.tensorboard import SummaryWriter
 
 
 
 @fixture()
-def writer(): 
-    return SummaryWriter()
+def writer():
+    with tempfile.TemporaryDirectory() as tmp: 
+        return SummaryWriter(log_dir=tmp)
 
 
 @fixture()

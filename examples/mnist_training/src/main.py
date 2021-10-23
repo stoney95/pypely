@@ -21,7 +21,6 @@ BATCH_SIZE = 128
 
 HERE = Path(__file__).parent.resolve()
 LOG_DIR = HERE.parent.parent.parent / "runs" / datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
-LOG_DIR.mkdir(parents=True, exist_ok=True)
 
 DATA_DIR = HERE.parent / "data"
 TRAIN_DATA = DATA_DIR / "train-images-idx3-ubyte.gz"
