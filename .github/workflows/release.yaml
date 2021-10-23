@@ -38,7 +38,7 @@ jobs:
     - name: Test with pytest
       run: |
         pip install pytest pytest-cov pytest-html
-        source .env
+        source .env && echo $PYTHONPATH
         pytest --cov-report html:package_cov --cov=src tests/
         pytest --cov-report html:examples_cov --cov=examples examples/
 
