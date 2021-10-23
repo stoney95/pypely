@@ -117,7 +117,7 @@ morning_routine() # -> 😋
 ```
 
 ## To
-A second way of joining multiple branches is using `to`. This function will forward the output of each branch to a data container. This could e.g. be a `dataclass` or a `namedtuple`. Like `merge`, `to` will also flatten the output of a previous `fork`. You can also define to which field of the given data container an output should be assigned. To do so define the field names as `str`. The outputs will be applied in order to field names in the order they are given. If no field names are given, the outputs will be applied to the given the container in the order they are created by `fork`
+A second way of joining multiple branches is using `to`. This function will forward the output of each branch to a data container. This could e.g. be a `dataclass` or a `namedtuple`. Like `merge`, `to` will also flatten the output of a previous `fork`. You can also define to which field of the given data container an output should be assigned. To do so define the field names as `str`. If no field names are given, the outputs will be applied to the given the container in the order they are created by `fork`:
 
 
 ```python
