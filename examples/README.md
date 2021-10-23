@@ -6,5 +6,5 @@ In this directory are some examples that will showcase how to apply `pypely`. To
 * [preprocessing](.preprocessing/): This example applies the `pypely` approach to different kaggle data preprocessing examples.
 
 
-> :mailbox: If you find the approaches in the examples interesting but have feedback, criticisms or questions please feel free to open an issue or contact me directly. 
+> :mailbox: If you find the approaches in the examples interesting and have feedback, criticisms or questions please feel free to open an issue or contact me directly. 
 
