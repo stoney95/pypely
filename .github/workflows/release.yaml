@@ -39,6 +39,7 @@ jobs:
       run: |
         pip install pytest pytest-cov pytest-html
         export PYTHONPATH=/home/runner/work/pypely/pypely/src:/home/runner/work/pypely/pypely/examples
+        echo $PYTHONPATH
         pytest --cov-report html:package_cov --cov=src tests/
         pytest --cov-report html:examples_cov --cov=examples examples/
 
