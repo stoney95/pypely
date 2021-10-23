@@ -1,6 +1,7 @@
 from pypely.helpers import *
 from pypely.types import PypelyTuple
 
+import pytest
 
 def test_reduce_by(add):
     partial_add = reduce_by(add)
@@ -16,6 +17,13 @@ def test_flatten():
     to_test = flatten(nested_tuple)
 
     assert to_test == expected
+
+
+def test_flatten_fail():
+    nested_tuple = (1,(2,3), 4)
+
+    with pytest.raises(ValueError):
+        flatten(nested_tuple)
 
 
 def test_side_effect():
@@ -55,3 +63,15 @@ def test_rest():
     to_test = rest(_list)
 
     assert to_test == PypelyTuple(2,3,4,5)
+
+
+def test_optional(add):
+    running_add = optional(add, True)
+    not_running_add = optional(add, False)
+
+    to_test_running = running_add(1,2)
+    to_test_not_running = not_running_add(1,2)
+
+    assert to_test_running == 3
+    assert to_test_not_running == (1,2)
+

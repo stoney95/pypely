@@ -69,14 +69,30 @@ def test_fork(add, mul, sub):
     assert to_test == PypelyTuple(3, 2, 1)
 
 
-def test_to(add, mul, sub):
+def test_to_with_field_names(add, mul, sub):
+    Triple = namedtuple('Triple', ['x', 'y', 'z'])
+
+    to_triple = pipeline(
+        fork(
+            sub, mul, add
+        ),
+        to(Triple, "x", "y", "z")
+    )
+
+    to_test = to_triple(2,1)
+    expected = Triple(1, 2, 3)
+
+    assert to_test == expected
+
+
+def test_to_no_field_names(add, mul, sub):
     Triple = namedtuple('Triple', ['x', 'y', 'z'])
 
     to_triple = pipeline(
         fork(
             add, mul, sub
         ),
-        to(Triple, "x", "y", "z")
+        to(Triple)
     )
 
     to_test = to_triple(2,1)
@@ -84,12 +100,13 @@ def test_to(add, mul, sub):
 
     assert to_test == expected
 
+
 def test_merge():
     single = merge(
         lambda x, y, z: x*y+z
     )
 
-    to_test = single((1,(2,3)))
+    to_test = single(PypelyTuple(1, PypelyTuple(2,3)))
     assert to_test == 5
 
 

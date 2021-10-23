@@ -1,4 +1,4 @@
-from typing import Callable, List, Any, Tuple
+from typing import Callable
 from inspect import getfullargspec
 from .types import PypelyTuple
 
