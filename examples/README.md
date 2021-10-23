@@ -9,3 +9,5 @@ The order of the list above also demonstrates the complexity of the examples. Wh
 
 > :mailbox: If you find the approaches in the examples interesting and have feedback, criticisms or questions please feel free to open an issue or contact me directly. 
 
+> :warning: If you want to execute the examples please run `source .env` as this will set the `PYTHONPATH`.
+
