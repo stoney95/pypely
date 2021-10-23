@@ -169,10 +169,11 @@ morning_routine = pipeline(
 ```
 
 ## PypelyTuple
-This class extends `builtins.tuple` and ensures that output of `fork` functions that is iterable will not be flattened by `to` and `merge`. This class should not be used by the user directly as it ment to handle data internally between `fork` and `to` / `merge` steps.
+This class extends `builtins.tuple` and ensures that an iterable output of a function used inside `fork` will not be flattened by `to` and `merge`. This class should not be used by the user directly as it is ment to handle data internally between `fork` and `to` / `merge` steps.
 
 
 # Contribution
 If you want to contribute:
 1. I'm super happy 🥳
 2. Please check out the [contribution guide](https://github.com/stoney95/pypely/tree/main/assets/CONTRIBUTION.md)
+3. See the [issues](https://github.com/stoney95/pypely/issues) to find a contribution possibility
