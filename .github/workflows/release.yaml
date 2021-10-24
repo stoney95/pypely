@@ -62,7 +62,7 @@ jobs:
         with:
           github_token: ${{ secrets.REPO_ADMIN_ACCESS_TOKEN }}
           pypi_token: ${{ secrets.PYPI_TOKEN }}
-          args: --noop
+          args: publish --noop
 
   release:
     needs: lint-and-test
