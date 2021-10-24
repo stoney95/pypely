@@ -3,7 +3,7 @@ import time
 from pypely import pipeline, fork, merge, identity
 from pypely.helpers import head
 
-from . import data
+from data_objects.src import data
 
 TIME_BETWEEN_STEPS = 1
 
