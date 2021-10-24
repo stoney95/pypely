@@ -10,7 +10,10 @@ The two files [feature_engineering.py](./src/feature_engineering.py) and [outlie
 
 ## Outlier Handling
 
- In [outlier_handling.py](src/outlier_handling.py) we will use this [kaggle guide](https://www.kaggle.com/berkayalan/data-preprocessing-a-complete-guide) and try to apply the `pypely` approach for the described data processing. Please take a look at the guide so that you will know why the data preprocessing is done. This guide here only focuses on applying the `pypely` approach.
+In [outlier_handling.py](src/outlier_handling.py) we will use this [kaggle guide](https://www.kaggle.com/berkayalan/data-preprocessing-a-complete-guide) and try to apply the `pypely` approach for the described data processing. Please take a look at the guide so that you will know why the data preprocessing is done. This guide here only focuses on applying the `pypely` approach.
+
+### Execution
+Please be sure that you ran `source .path` before you start [outlier_handling.py](src/outlier_handling.py). [.path](../../.path) is located in the root of the project.
 
 ### Building a Pipeline
 The following graphic demonstrates the pipeline that is built in [outlier_handling.py](./outlier_handling.py). Intermediate outputs that are not visible in the code are displayed here. Additionally each section where `pypely` code is applied is highlighted.
@@ -110,6 +113,9 @@ fill_with_mean = fill_outliers(
 
 ## Feature Engineering
 The second example refers to [this kaggle example](https://www.kaggle.com/agrawaladitya/step-by-step-data-preprocessing-eda). Again it might be useful to take a look at the notebook. [feature_engineering.py](src/feature_engineering.py) applies `pypely` to the code from the sections **Data Cleaning & Pre-processing** and **Feature Engineering**.
+
+### Execution
+Please be sure that you ran `source .path` before you start [outlier_handling.py](src/outlier_handling.py). [.path](../../.path) is located in the root of the project.
 
 ### The Main Pipeline
 The complete process is defined by the following code snippet:
