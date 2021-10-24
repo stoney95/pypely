@@ -1,34 +1,44 @@
-from typing import Callable, List, Any, Iterable
+from typing import Callable
 from inspect import getfullargspec
+from .types import PypelyTuple
 
 
 def reduce_by(func: Callable) -> Callable:
     num_args = len(getfullargspec(func).args)
-    return lambda *x: (func(*x[:num_args]), x[num_args:])
+    return lambda *x: flatten(PypelyTuple(func(*x[:num_args]), *x[num_args:]))
 
 
-def flatten(_list: List[Any]) -> List[Any]:
+def flatten(_tuple: PypelyTuple) -> PypelyTuple:
     result = []
-    for elem in _list:
-        if isinstance(elem, Iterable):
-            if any(isinstance(x, Iterable) for x in elem):
-                result += flatten(elem)
+    if isinstance(_tuple, PypelyTuple):
+        for elem in _tuple:
+            if isinstance(elem, PypelyTuple):
+                if any(isinstance(x, PypelyTuple) for x in elem):
+                    result += list(flatten(elem))
+                else:
+                    result += list(elem)
             else:
-                result += elem
-        else:
-            result.append(elem)
-
-    return result
+                result.append(elem)
+        return PypelyTuple(*result)
+    raise ValueError(f"You can use flatten only with 'PypelyTuple'. Input is of type: {type(_tuple)}")
 
 
 def side_effect(func: Callable):
     def __run_func(*_input):
         func(*_input)
+
+        # TODO: find better solution
+        if len(_input) == 1:
+            return _input[0]
         return _input
 
     return lambda *x: __run_func(*x)
 
 
+def optional(func: Callable, cond: bool):
+    return lambda *x:  func(*x) if cond else x
+
 
 head = lambda x: x[0]
-rest = lambda x: x[1:]
+last = lambda x: x[-1]
+rest = lambda x: PypelyTuple(*x[1:])

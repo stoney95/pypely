@@ -1,3 +1,9 @@
+# Custom
+.DS_Store
+notes.txt
+runs/
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -131,6 +137,5 @@ dmypy.json
 
 #VS Code
 .vscode
-.DS_Store
-notes.txt
+
 #.github

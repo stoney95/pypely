@@ -5,4 +5,15 @@ dependencies:
     - twine
     - seaborn
     - pytest
+    - pytest-mock
+    - pytest-html
     - "."
+    - torch
+    - numpy
+    - pandas
+    - scikit-learn
+    - matplotlib
+    - tensorboard
+    - mlflow
+    - tqdm
+    - pillow

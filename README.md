@@ -42,18 +42,19 @@ This may be the main question that should be answered. This library focuses on s
 But :point_up:.. if you want to build your whole application in a functional style, `pypely` provides you with the basics for this. So get creative 🤩 
 
 ## Examples
-If you want to get inspired or want to see `pypely` in action please check out the [expamples](https://github.com/stoney95/pypely/tree/main/src/examples) directory.
+If you want to get inspired or want to see `pypely` in action please check out the [expamples](https://github.com/stoney95/pypely/tree/main/src/examples) directory. Next to `pandas` examples this directory showcases other applications of `pypely`. 
 
 # Documentation
 The package consists of these functions:
 * `pipeline`
 * `fork`
 * `merge`
+* `to`
 * `identity`
 
-and a `helpers` module which provides useful helper functions. Take a look at them an be inspired to write your own - with a perfect fit on your demand. For documentation of the `helpers` module please refer to the [tests](https://github.com/stoney95/pypely/tree/main/tests/test_helpers.py)
+and a `helpers` module which provides useful helper functions. Take a look at them an be inspired to write your own - with a perfect fit on your demand. For documentation of the `helpers` module please refer to the [helpers tests](https://github.com/stoney95/pypely/tree/main/tests/test_helpers.py)
 
-In the following the functions will be described and some example code is given. Please also refer to the [tests](https://github.com/stoney95/pypely/tree/main/tests/test_functions.py) for a better understaning of each function.
+In the following the functions will be described and some example code is given. Please also refer to the [functions tests](https://github.com/stoney95/pypely/tree/main/tests/test_functions.py) for a better understaning of each function.
 
 ## Identity
 Let's start with the simplest one first. The only purpose of this function is to forward the input. This can be used for intermediate results to bypass other steps and make them available in later steps.
@@ -74,7 +75,7 @@ use_pypely() # -> 🥳
 ```
 
 ## Fork
-Sometimes you want to do multiple things with one intermediate result. `fork` allows you to do this. You can specify multiple functions inside `fork`. Each will receive the output of the previous function as the input. `fork` outputs a list with the result of each specified function in the order of the functions. You can use fork like this.
+Sometimes you want to do multiple things with one intermediate result. `fork` allows you to do this. You can specify multiple functions inside `fork`. Each will receive the output of the previous function as the input. `fork` outputs a `PypelyTuple` with the result of each specified function in the order of the functions. You can use fork like this.
 
 ```python
 morning_routine = pipeline(
@@ -88,11 +89,12 @@ morning_routine = pipeline(
     )
 )
 
-morning_routine() # -> [🍵, 🍳, 🍞, 🍽️]
+morning_routine() # -> PypelyTuple(🍵, 🍳, 🍞, 🍽️)
 ```
 
+
 ## Merge
-After you split your process into multiple branches, it is time to `merge`. You only have to specify a function that takes as many arguments as there are branches. `merge` will flatten and unpack the list calculated by a previous `fork` and forward it to the specified function. `merge` return the output of the specified function. Use `merge` to have a lovily breakfast:
+After you split your process into multiple branches, it is time to `merge`. You only have to specify a function that takes as many arguments as there are branches. `merge` will flatten and unpack the `PypelyTuple` calculated by a previous `fork` and forward it to the specified function. `merge` returns the output of the specified function. Use `merge` to have a lovily breakfast:
 
 
 ```python
@@ -114,7 +116,64 @@ morning_routine = pipeline(
 morning_routine() # -> 😋
 ```
 
+## To
+A second way of joining multiple branches is using `to`. This function will forward the output of each branch to a data container. This could e.g. be a `dataclass` or a `namedtuple`. Like `merge`, `to` will also flatten the output of a previous `fork`. You can also define to which field of the given data container an output should be assigned. To do so define the field names as `str`. If no field names are given, the outputs will be applied to the given the container in the order they are created by `fork`:
+
+
+```python
+@dataclass
+class Table: 
+    tea: Tea
+    eggs: Eggs
+    bread: Bread
+    plate: Plate
+
+morning_routine = pipeline(
+    wake_up,
+    go_to_kitchen,
+    fork(
+        make_tea,
+        fry_eggs,
+        cut_bread,
+        get_plate
+    ),
+    to(Table)
+)
+```
+
+Imagine a different definition of the `Table` class:
+
+```python
+@dataclass
+class Table: 
+    tea: Tea
+    plate: Plate
+    bread: Bread
+    eggs: Eggs
+```
+
+You could change the order of the functions in `fork` to match the order of the fields of `Table`. Another way is to use field names in `to`:
+
+```python
+morning_routine = pipeline(
+    wake_up,
+    go_to_kitchen,
+    fork(
+        make_tea,
+        fry_eggs,
+        cut_bread,
+        get_plate
+    ),
+    to(Table, "tea", "eggs", "bread", "plate")
+)
+```
+
+## PypelyTuple
+This class extends `builtins.tuple` and ensures that an iterable output of a function used inside `fork` will not be flattened by `to` and `merge`. This class should not be used by the user directly as it is ment to handle data internally between `fork` and `to` / `merge` steps.
+
+
 # Contribution
 If you want to contribute:
 1. I'm super happy 🥳
 2. Please check out the [contribution guide](https://github.com/stoney95/pypely/tree/main/assets/CONTRIBUTION.md)
+3. See the [issues](https://github.com/stoney95/pypely/issues) to find a contribution possibility
