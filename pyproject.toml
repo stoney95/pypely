@@ -3,6 +3,6 @@ version_variable = [
     "setup.py:__version__"
 ]
 branch = "main"
+build_command = "python setup.py sdist bdist_wheel"
 upload_to_pypi = true
 upload_to_release = true
-build_command = "python setup.py sdist bdist_wheel"
