@@ -43,27 +43,6 @@ jobs:
         pytest --cov-report html:package_cov --cov=src tests/
         pytest --cov-report html:examples_cov --cov=examples examples/
 
-  test-release:
-    needs: lint-and-test
-    # https://github.community/t/how-do-i-specify-job-dependency-running-in-another-workflow/16482
-    if: github.event_name == 'pull_request' 
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.REPO_ADMIN_ACCESS_TOKEN }}
-      - name: Python Semantic Release
-        uses: relekang/python-semantic-release@master
-        with:
-          github_token: ${{ secrets.REPO_ADMIN_ACCESS_TOKEN }}
-          pypi_token: ${{ secrets.PYPI_TOKEN }}
-          args: publish --noop
-
   release:
     needs: lint-and-test
     # https://github.community/t/how-do-i-specify-job-dependency-running-in-another-workflow/16482
