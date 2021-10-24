@@ -23,7 +23,7 @@ In this analogy you should translate:
 
 ### Git 
 `git` branching might be an even easier analogy: 
-![alt text](./assets/git_branch.png?raw=true)
+![](https://raw.githubusercontent.com/stoney95/pypely/main/assets/git_branch.png?raw=true)
 
 Our every day work is managed by `git` and hopefully you don't need to care about special commit hashes etc.. "Shouldn't it be the same for intermediate results in data processing?" :thinking: - "I guess I just care about raw data and processing results". 
 
