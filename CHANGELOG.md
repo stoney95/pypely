@@ -2,6 +2,9 @@
 
 <!--next-version-placeholder-->
 
+## v0.1.1 (2021-10-24)
+
+
 ## v0.1.0 (2021-10-24)
 ### Feature
 * **examples:** Add example for feature engineering ([`48de6ab`](https://github.com/stoney95/pypely/commit/48de6ab44aac5da415b96481fc7bb31c49868104))
