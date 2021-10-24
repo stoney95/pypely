@@ -9,5 +9,5 @@ In this directory are some examples that will showcase how to apply `pypely`. To
 
 > :mailbox: If you find the approaches in the examples interesting and have feedback, criticisms or questions please feel free to open an issue or contact me directly. 
 
-> :warning: If you want to execute the examples please run `source .env` as this will set the correct `PYTHONPATH`.
+> :warning: If you want to execute the examples please run `source .path` as this will set the correct `PYTHONPATH`. You can also run the command from any subdirectory as long as you update the path to [.path](../.path) respectively. 
 

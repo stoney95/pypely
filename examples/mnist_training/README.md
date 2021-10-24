@@ -31,4 +31,4 @@ tensorboard --logdir=runs
 ```
 
 ## Execution
-Please be sure that you ran `source .env` before you start [main.py](src/main.py). [.env](../../.env) is located in the root of the project.
+Please be sure that you ran `source .path` before you start [main.py](src/main.py). [.path](../../.path) is located in the root of the project.
