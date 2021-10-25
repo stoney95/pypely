@@ -2,7 +2,7 @@ import pytest
 
 from pypely import pipeline, merge, fork, identity, to
 from pypely.helpers import head, rest, reduce_by
-from pypely.types import PypelyTuple
+from pypely._types import PypelyTuple
 
 from collections import namedtuple
 
