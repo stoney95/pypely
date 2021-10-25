@@ -1,6 +1,6 @@
 from typing import Callable
 from inspect import getfullargspec
-from .types import PypelyTuple
+from ._types import PypelyTuple
 
 
 def reduce_by(func: Callable) -> Callable:

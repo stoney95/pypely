@@ -1,7 +1,8 @@
 from functools import reduce
 from typing import Callable, Tuple, TypeVar
-from .helpers import flatten
-from .types import PypelyTuple
+from pypely.helpers import flatten
+from pypely._types import PypelyTuple
+from pypely.memory._context import PipelineMemoryContext
 
 T = TypeVar("T")
 
