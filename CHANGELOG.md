@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.1.2 (2021-10-25)
+### Fix
+* **documentation:** Fix path to examples ([`240a05b`](https://github.com/stoney95/pypely/commit/240a05b076077795ae6121b8331109e638df20ec))
+
 ## v0.1.1 (2021-10-24)
 ### Fix
 * **documentation:** Fix broken image link ([`8a28f0d`](https://github.com/stoney95/pypely/commit/8a28f0d402cb48bee1281ddf37fbdc1709ac8bce))
