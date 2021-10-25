@@ -10,7 +10,8 @@ def pipeline(*funcs: Callable) -> Callable:
     def _reducer(func1, func2):
         return lambda *x: func2(func1(*x))
 
-    return reduce(_reducer, funcs)
+    with PipelineMemoryContext() as _:
+        return reduce(_reducer, funcs)
 
 
 def fork(*funcs: Callable) -> Callable[..., Tuple]:
