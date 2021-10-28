@@ -1,5 +1,5 @@
 # Helpers
-The helpers module provide useful functions that can be used inside a pipeline. If these functions don't fit your need you can easily create your own. Provided functions are:
+The helpers module provides useful functions for the use inside pipelines. If these functions don't fit your need you can easily create your own. Provided functions are:
 
   - [reduce_by](#reduce_by)
   - [flatten](#flatten)

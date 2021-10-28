@@ -1,7 +1,7 @@
 # Documentation
 This is the official documentation for `pypely`. This page will describe the core functions and how they can be applied. Please also see the documentation for:
 
-* [helpers](localhost:3000/#/helpers/)
+* [helpers](helpers/README.md)
 
 ## Core functions
 This section will describe the core functions:
@@ -34,7 +34,7 @@ use_pypely() # -> 🥳
 ```
 
 #### Inputs
-The number of inputs is not defined for `pipeline` as you can chain as many functions as you like. But each input needs to be a `Callable`. This includes using a `lambda` expression directly inside `pipeline`. Using `lambda` can be useful but don't use it to often as this will decrease readability.
+The number of inputs is not defined for `pipeline` as you can chain as many functions as you like. It has to be **at least one function**. But each input needs to be a `Callable`. This includes using a `lambda` expression directly inside `pipeline`. Using `lambda` can be useful but don't use it to often as this will decrease readability.
 
 Demonstration:  
 ```python
@@ -58,6 +58,7 @@ invalid_1 = pipeline(4, 2, add)
 invalid_2 = pipeline((4, 2), add)
 invalid_3 = pipeline(x, y, add)
 invalid_4 = pipeline(add, x, y)
+invalid_5 = pipeline()
 ```
 
 Using invalid arguments will currently not produce an error when creating the pipeline. The error will be thrown when executing the pipeline. This will be addressed in [this issue](https://github.com/stoney95/pypely/issues/4)
