@@ -66,12 +66,10 @@ def test_rest():
 
 
 def test_optional(add):
-    running_add = optional(add, True)
-    not_running_add = optional(add, False)
+    optional_add = optional(add, lambda x: x > 10)
 
-    to_test_running = running_add(1,2)
-    to_test_not_running = not_running_add(1,2)
+    not_added = optional_add(1, 2)
+    added = optional_add(11, 3)
 
-    assert to_test_running == 3
-    assert to_test_not_running == (1,2)
-
+    assert not_added == (1,2)
+    assert added == 14

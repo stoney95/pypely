@@ -35,8 +35,16 @@ def side_effect(func: Callable):
     return lambda *x: __run_func(*x)
 
 
-def optional(func: Callable, cond: bool):
-    return lambda *x:  func(*x) if cond else x
+def optional(func: Callable[[IN], OUT], cond: Callable[..., bool]) -> Callable[[IN], Union[IN, OUT]]:
+    # TODO: add custom error if cond takes more arguments than func
+    def __inner(*x):
+        _cond = reduce_by(cond)(*x)[0]
+        if _cond:
+            return func(*x)
+        else:
+            return x
+
+    return __inner
 
 
 head = lambda x: x[0]
