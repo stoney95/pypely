@@ -12,11 +12,12 @@ def test_reduce_by(add):
 
 def test_flatten():
     nested_tuple = PypelyTuple(1, 2, PypelyTuple(3, PypelyTuple(4, 5), 6), 7, PypelyTuple(8, PypelyTuple(9)))
-    expected = (1, 2, 3, 4, 5, 6, 7, 8, 9)
+    expected = PypelyTuple(1, 2, 3, 4, 5, 6, 7, 8, 9)
 
     to_test = flatten(nested_tuple)
 
     assert to_test == expected
+    assert type(to_test) == PypelyTuple
 
 
 def test_flatten_fail():

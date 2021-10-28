@@ -1,6 +1,10 @@
-from typing import Callable
+from typing import Callable, TypeVar, Any, Union
 from inspect import getfullargspec
 from .types import PypelyTuple
+
+T = TypeVar("T")
+IN = TypeVar("IN")
+OUT = TypeVar("OUT")
 
 
 def reduce_by(func: Callable) -> Callable:
@@ -23,7 +27,7 @@ def flatten(_tuple: PypelyTuple) -> PypelyTuple:
     raise ValueError(f"You can use flatten only with 'PypelyTuple'. Input is of type: {type(_tuple)}")
 
 
-def side_effect(func: Callable):
+def side_effect(func: Callable[[T], Any]) -> Callable[[T], T]:
     def __run_func(*_input):
         func(*_input)
 
