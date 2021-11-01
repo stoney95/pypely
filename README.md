@@ -34,7 +34,7 @@ If you want to learn more check out the following links.
 - [Examples](https://github.com/stoney95/pypely/tree/main/examples)
 
 ## Why functional?
-Functional programming is a data driven approach to building software - so let's move data to the center of our thinking when building data processing pipelines. To ilustrate the idea a little more two analogies will be used
+Functional programming is a data driven approach to building software - so let's move data to the center of our thinking when building data processing pipelines. To illustrate the idea a little more two analogies will be used.
 
 ### Railway
 The railway analogy used by Scott Wlaschin in [this talk](https://youtu.be/Nrp_LZ-XGsY?t=2617) is a good way of looking at functional programming. With `pypely` you can easily build a route from start to finish without caring about the stops in between. :steam_locomotive: 
