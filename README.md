@@ -11,7 +11,6 @@ You are encouraged to write your data processing step by step - each step being 
 pip install pypely
 ```
 
-
 ## Usage
 Use `pypely` to chain functions and structure your data processing code in a readable way.
 
