@@ -12,11 +12,12 @@ def test_reduce_by(add):
 
 def test_flatten():
     nested_tuple = PypelyTuple(1, 2, PypelyTuple(3, PypelyTuple(4, 5), 6), 7, PypelyTuple(8, PypelyTuple(9)))
-    expected = (1, 2, 3, 4, 5, 6, 7, 8, 9)
+    expected = PypelyTuple(1, 2, 3, 4, 5, 6, 7, 8, 9)
 
     to_test = flatten(nested_tuple)
 
     assert to_test == expected
+    assert type(to_test) == PypelyTuple
 
 
 def test_flatten_fail():
@@ -66,12 +67,10 @@ def test_rest():
 
 
 def test_optional(add):
-    running_add = optional(add, True)
-    not_running_add = optional(add, False)
+    optional_add = optional(add, lambda x: x > 10)
 
-    to_test_running = running_add(1,2)
-    to_test_not_running = not_running_add(1,2)
+    not_added = optional_add(1, 2)
+    added = optional_add(11, 3)
 
-    assert to_test_running == 3
-    assert to_test_not_running == (1,2)
-
+    assert not_added == (1,2)
+    assert added == 14
