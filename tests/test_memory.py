@@ -4,8 +4,6 @@ from pypely import pipeline, fork, merge
 import pytest
 
 def test_multiple_layers_access_fails(add, mul, sub):
-    
-
     inner_pipe = pipeline(
         with_memory_attribute("first_sum", mul),
         with_memory_attribute("first_product", add)

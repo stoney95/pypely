@@ -10,9 +10,13 @@ def pipeline(*funcs: Callable) -> Callable:
     def _reducer(func1, func2):
         return lambda *x: func2(func1(*x))
 
-    with PipelineMemoryContext() as _:
-        return reduce(_reducer, funcs)
+    _pipeline = reduce(_reducer, funcs)
 
+    def _call(*args):
+        with PipelineMemoryContext() as _:
+            return _pipeline(*args)
+
+    return _call
 
 def fork(*funcs: Callable) -> Callable[..., PypelyTuple]:
     return lambda *x: PypelyTuple(*[func(*x) for func in funcs])
