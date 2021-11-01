@@ -47,7 +47,7 @@ def optimize(optimizer: torch.optim.Optimizer) -> Callable[[Batch], None]:
 
 
 def batch(training_dependencies: TrainingDependencies, batch_data: BatchData, stage: StageName, step: int) -> Batch:
-    _optimize = optional(optimize(training_dependencies.optimizer), stage == StageName.TRAIN)
+    _optimize = optional(optimize(training_dependencies.optimizer), lambda: stage == StageName.TRAIN)
     _add_batch_metric = lambda batch: training_dependencies.experiment.add_batch_metric(stage, "accuracy", batch.metric.accuracy, step)
 
     process = pipeline(

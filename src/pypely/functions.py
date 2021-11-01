@@ -14,11 +14,11 @@ def pipeline(*funcs: Callable) -> Callable:
         return reduce(_reducer, funcs)
 
 
-def fork(*funcs: Callable) -> Callable[..., Tuple]:
+def fork(*funcs: Callable) -> Callable[..., PypelyTuple]:
     return lambda *x: PypelyTuple(*[func(*x) for func in funcs])
 
 
-def to(obj: T, *set_fields) -> Callable[..., T]:
+def to(obj: T, *set_fields: str) -> Callable[[PypelyTuple], T]:
     def _inner(vals: PypelyTuple) -> T:
         vals_flattened = flatten(vals)
         if not set_fields == ():
@@ -31,7 +31,7 @@ def to(obj: T, *set_fields) -> Callable[..., T]:
     return _inner
 
 
-def merge(func: Callable[..., T]) -> Callable[[Tuple], T]:
+def merge(func: Callable[..., T]) -> Callable[[PypelyTuple], T]:
     return lambda branches: func(*flatten(branches))
 
 
