@@ -1,9 +1,6 @@
 from typing import Optional, Any
 
 class PipelineMemory:
-    def __init__(self):
-        print("Memory created")
-
     def add(self, name: str, value: Any) -> None:
         self.__setattr__(name, value)
 
@@ -15,7 +12,6 @@ class PipelineMemory:
                 f"""Tried to access attribute {name} but attribute was not found. 
                 Available Attributes: {list(self.__dict__.keys())}"""
             )
-
 
 
 MEMORY: Optional[PipelineMemory] = None
