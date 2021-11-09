@@ -1,4 +1,4 @@
-from pypely.memory import add_to_memory, use_memory, PipelineMemory
+from pypely.memory import add_to_memory, use_memory, with_memory_attribute
 from pypely import pipeline, fork, merge
 
 import pytest
@@ -38,7 +38,3 @@ def test_memory_access(add, mul, sub):
     assert to_test == 5
 
 
-def with_memory_attribute(name, func):
-        def __inner(x, memory: PipelineMemory):
-            return func(x, memory.get(name))
-        return use_memory(__inner)

@@ -1,7 +1,10 @@
-from pypely.memory._impl import get_memory
+from pypely.memory._impl import get_memory, PipelineMemory
+from typing import Callable, TypeVar
+
+T = TypeVar("T")
 
 
-def add_to_memory(name, func):
+def add_to_memory(name: str, func: Callable[..., T]) -> Callable[..., T]:
     def __inner(*args):
         result = func(*args)
         memory = get_memory()
@@ -16,3 +19,9 @@ def use_memory(func):
         memory = get_memory()
         return func(*args, memory)
     return __inner
+
+
+def with_memory_attribute(name, func):
+        def __inner(x, memory: PipelineMemory):
+            return func(x, memory.get(name))
+        return use_memory(__inner)
