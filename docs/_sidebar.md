@@ -7,3 +7,4 @@
   * [identity](/#identity "pypely - Documentation")
 * [Other Modules](/#documentation "pypely - Documentation")
   * [helpers](helpers/README.md)
+  * [memory](memory/README.md)

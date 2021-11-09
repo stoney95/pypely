@@ -2,6 +2,7 @@
 This is the official documentation for `pypely`. This page will describe the core functions and how they can be applied. Please also see the documentation for other modules available in `pypely`:
 
 * [helpers](helpers/README.md)
+* [memory](memory/README.md)
 
 ## Core functions
 This section will describe the core functions:
