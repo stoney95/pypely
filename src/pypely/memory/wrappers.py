@@ -16,12 +16,12 @@ def memorizable(func=None, allow_ingest=True):
             return _add_to_memory(self.func, other)
 
         def __lshift__(self, other):
-            if not allow_ingest:
-                raise MemoryIngestNotAllowedError(f"Memory ingest is not allowed for func: {self.func.__qualname__}")
+            self.__check_ingest()
             self.attributes_after.append(other)
             return self
 
         def __rrshift__(self, other):
+            self.__check_ingest()
             self.attributes_before.append(other)
             return self
 
@@ -30,6 +30,10 @@ def memorizable(func=None, allow_ingest=True):
             memory_attributes_before = [memory.get(attr) for attr in self.attributes_before]
             memory_attributes_after = [memory.get(attr) for attr in self.attributes_after]
             return self.func(*memory_attributes_before, *args, *memory_attributes_after)
+
+        def __check_ingest(self):
+            if not allow_ingest:
+                raise MemoryIngestNotAllowedError(f"Memory ingest is not allowed for func: {self.func.__qualname__}")
     
     if func is None:
         return Memorizable
