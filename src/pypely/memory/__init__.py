@@ -1,4 +1,5 @@
-from pypely.memory.wrappers import add_to_memory, use_memory, with_memory_attribute, memorizable
+from pypely.memory.wrappers import memorizable
 from pypely.memory._impl import PipelineMemory
+from pypely.memory import errors
 
-__all__ = ['add_to_memory', 'use_memory', 'Memory', 'memorizable']
+__all__ = ['PipelineMemory', 'memorizable', 'errors']
