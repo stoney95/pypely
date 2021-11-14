@@ -1,5 +1,5 @@
 from pypely.helpers import *
-from pypely.types import PypelyTuple
+from pypely._types import PypelyTuple
 
 import pytest
 

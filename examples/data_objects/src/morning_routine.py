@@ -1,7 +1,7 @@
 import time
 
-from pypely import pipeline, fork, merge, identity
-from pypely.helpers import head
+from pypely import pipeline, fork, merge
+from pypely.memory import memorizable
 
 from data_objects.src import data
 
@@ -11,19 +11,15 @@ TIME_BETWEEN_STEPS = 1
 def main(): 
     morning_routine = pipeline(
         wake_up,
-        go_to_kitchen,
+        go_to_kitchen >> "me_in_kitchen",
         fork(
-            identity,
             make_tea,
             fry_eggs,
             cut_bread,
             get_plate
         ),
-        fork(
-            head,
-            merge(set_table)
-        ),
-        merge(have_breakfast)
+        merge("me_in_kitchen" >> set_table),
+        "me_in_kitchen" >> have_breakfast
     )
 
     sleeping_me = data.Me(position="Bed", awake=False, hungry=True)
@@ -38,7 +34,7 @@ def wake_up(me: data.Me) -> data.Me:
     __tab_print("wake_up:", new_me)
     return new_me
 
-
+@memorizable
 def go_to_kitchen(me: data.Me) -> data.Me:
     new_me = data.Me(position="Kitchen", awake=me.awake, hungry=me.hungry)
     __tab_print("go_to_kitchen:", new_me)
@@ -78,6 +74,7 @@ def get_plate(me: data.Me) -> data.Plate:
     return plate
 
 
+@memorizable
 def set_table(me: data.Me, tea: data.Tea, eggs: data.Eggs, bread: data.Bread, plate: data.Plate) -> data.Table:
     __check_me(me)
     table = data.Table(objects_on_table=[tea, eggs, bread, plate])
@@ -85,6 +82,7 @@ def set_table(me: data.Me, tea: data.Tea, eggs: data.Eggs, bread: data.Bread, pl
     return table
 
 
+@memorizable
 def have_breakfast(me: data.Me, table: data.Table) -> data.Me:
     __check_me(me)
     if table.is_set:

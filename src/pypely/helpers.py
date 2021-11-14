@@ -1,6 +1,6 @@
 from typing import Callable, TypeVar, Any, Union
 from inspect import getfullargspec
-from .types import PypelyTuple
+from ._types import PypelyTuple
 
 T = TypeVar("T")
 IN = TypeVar("IN")

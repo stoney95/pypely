@@ -1,21 +1,33 @@
 from functools import reduce
-from typing import Callable, Tuple, TypeVar
-from .helpers import flatten
-from .types import PypelyTuple
+from typing import Callable, TypeVar
+from pypely.helpers import flatten
+from pypely._types import PypelyTuple
+from pypely.memory import memorizable
+from pypely.memory._context import PipelineMemoryContext
 
 T = TypeVar("T")
 
+
+@memorizable
 def pipeline(*funcs: Callable) -> Callable:
     def _reducer(func1, func2):
         return lambda *x: func2(func1(*x))
 
-    return reduce(_reducer, funcs)
+    _pipeline = reduce(_reducer, funcs)
+
+    def _call(*args):
+        with PipelineMemoryContext() as _:
+            return _pipeline(*args)
+
+    return _call
 
 
+@memorizable(allow_ingest=False)
 def fork(*funcs: Callable) -> Callable[..., PypelyTuple]:
     return lambda *x: PypelyTuple(*[func(*x) for func in funcs])
 
 
+@memorizable(allow_ingest=False)
 def to(obj: T, *set_fields: str) -> Callable[[PypelyTuple], T]:
     def _inner(vals: PypelyTuple) -> T:
         vals_flattened = flatten(vals)
@@ -29,6 +41,7 @@ def to(obj: T, *set_fields: str) -> Callable[[PypelyTuple], T]:
     return _inner
 
 
+@memorizable(allow_ingest=False)
 def merge(func: Callable[..., T]) -> Callable[[PypelyTuple], T]:
     return lambda branches: func(*flatten(branches))
 

@@ -1,4 +1,5 @@
 from pypely import pipeline, fork, to, merge
+from pypely.memory import memorizable
 
 
 import torch
@@ -58,16 +59,17 @@ log_epochs = lambda epochs, training_dependencies: [log_epoch(epoch, i, training
 
 
 def main():
+    _create_training_dependencies = memorizable(create_training_dependencies)
+    _log_epochs = memorizable(log_epochs)
+    _run_epochs = run_epochs(EPOCHS)
+
     run = pipeline(
         fork(
-            create_training_dependencies,
+            _create_training_dependencies >> "training_dependencies",
             create_epoch_data
         ),
-        fork(
-            merge(run_epochs(EPOCHS)),
-            merge(lambda training_dependencies, _: training_dependencies),
-        ),
-        merge(log_epochs)
+        merge(_run_epochs),
+        _log_epochs << "training_dependencies"
     )
 
     run()

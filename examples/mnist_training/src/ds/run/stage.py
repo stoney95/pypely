@@ -59,11 +59,13 @@ def batches2stage_metric(batches: Iterable[Batch]) -> StageMetric:
 
     get_metrics = lambda batches: map(lambda batch: batch.metric, batches)
     sum_metrics = lambda batch_metrics: reduce(lambda first, second: sum_batch_metrics(first, second), batch_metrics, BatchMetric(torch.Tensor(0), 0, 0))
+    get_average = lambda summed_metric: summed_metric.accuracy / summed_metric.batch_size
 
     process = pipeline(
         get_metrics,
         sum_metrics,
-        lambda summed: StageMetric(summed.accuracy / summed.batch_size)
+        get_average,
+        lambda avg: StageMetric(avg)
     )
 
     return process(batches)
@@ -72,12 +74,12 @@ def batches2stage_metric(batches: Iterable[Batch]) -> StageMetric:
 def batches2stage_result(batches: Iterable[Batch]) -> StageResult:
     Memory = namedtuple('Memory', ['true', 'pred'])
 
-    def add_to_memory(memory: Memory, batch: Batch):
+    def _add_to_memory(memory: Memory, batch: Batch):
         memory.true.append(batch.data.y.detach().numpy())
         memory.pred.append(np.argmax(batch.result.pred.detach().numpy(), axis=1))
 
         return memory
 
-    memory = reduce(lambda memory, batch: add_to_memory(memory, batch), batches, Memory(true=[], pred=[]))
+    memory = reduce(lambda memory, batch: _add_to_memory(memory, batch), batches, Memory(true=[], pred=[]))
     return StageResult(true=memory.true, pred=memory.pred)
     
