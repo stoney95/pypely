@@ -3,7 +3,7 @@ import setuptools
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
 setuptools.setup(
     name="pypely",

@@ -2,6 +2,19 @@
 
 <!--next-version-placeholder-->
 
+## v0.1.3 (2021-11-01)
+### Fix
+* **docs:** Link to new documentation ([`c8e2b30`](https://github.com/stoney95/pypely/commit/c8e2b304f190e18e1812b2aec8c15db7c817f74a))
+
+### Documentation
+* Remove typo ([`53b7246`](https://github.com/stoney95/pypely/commit/53b7246cfee91ff859e6c9abdb6b0e47565a223f))
+* Add info to first paragraph ([`5c30dff`](https://github.com/stoney95/pypely/commit/5c30dff3cb280db838cd5b1d6d96fb2f218fc571))
+* Adjust frontpage ([`231dc9a`](https://github.com/stoney95/pypely/commit/231dc9a116f829234a3d92a27a9d916af52cb547))
+* Adjust sidebar ([`a0c0232`](https://github.com/stoney95/pypely/commit/a0c0232966e806d15846d4dd95cc16349fa418d2))
+* Add custom sidebars ([`bb0da90`](https://github.com/stoney95/pypely/commit/bb0da907716d29cb0e8c24fc88d356ff531508f7))
+* Add docsify ([`5892055`](https://github.com/stoney95/pypely/commit/589205564f4ead95e7b5c23c318b607a03b7e4f0))
+* Add docs folder ([`134e47e`](https://github.com/stoney95/pypely/commit/134e47ec3464a5662a5dea27fd179ad137a4da79))
+
 ## v0.1.2 (2021-10-25)
 ### Fix
 * **documentation:** Fix path to examples ([`240a05b`](https://github.com/stoney95/pypely/commit/240a05b076077795ae6121b8331109e638df20ec))
