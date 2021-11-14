@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: Python application
+name: Test & Release
 
 on:
   pull_request:
@@ -40,8 +40,12 @@ jobs:
         pip install pytest pytest-cov pytest-html
         export PYTHONPATH=/home/runner/work/pypely/pypely/src:/home/runner/work/pypely/pypely/examples
         echo $PYTHONPATH
-        pytest --cov-report html:package_cov --cov=src tests/
-        pytest --cov-report html:examples_cov --cov=examples examples/
+        pytest --cov-report xml:package_cov.xml --cov=src tests/
+        pytest --cov-report xml:examples_cov.xml --cov=examples examples/
+    - uses: codecov/codecov-action@v2
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: ./package_cov.xml,./examples_cov.xml
 
   release:
     needs: lint-and-test
