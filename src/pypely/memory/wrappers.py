@@ -1,4 +1,4 @@
-from pypely.memory._impl import get_memory, PipelineMemory
+from pypely.memory._impl import get_memory
 from pypely.memory.errors import MemoryIngestNotAllowedError
 from typing import Callable, TypeVar, Optional, Union
 
