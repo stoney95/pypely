@@ -1,11 +1,13 @@
 from pypely.memory._impl import get_memory, PipelineMemory
 from pypely.memory.errors import MemoryIngestNotAllowedError
-from typing import Callable, TypeVar
+from typing import Callable, TypeVar, Optional, Union
 
 T = TypeVar("T")
 
+Memorizable = Callable([Callable[..., T]], Callable[..., T])
 
-def memorizable(func=None, allow_ingest=True):
+
+def memorizable(func: Optional[Callable[..., T]]=None, allow_ingest: Optional[bool]=True) -> Union[Memorizable, Callable[..., T]]:
     class Memorizable:
         def __init__(self, func):
             self.func = func
