@@ -2,6 +2,18 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.0 (2021-11-14)
+### Feature
+* **memory:** Make it possible to prohibit memory ingest ([`db7ba7b`](https://github.com/stoney95/pypely/commit/db7ba7b6607e9fd20aa3dfc8eabd6632325e356a))
+* **package:** Make functions memorizable ([`4cde941`](https://github.com/stoney95/pypely/commit/4cde941bf7c47e5377cbfeb2590ff19fd6bf016c))
+* **memory:** Add memorizable ([`ae280fa`](https://github.com/stoney95/pypely/commit/ae280fad5fee5225fead1215d15205a5ba87d4b7))
+* **package:** Add PipelineMemory ([`3b4a808`](https://github.com/stoney95/pypely/commit/3b4a8089e49034dbfd4354b437b5234168cac6fe))
+
+### Documentation
+* Add icon to browser title ([`5f082cc`](https://github.com/stoney95/pypely/commit/5f082cc06c941d7e74fcaface3d1c97cfc54e4c8))
+* **memory:** Finish documentation ([`9b2e656`](https://github.com/stoney95/pypely/commit/9b2e65680db042586b18d24adcbb780b24d87dee))
+* **memory:** Start memory documentation ([`ce4c25a`](https://github.com/stoney95/pypely/commit/ce4c25a536356471127a0e18b6b2de5df5d71cda))
+
 ## v0.1.3 (2021-11-01)
 ### Fix
 * **docs:** Link to new documentation ([`c8e2b30`](https://github.com/stoney95/pypely/commit/c8e2b304f190e18e1812b2aec8c15db7c817f74a))
