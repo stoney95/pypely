@@ -10,6 +10,8 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/stoney95/pypely)
 
+[![codecov](https://codecov.io/gh/stoney95/pypely/branch/main/graph/badge.svg?token=7JH2HHJ5CE)](https://codecov.io/gh/stoney95/pypely)
+
 Make your data processing easy - build pipelines in a functional manner. In general this package will not make your code faster or necessarily make you write less code. The purpose of this package is to make you think differently about data processing. 
 
 ![](https://media.giphy.com/media/SACoDGYTvVNhZYNb5a/giphy.gif)
