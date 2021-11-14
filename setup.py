@@ -14,7 +14,7 @@ setuptools.setup(
     url="https://github.com/stoney95/pypely",
     author="Stoney95",
     author_email="simon@steinheber.info",
-    license="MIT",
+    license="GPLv3.0",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
