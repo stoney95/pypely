@@ -31,7 +31,13 @@ def memorizable(func: Optional[Callable[..., T]]=None, allow_ingest: Optional[bo
             memory = get_memory()
             memory_attributes_before = [memory.get(attr) for attr in self.attributes_before]
             memory_attributes_after = [memory.get(attr) for attr in self.attributes_after]
+            self.__reset()
+
             return self.func(*memory_attributes_before, *args, *memory_attributes_after)
+
+        def __reset(self):
+            self.attributes_after = []
+            self.attributes_before = []
 
         def __check_ingest(self):
             if not allow_ingest:
