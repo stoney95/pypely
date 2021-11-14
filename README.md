@@ -1,4 +1,21 @@
-# pypely
+# pypely [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fstoney95%2Fpypely)](https://twitter.com/intent/tweet?text=Check+out+pypely:&url=https%3A%2F%2Fgithub.com%2Fstoney95%2Fpypely)
+
+![PyPI](https://img.shields.io/pypi/v/pypely)
+[![GitHub release](https://img.shields.io/github/release/stoney95/pypely)](https://github.com/stoney95/pypely/releases)
+[![PyPI download month](https://img.shields.io/pypi/dm/pypely)](https://pypi.org/project/pypely/)
+[![PyPI download week](https://img.shields.io/pypi/dw/pypely)](https://pypi.org/project/pypely/)
+
+[![Lint Code Base](https://github.com/stoney95/pypely/actions/workflows/release.yaml/badge.svg)](https://github.com/stoney95/pypely/actions/workflows/release.yaml)
+[![GitHub stars](https://img.shields.io/github/stars/stoney95/pypely?style=social)](https://github.com/stoney95/pypely/stargazers)
+[![GitHub followers](https://img.shields.io/github/followers/stoney95.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/stoney95?tab=followers)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/stoney95/pypely)
+
+
+
+
+
 Make your data processing easy - build pipelines in a functional manner. In general this package will not make your code faster or necessarily make you write less code. The purpose of this package is to make you think differently about data processing. 
 
 ![](https://media.giphy.com/media/SACoDGYTvVNhZYNb5a/giphy.gif)
