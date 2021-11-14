@@ -4,7 +4,7 @@ from typing import Callable, TypeVar, Optional, Union
 
 T = TypeVar("T")
 
-Memorizable = Callable([Callable[..., T]], Callable[..., T])
+Memorizable = Callable[[Callable[..., T]], Callable[..., T]]
 
 
 def memorizable(func: Optional[Callable[..., T]]=None, allow_ingest: Optional[bool]=True) -> Union[Memorizable, Callable[..., T]]:
@@ -51,16 +51,3 @@ def _add_to_memory(func: Callable[..., T], name: str, ) -> Callable[..., T]:
 
         return result
     return __inner
-
-
-def _use_memory(func):
-    def __inner(*args):
-        memory = get_memory()
-        return func(*args, memory)
-    return __inner
-
-
-def _with_memory_attribute(func, name):
-        def __inner(x, memory: PipelineMemory):
-            return func(x, memory.get(name))
-        return _use_memory(__inner)
