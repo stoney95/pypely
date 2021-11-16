@@ -1,5 +1,5 @@
-* [Home](/)
-* [Helpers Module](/helpers/ "🤓 pypely.helpers - Documentation")
+* [Home 🏠](/)
+* [Helpers Module 🙏](/helpers/ "🤓 pypely.helpers - Documentation")
   * [reduce_by](/helpers/#reduce_by "🤓 pypely.helpers - Documentation")
   * [flatten](/helpers/#flatten "🤓 pypely.helpers - Documentation")
   * [side_effect](/helpers/#side_effect "🤓 pypely.helpers - Documentation")

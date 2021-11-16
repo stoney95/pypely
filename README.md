@@ -78,5 +78,5 @@ But :point_up:.. if you want to build your whole application in a functional sty
 # Contribution
 If you want to contribute:
 1. I'm super happy 🥳
-2. Please check out the [contribution guide](https://github.com/stoney95/pypely/tree/main/assets/CONTRIBUTION.md)
+2. Please check out the [contribution guide](https://github.com/stoney95/pypely/tree/main/docs/CONTRIBUTION.md)
 3. See the [issues](https://github.com/stoney95/pypely/issues) to find a contribution possibility
