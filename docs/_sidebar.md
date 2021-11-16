@@ -8,4 +8,4 @@
 * [Other Modules 🔌](/#documentation "🤓 pypely - Documentation")
   * [helpers](helpers/README.md)
   * [memory](memory/README.md)
-* [Contribution 💻](CONTRIBUTION.md "🤓 pypely - Documentation")
+* [Contributing 💻](CONTRIBUTING.md "🤓 pypely - Documentation")

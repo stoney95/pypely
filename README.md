@@ -43,6 +43,7 @@ If you want to learn more check out the following links.
 ## Links
 - [Documentation](https://stoney95.github.io/pypely/)
 - [Examples](https://github.com/stoney95/pypely/tree/main/examples)
+- [Contributing](#contributing)
 
 ## Why functional?
 Functional programming is a data driven approach to building software - so let's move data to the center of our thinking when building data processing pipelines. To illustrate the idea a little more two analogies will be used.
@@ -75,8 +76,8 @@ This may be the main question that should be answered. This library focuses on s
 But :point_up:.. if you want to build your whole application in a functional style, `pypely` provides you with the basics for this. So get creative 🤩 
 
 
-# Contribution
+# Contributing
 If you want to contribute:
-1. I'm super happy 🥳
-2. Please check out the [contribution guide](https://github.com/stoney95/pypely/tree/main/docs/CONTRIBUTION.md)
-3. See the [issues](https://github.com/stoney95/pypely/issues) to find a contribution possibility
+1. Woohoo! 🥳
+2. Please check out the [contribution guide](https://github.com/stoney95/pypely/tree/main/docs/CONTRIBUTING.md).
+3. See the [issues](https://github.com/stoney95/pypely/issues) to find a contribution possibility or create one to tell your plan and start a discussion.
