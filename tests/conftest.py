@@ -3,7 +3,9 @@ from pytest import fixture
 
 @fixture
 def add():
-    return lambda x, y: x + y
+    def _add(x: int, y) -> int:
+        return x + y
+    return _add
 
 
 @fixture
