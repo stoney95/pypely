@@ -2,6 +2,15 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.1 (2021-11-26)
+### Fix
+* **debug:** Introduce `MergeError` ([`342d9c9`](https://github.com/stoney95/pypely/commit/342d9c9d851efcc017abe95b9c13e013fec56f5b))
+* **debug:** Increase ability to debug a pipeline ([`cadf704`](https://github.com/stoney95/pypely/commit/cadf704737b764adeca0f66fe4223acc1f135262))
+
+### Documentation
+* **errors:** Describe raised errors ([`43c02b9`](https://github.com/stoney95/pypely/commit/43c02b92955efd475dfca7f9163f10a571a80cbb))
+* **sidebar:** Improve sidebar with emojis ([`a667d4c`](https://github.com/stoney95/pypely/commit/a667d4c5f59c0c96aefa09e1a74af80691879050))
+
 ## v0.2.0 (2021-11-14)
 ### Feature
 * **memory:** Make it possible to prohibit memory ingest ([`db7ba7b`](https://github.com/stoney95/pypely/commit/db7ba7b6607e9fd20aa3dfc8eabd6632325e356a))
