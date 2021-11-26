@@ -3,6 +3,7 @@ import pytest
 from pypely import pipeline, merge, fork, identity, to
 from pypely.helpers import head, rest, reduce_by
 from pypely._types import PypelyTuple
+from pypely.core.errors import MergeError, PipelineForwardError, PipelineCallError
 
 from collections import namedtuple
 
@@ -48,7 +49,7 @@ def test_pipeline_single_function(add):
     assert to_test == 3
 
 
-def test_fail_pipeline(add):
+def test_fail_pipeline_forward(add):
     add_to_5 = lambda x: x+5
 
     pipe = pipeline(
@@ -56,7 +57,21 @@ def test_fail_pipeline(add):
         add
     )
 
-    with pytest.raises(Exception):
+    with pytest.raises(PipelineForwardError):
+        pipe(1)
+
+
+def test_fail_pipeline_call(add):
+    add_to_5 = lambda x: x+5
+    pipe = pipeline(
+        add, 
+        add_to_5
+    )
+
+    to_test = pipe(1,2)
+    assert to_test == 8
+
+    with pytest.raises(PipelineCallError):
         pipe(1)
 
 
@@ -108,6 +123,15 @@ def test_merge():
 
     to_test = single(PypelyTuple(1, PypelyTuple(2,3)))
     assert to_test == 5
+
+
+def test_fail_merge():
+    single = merge(
+        lambda x, y: x*y
+    )
+
+    with pytest.raises(MergeError):
+        single(PypelyTuple(1, PypelyTuple(2,3)))
 
 
 def test_identity():
