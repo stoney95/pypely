@@ -4,7 +4,8 @@ from pypely.helpers import flatten
 from pypely._types import PypelyTuple
 from pypely.memory import memorizable
 from pypely.memory._context import PipelineMemoryContext
-from pypely.core._helpers import debugable_reduce, DebugMemory
+from pypely.core._debug_helpers import debugable_reduce, DebugMemory
+from pypely.core.errors import MergeError
 
 T = TypeVar("T")
 
@@ -42,7 +43,14 @@ def to(obj: T, *set_fields: str) -> Callable[[PypelyTuple], T]:
 
 @memorizable(allow_ingest=False)
 def merge(func: Callable[..., T]) -> Callable[[PypelyTuple], T]:
-    return lambda branches: func(*flatten(branches))
+    def _inner(branches):
+        flat_branches = flatten(branches)
+        try:
+            return func(*flat_branches)
+        except TypeError:
+            raise MergeError(func, branches)
+
+    return _inner
 
 
 def identity(*x):
