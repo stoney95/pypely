@@ -4,6 +4,8 @@ This is the official documentation for `pypely`. This page will describe the cor
 * [helpers](helpers/README.md)
 * [memory](memory/README.md)
 
+The documentation will explain `pypely` in a formal way. If you want to have a hands-on introduction please checkout the [examples](https://github.com/stoney95/pypely/tree/main/examples)
+
 ## Core functions
 This section will describe the core functions:
 
@@ -18,7 +20,8 @@ Additionally to this document you can take a look at the [tests](https://github.
 ### `pipeline`
 
 > **Signature** `(*func: Callable) -> Callable` <br>
-> **Import** `from pypely import pipeline`
+> **Import** `from pypely import pipeline` <br>
+> **[Raises](#pipeline-errors)** `PipelineCallError`, `PipelineForwardError`
 
 `pipeline` allows you to chain defined functions together. The output of a function will be passed as the input to the following function. `pipeline` can be used like the following:
 
@@ -86,6 +89,12 @@ pipe = pipeline(add, mul_with_5, add_to_3, div_by_2)
 result = pipe(1,2) # result: float
 ```
 
+#### `pipeline` Errors
+The execution of a `pipeline` can raise the two errors: `PipelineCallError` and `PipelineForwardError`. 
+
+* `PipelineCallError`: is raised when the arguments given to a `pipeline` do not match the signature of the `pipeline`. This signature of the pipeline is the same as the signature of the first function in the `pipeline`.
+* `PipelineForwardError`: is raised when an intermediate result does not match the signature of the following function.
+
 ### `fork`
 
 > **Signature** `(*func: Callable[[T], Any]) -> Callable[[T], PypelyTuple]` <br>
@@ -117,7 +126,9 @@ The number of inputs to `fork` is not limited as you can fork an intermediate re
 ### Merge
 
 > **Signature** `(func: [Callable[..., T]) -> Callable[[PypelyTuple], T]` <br>
-> **Import** `from pypely import merge`
+> **Import** `from pypely import merge` <br>
+> **[Raises](#merge-errors)**: `MergeError`
+
 
 After you split your process into multiple branches, it is time to `merge`. You only have to specify a function that takes as many arguments as there are branches. `merge` will flatten and unpack the `PypelyTuple` calculated by a previous `fork` and forward it to the specified function. `merge` returns the output of the specified function. Use `merge` to have a lovily breakfast:
 
@@ -146,6 +157,9 @@ morning_routine() # -> 😋
 
 #### Outputs
 `merge` returns a `Callable` that consumes a `PypelyTuple`. The output is as the output of the given `Callable` of type `T`. 
+
+#### `merge` Errors
+The execution of `merge` can raise a `MergeError`. This error occurs when the arguments created by flattening the input `PypelyTuple` do not match the signature of the function used by `merge`.
 
 ### To
 
