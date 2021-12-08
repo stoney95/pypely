@@ -21,7 +21,7 @@ Additionally to this document you can take a look at the [tests](https://github.
 
 > **Signature** `(*func: Callable) -> Callable` <br>
 > **Import** `from pypely import pipeline` <br>
-> **[Raises](#pipeline-errors)** `PipelineCallError`, `PipelineForwardError`
+> **[Raises](#pipeline-errors)** `PipelineCallError`, `PipelineForwardError`, `PipelineStepError`
 
 `pipeline` allows you to chain defined functions together. The output of a function will be passed as the input to the following function. `pipeline` can be used like the following:
 
@@ -90,10 +90,11 @@ result = pipe(1,2) # result: float
 ```
 
 #### `pipeline` Errors
-The execution of a `pipeline` can raise the two errors: `PipelineCallError` and `PipelineForwardError`. 
+The execution of a `pipeline` can raise the errors: `PipelineCallError`, `PipelineForwardError` and `PipelineStepError`. 
 
 * `PipelineCallError`: is raised when the arguments given to a `pipeline` do not match the signature of the `pipeline`. This signature of the pipeline is the same as the signature of the first function in the `pipeline`.
 * `PipelineForwardError`: is raised when an intermediate result does not match the signature of the following function.
+* `PipelineStepError`: is raised when an error occurs inside a function given to `pipeline`.
 
 ### `fork`
 
