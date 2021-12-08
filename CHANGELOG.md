@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.2 (2021-12-08)
+### Fix
+* **errors:** Add step error ([`aed9dbc`](https://github.com/stoney95/pypely/commit/aed9dbcbc8860f65e5be240eba44421a7cc435d2))
+
+### Documentation
+* **errors:** Update raised errors for `pipeline` ([`26883f4`](https://github.com/stoney95/pypely/commit/26883f45a38ed785cf653ed12a7a387c4c86477e))
+
 ## v0.2.1 (2021-11-26)
 ### Fix
 * **debug:** Introduce `MergeError` ([`342d9c9`](https://github.com/stoney95/pypely/commit/342d9c9d851efcc017abe95b9c13e013fec56f5b))
