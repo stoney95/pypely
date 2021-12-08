@@ -14,6 +14,8 @@ def memorizable(func: Optional[Callable[..., T]]=None, allow_ingest: Optional[bo
             self.attributes_after = []
             self.attributes_before = []
 
+            self.__set_name(func)
+
         def __rshift__(self, other):
             return _add_to_memory(self.func, other)
 
@@ -42,6 +44,13 @@ def memorizable(func: Optional[Callable[..., T]]=None, allow_ingest: Optional[bo
         def __check_ingest(self):
             if not allow_ingest:
                 raise MemoryIngestNotAllowedError(f"Memory ingest is not allowed for func: {self.func.__qualname__}")
+
+        def __set_name(self, func):
+            try:
+                self.__name__ = func.__name__
+            except:
+                self.__name__ = "UNKNOWN"
+                
     
     if func is None:
         return Memorizable
