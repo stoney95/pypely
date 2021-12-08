@@ -3,7 +3,7 @@ import pytest
 from pypely import pipeline, merge, fork, identity, to
 from pypely.helpers import head, rest, reduce_by
 from pypely._types import PypelyTuple
-from pypely.core.errors import MergeError, PipelineForwardError, PipelineCallError
+from pypely.core.errors import MergeError, PipelineForwardError, PipelineCallError, PipelineStepError
 
 from collections import namedtuple
 
@@ -73,6 +73,21 @@ def test_fail_pipeline_call(add):
 
     with pytest.raises(PipelineCallError):
         pipe(1)
+
+
+def test_fail_pipeline_step(add):
+    def raise_error(x):
+        return x / 0
+
+    add_to_5 = lambda x: x+5
+    pipe = pipeline(
+        add,
+        add_to_5,
+        raise_error
+    )
+
+    with pytest.raises(PipelineStepError):
+        pipe(1, 2)
 
 
 def test_fork(add, mul, sub):
