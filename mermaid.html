@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+  <div class="mermaid">
+  flowchart TB
+classDef pipeline fill:#f9f,stroke:#333,stroke-width:4px;
+classDef merge fill:black,stroke:grey,stroke-width:4px;
+classDef fork fill:gree,stroke:red,stroke-width:4px;
+subgraph initialPipeline [ ]
+direction TB
+  step0([add])
+  subgraph fork1 [fork]
+    subgraph pipeline2 [ ]
+      step2([subtract])
+      step3([subtract])
+    end
+class pipeline2 pipeline
+    step4([multiply])
+  end
+  class fork1 fork
+  subgraph merge5 [merge]
+  step5([add])
+  end
+  class merge5 merge
+  subgraph pipeline6 [ ]
+    step6([subtract])
+    step7([subtract])
+    subgraph pipeline8 [ ]
+      step8([subtract])
+      step9([subtract])
+    end
+class pipeline8 pipeline
+    step10([subtract])
+  end
+class pipeline6 pipeline
+  step11([multiply])
+  step12([subtract])
+  step0-->step2
+  step2-->step3
+  step0-->step4
+  step3-->step5
+  step4-->step5
+  step5-->step6
+  step6-->step7
+  step7-->step8
+  step8-->step9
+  step9-->step10
+  step10-->step11
+  step11-->step12
+  end
+class initialPipeline pipeline
+  </div>
+ <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+ <script>mermaid.initialize({startOnLoad:true});</script>
+</body>
+</html>
