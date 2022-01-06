@@ -26,7 +26,8 @@ setuptools.setup(
     include_package_data=True,
     python_requires=">=3.7",
     install_requires=[
-        "beautifulsoup4"
+        "beautifulsoup4",
+        "IPython"
     ],
     extras_require={
         'dev': []
