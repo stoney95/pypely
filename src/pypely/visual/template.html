@@ -34,6 +34,12 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 <script>mermaid.initialize({startOnLoad:true});</script>
+<script>$(function(){
+  window.mermaid && mermaid.init();
+  $(IPython.events).on("rendered.MarkdownCell", function(evt, cell){
+      mermaid.init();
+  });
+});</script>
 <style>
             body {
               margin: 0px;
@@ -93,9 +99,11 @@
             }
             #pipeline .marker {
               background-color: #A9FFFF;
+              background-color: #a9ffffb3;
             }
             #fork .marker {
               background-color: #90C8F9;
+              background-color: #90c8f9b3;
             }
             #merge .marker {
               background-color: #A5FFD6;
