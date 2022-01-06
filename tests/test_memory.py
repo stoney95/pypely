@@ -106,3 +106,50 @@ def test_unallowed_memory_ingest(add):
             _add >> "result",
             _add << "result"
         )
+
+
+def test_memory_decorator_allow_ingest_works():
+    @memorizable(allow_ingest=True)
+    def add(x, y):
+        return x + y
+
+    @memorizable(allow_ingest=False)
+    def subtract(x, y):
+        return x - y
+
+    test = pipeline(
+        subtract >> "result",
+        add << "result"
+    )
+
+    assert test(2,1) == 2
+
+
+def test_memory_decorator_allow_ingest_fails():
+    @memorizable(allow_ingest=True)
+    def add(x, y):
+        return x + y
+
+    @memorizable(allow_ingest=False)
+    def subtract(x, y):
+        return x - y
+
+    with pytest.raises(MemoryIngestNotAllowedError):
+        pipeline(
+            add >> "result",
+            subtract << "result"
+        )
+
+
+def test_memory_consumption_and_writing():
+    @memorizable(allow_ingest=True)
+    def add(x, y):
+        return x + y
+
+    test = pipeline(
+        add >> "sum1",
+        add << "sum1" >> "sum2",
+        add << "sum2"
+    )
+
+    assert test(1,1) == 8

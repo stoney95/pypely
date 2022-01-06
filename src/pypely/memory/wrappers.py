@@ -1,64 +1,87 @@
 from pypely.memory._impl import get_memory
 from pypely.memory.errors import MemoryIngestNotAllowedError
+
+from copy import deepcopy
 from typing import Callable, TypeVar, Optional, Union
 
 T = TypeVar("T")
 
-Memorizable = Callable[[Callable[..., T]], Callable[..., T]]
+class Memorizable:
+    def __init__(self, func: Callable[..., T], allow_ingest: bool):
+        self.func = func
+        self.allow_ingest = allow_ingest
+
+        self.attributes_after = []
+        self.attributes_before = []
+        self.used_memory = False
+
+        self.__qualname__ = func.__qualname__
+
+    @property
+    def __name__(self):
+        return self.func.__name__
+
+    @property
+    def __code__(self):
+        return self.func.__code__
+
+    @property
+    def __closure__(self):
+        return self.func.__closure__
+
+    @property
+    def __module__(self):
+        return self.func.__module__
+
+    def __rshift__(self, other):
+        # return _add_to_memory(self.func, other)
+        self_copy = self.__copy_for_memory_usage()
+        self_copy.func = _add_to_memory(self.func, other)
+        return self_copy
+
+    def __lshift__(self, other):
+        self.__check_ingest()
+        self_copy = self.__copy_for_memory_usage()
+        self_copy.attributes_after.append(other)
+        return self_copy
+
+    def __rrshift__(self, other):
+        self.__check_ingest()
+        self_copy = self.__copy_for_memory_usage()
+        self_copy.attributes_before.append(other)
+        return self_copy
+
+    def __call__(self, *args):
+        memory = get_memory()
+        memory_attributes_before = [memory.get(attr) for attr in self.attributes_before]
+        memory_attributes_after = [memory.get(attr) for attr in self.attributes_after]
+        self.__reset()
+
+        return self.func(*memory_attributes_before, *args, *memory_attributes_after)
+
+    def __reset(self):
+        self.attributes_after = []
+        self.attributes_before = []
+
+    def __check_ingest(self):
+        if not self.allow_ingest:
+            raise MemoryIngestNotAllowedError(f"Memory ingest is not allowed for func: {self.func.__qualname__}")
+
+    def __copy_for_memory_usage(self):
+        self_copy = deepcopy(self)
+        self_copy.used_memory = True
+
+        return self_copy
 
 
-def memorizable(func: Optional[Callable[..., T]]=None, allow_ingest: Optional[bool]=True) -> Union[Memorizable, Callable[..., T]]:
-    class Memorizable:
-        def __init__(self, func):
-            self.func = func
-            self.attributes_after = []
-            self.attributes_before = []
-
-            self.__set_name(func)
-
-        def __rshift__(self, other):
-            return _add_to_memory(self.func, other)
-
-        def __lshift__(self, other):
-            self.__check_ingest()
-            self.attributes_after.append(other)
-            return self
-
-        def __rrshift__(self, other):
-            self.__check_ingest()
-            self.attributes_before.append(other)
-            return self
-
-        def __call__(self, *args):
-            memory = get_memory()
-            memory_attributes_before = [memory.get(attr) for attr in self.attributes_before]
-            memory_attributes_after = [memory.get(attr) for attr in self.attributes_after]
-            self.__reset()
-
-            return self.func(*memory_attributes_before, *args, *memory_attributes_after)
-
-        def __reset(self):
-            self.attributes_after = []
-            self.attributes_before = []
-
-        def __check_ingest(self):
-            if not allow_ingest:
-                raise MemoryIngestNotAllowedError(f"Memory ingest is not allowed for func: {self.func.__qualname__}")
-
-        def __set_name(self, func):
-            try:
-                self.__name__ = func.__name__
-            except:
-                self.__name__ = "UNKNOWN"
-                
-    
+def memorizable(func: Optional[Callable[..., T]]=None, allow_ingest: Optional[bool]=True) -> Union[Callable[[Callable[..., T]], Memorizable], Callable[..., T]]:
     if func is None:
-        return Memorizable
+        return lambda func: Memorizable(func, allow_ingest)
     else:
-        return Memorizable(func)
+        return Memorizable(func, allow_ingest)
 
 
-def _add_to_memory(func: Callable[..., T], name: str, ) -> Callable[..., T]:
+def _add_to_memory(func: Callable[..., T], name: str) -> Callable[..., T]:
     def __inner(*args):
         result = func(*args)
         memory = get_memory()
