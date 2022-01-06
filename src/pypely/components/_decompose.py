@@ -1,9 +1,13 @@
-from pypely.components._data import Pipeline, Fork, Merge, Operation
+from pypely.components._data import Pipeline, Fork, Merge, Operation, Memorizable as MemorizableContainer
 from pypely.core._debug_helpers import DebugMemory
+from pypely.memory.wrappers import Memorizable
 
 
 def _is(_type):
     def inner(func):
+        if isinstance(func, Memorizable):
+            return _type == "memorizable"
+
         is_from_core_modul = func.__module__ == "pypely.core.functions"
         is_type = func.__qualname__.startswith(_type)
 
@@ -14,6 +18,7 @@ def _is(_type):
 is_pipeline = _is("pipeline")
 is_fork = _is("fork")
 is_merge = _is("merge")
+is_memorizable = _is("memorizable")
 
 
 def decompose(pipe):
@@ -30,6 +35,11 @@ def decompose(pipe):
         return Fork([decompose(step) for step in parallel_steps])
     if is_merge(pipe):
         return Merge(func=pipe.__closure__[0].cell_contents)
+    if is_memorizable(pipe):
+        if pipe.used_memory:
+            return MemorizableContainer(func=decompose(pipe.func))
+        else:
+            return decompose(pipe.func)
     else:
         return Operation(func=pipe)
 
