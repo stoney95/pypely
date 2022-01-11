@@ -1,113 +1,123 @@
-
 <!DOCTYPE html>
 
 <html lang="en">
-<head>
-<meta charset="utf-8"/>
-</head>
-<body>
-<div id="wrapper">
-<header id="header">pypely - Your Pipeline</header>
-<div id="content">
-<div class="mermaid-wrapper">
-<div class="mermaid"></div>
-</div>
-<div class="legend">
-<div class="legend-entry" id="operation">
-<span class="marker"></span>
-<span class="description">Operation</span>
-</div>
-<div class="legend-entry" id="pipeline">
-<span class="marker"></span>
-<span class="description">Sub-Pipeline</span>
-</div>
-<div class="legend-entry" id="fork">
-<span class="marker"></span>
-<span class="description">Fork</span>
-</div>
-<div class="legend-entry" id="merge">
-<span class="marker"></span>
-<span class="description">Merge</span>
-</div>
-</div>
-</div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-<script>mermaid.initialize({startOnLoad:true});</script>
-<script>$(function(){
-  window.mermaid && mermaid.init();
-  $(IPython.events).on("rendered.MarkdownCell", function(evt, cell){
-      mermaid.init();
-  });
-});</script>
-<style>
-            body {
-              margin: 0px;
-              font-family: "trebuchet ms",verdana,arial,sans-serif;
-            }
-            #wrapper {
-              height: 100vh;
-              display: flex;
-              flex-direction: column;
-            }
-            #header {
-              font-size: 20px;
-              padding: 20px 0px 20px 10px;
-              background: #b4fffb;
-            }
-            #content {
-              display: flex;
-              flex-direction: row;
-              flex: 1;
-            }
-            .mermaid-wrapper {
-              background: white;
-              flex: 1;
-              overflow: scroll;
-            }
-            .mermaid{
-              flex-grow: 5;
-            }
-            svg{
-              width: 100000%;
-            }
-            .legend {
-              display: flex;
-              flex-direction: column;
-              width: 250px;
-              padding-left: 10px;
-              padding-top: 10px;
-              box-shadow: 0px 8px 15px #5858589d;
-            }
-            .legend-entry {
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              margin-bottom: 10px;
-            }
-            .marker {
-              height: 25px;
-              width: 25px;
-              border-radius: 50%;
-              display: inline-block;
-            }
-            .description {
-              margin-left: 5px;
-            }
-            #operation .marker {
-              background-color: #053C5E;
-            }
-            #pipeline .marker {
-              background-color: #A9FFFF;
-              background-color: #a9ffffb3;
-            }
-            #fork .marker {
-              background-color: #90C8F9;
-              background-color: #90c8f9b3;
-            }
-            #merge .marker {
-              background-color: #A5FFD6;
-            }
-          </style>
-</body>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="wrapper">
+      <header id="header">pypely - Your Pipeline</header>
+      <div id="content">
+        <div class="mermaid-wrapper">
+          <div class="mermaid"></div>
+        </div>
+        <div class="legend">
+          <div class="legend-entry" id="operation">
+            <span class="marker"></span>
+            <span class="description">Operation</span>
+          </div>
+          <div class="legend-entry" id="pipeline">
+            <span class="marker"></span>
+            <span class="description">Sub-Pipeline</span>
+          </div>
+          <div class="legend-entry" id="fork">
+            <span class="marker"></span>
+            <span class="description">Fork</span>
+          </div>
+          <div class="legend-entry" id="merge">
+            <span class="marker"></span>
+            <span class="description">Merge</span>
+          </div>
+          <div class="legend-entry" id="memory">
+            <span class="marker"></span>
+            <span class="description">Memory</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+      $(function () {
+        window.mermaid && mermaid.init();
+        $(IPython.events).on("rendered.MarkdownCell", function (evt, cell) {
+          mermaid.init();
+        });
+      });
+    </script>
+    <style>
+      body {
+        margin: 0px;
+        font-family: "trebuchet ms", verdana, arial, sans-serif;
+      }
+      #wrapper {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      #header {
+        font-size: 20px;
+        padding: 20px 0px 20px 10px;
+        background: #b4fffb;
+      }
+      #content {
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+      }
+      .mermaid-wrapper {
+        background: white;
+        flex: 1;
+        overflow: scroll;
+      }
+      .mermaid {
+        flex-grow: 5;
+      }
+      svg {
+        width: 100000%;
+      }
+      .legend {
+        display: flex;
+        flex-direction: column;
+        width: 250px;
+        padding-left: 10px;
+        padding-top: 10px;
+        box-shadow: 0px 8px 15px #5858589d;
+      }
+      .legend-entry {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .marker {
+        height: 25px;
+        width: 25px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+      .description {
+        margin-left: 5px;
+      }
+      #operation .marker {
+        background-color: #053c5e;
+      }
+      #pipeline .marker {
+        background-color: #a9ffff;
+        background-color: #a9ffffb3;
+      }
+      #fork .marker {
+        background-color: #90c8f9;
+        background-color: #90c8f9b3;
+      }
+      #merge .marker {
+        background-color: #a5ffd6;
+      }
+      #memory .marker {
+        background-color: #f7948d;
+      }
+    </style>
+  </body>
 </html>

@@ -37,7 +37,11 @@ def decompose(pipe):
         return Merge(func=pipe.__closure__[0].cell_contents)
     if is_memorizable(pipe):
         if pipe.used_memory:
-            return MemorizableContainer(func=decompose(pipe.func))
+            return MemorizableContainer(
+                func=decompose(pipe.func), 
+                write_attribute=pipe.written_attribute, 
+                read_attributes=pipe.read_attributes
+            )
         else:
             return decompose(pipe.func)
     else:

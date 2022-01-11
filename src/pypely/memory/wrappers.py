@@ -14,8 +14,10 @@ class Memorizable:
         self.attributes_after = []
         self.attributes_before = []
         self.used_memory = False
+        self.written_attribute = None
 
         self.__qualname__ = func.__qualname__
+        self._execute = func
 
     @property
     def __name__(self):
@@ -33,10 +35,15 @@ class Memorizable:
     def __module__(self):
         return self.func.__module__
 
+    @property
+    def read_attributes(self):
+        return self.attributes_before + self.attributes_after
+
     def __rshift__(self, other):
         # return _add_to_memory(self.func, other)
         self_copy = self.__copy_for_memory_usage()
-        self_copy.func = _add_to_memory(self.func, other)
+        self_copy._execute = _add_to_memory(self.func, other)
+        self_copy.written_attribute = other
         return self_copy
 
     def __lshift__(self, other):
@@ -55,13 +62,8 @@ class Memorizable:
         memory = get_memory()
         memory_attributes_before = [memory.get(attr) for attr in self.attributes_before]
         memory_attributes_after = [memory.get(attr) for attr in self.attributes_after]
-        self.__reset()
-
-        return self.func(*memory_attributes_before, *args, *memory_attributes_after)
-
-    def __reset(self):
-        self.attributes_after = []
-        self.attributes_before = []
+        
+        return self._execute(*memory_attributes_before, *args, *memory_attributes_after)
 
     def __check_ingest(self):
         if not self.allow_ingest:

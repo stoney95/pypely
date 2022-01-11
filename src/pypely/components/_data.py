@@ -1,5 +1,5 @@
-from dataclasses import dataclass
-from typing import Callable, List, Union
+from dataclasses import dataclass, field
+from typing import Callable, List, Optional, Union
 
 
 @dataclass(frozen=True)
@@ -46,6 +46,8 @@ class Pipeline:
 @dataclass(frozen=True)
 class Memorizable:
     func: MemorizableStep
+    read_attributes: List[str]=field(default_factory=lambda: [])
+    write_attribute: Optional[str] = None
 
     def __eq__(self, other: 'Memorizable'):
         if isinstance(other, Memorizable):
