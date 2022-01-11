@@ -10,11 +10,12 @@ from pypely.core.errors import MergeError
 T = TypeVar("T")
 
 
-@memorizable
+
 def pipeline(*funcs: Callable) -> Callable:
     initial = DebugMemory(combine=funcs[0], first=funcs[0], last=funcs[0])
     _pipeline = reduce(debugable_reduce, funcs[1:], initial).combine
 
+    @memorizable
     def _call(*args):
         with PipelineMemoryContext() as _:
             return _pipeline(*args)
@@ -22,14 +23,18 @@ def pipeline(*funcs: Callable) -> Callable:
     return _call
 
 
-@memorizable(allow_ingest=False)
+
 def fork(*funcs: Callable) -> Callable[..., PypelyTuple]:
-    return lambda *x: PypelyTuple(*[func(*x) for func in funcs])
+    @memorizable(allow_ingest=False)
+    def _fork(*args):
+        return PypelyTuple(*[func(*args) for func in funcs])
+
+    return _fork
 
 
-@memorizable(allow_ingest=False)
 def to(obj: T, *set_fields: str) -> Callable[[PypelyTuple], T]:
-    def _inner(vals: PypelyTuple) -> T:
+    @memorizable(allow_ingest=False)
+    def _to(vals: PypelyTuple) -> T:
         vals_flattened = flatten(vals)
         if not set_fields == ():
             assert len(vals_flattened) == len(set_fields)
@@ -38,19 +43,19 @@ def to(obj: T, *set_fields: str) -> Callable[[PypelyTuple], T]:
         else:
             return obj(*vals_flattened)
     
-    return _inner
+    return _to
 
 
-@memorizable(allow_ingest=False)
 def merge(func: Callable[..., T]) -> Callable[[PypelyTuple], T]:
-    def _inner(branches):
+    @memorizable(allow_ingest=False)
+    def _merge(branches):
         flat_branches = flatten(branches)
         try:
             return func(*flat_branches)
         except TypeError:
             raise MergeError(func, branches)
 
-    return _inner
+    return _merge
 
 
 def identity(*x):

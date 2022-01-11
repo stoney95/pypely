@@ -69,6 +69,37 @@ def test_memorizable(add, mul, sub):
     assert to_test == 15
 
 
+def test_memorizable_pipeline(add):
+    _add = memorizable(add)
+    add_2 = lambda x: x + 2
+    inner = pipeline(add, add_2)
+
+    test = pipeline(
+        _add >> "test",
+        inner << "test"
+    )
+
+    assert test(1, 1) == 6
+
+
+def test_memorizable_fork_merge(add):
+    _add = memorizable(add)
+    add_2 = lambda x: x + 2
+
+    to_test = pipeline(
+        add,
+        fork(
+            add_2,
+            add_2
+        ) >> "forked",
+        merge(add) >> "merged", 
+        memorizable(lambda res, x: res + x[0]) << "forked",
+        _add << "merged"
+    )
+
+    assert to_test(1, 1) == 20
+
+
 def test_no_double_attr_assignment(add):
     _add = memorizable(add)
 
