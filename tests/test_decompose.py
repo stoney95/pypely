@@ -12,6 +12,7 @@ def add(x, y):
 def multiply_by(x):
     return lambda y: x * y
 
+@memorizable
 def devide_by(x):
     return lambda y: y / x
 
