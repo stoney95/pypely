@@ -39,8 +39,6 @@ class Operation(Step):
         return False
 
 
-# MemorizableStep = Union[Fork, Merge, Operation, 'Pipeline']
-# Step = Union[MemorizableStep, 'Memorizable']
 @dataclass(frozen=True)
 class Pipeline(Step):
     steps: List[Step] = field(default_factory=list)
