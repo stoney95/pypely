@@ -27,6 +27,7 @@ setuptools.setup(
     python_requires=">=3.7",
     install_requires=[
         "beautifulsoup4",
+        "pyvis",
         "IPython"
     ],
     extras_require={

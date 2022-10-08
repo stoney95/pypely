@@ -50,4 +50,19 @@ def test_draw(add):
         with open(HERE / "expected.html", 'r') as f:
             expected = f.read()
 
+        to_test = _replace_multiple_spaces(to_test)
+        expected = _replace_multiple_spaces(expected)
         assert to_test == expected
+
+
+def _replace_multiple_spaces(text: str) -> str:
+    """I replace multiple spaces in a string with one space.
+
+    Args:
+        text (str): String input with multiple spaces
+
+    Returns:
+        str: String with only one space between words
+    """
+
+    return " ".join(text.split())

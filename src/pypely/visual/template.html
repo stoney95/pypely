@@ -36,17 +36,7 @@
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    <script>
-      mermaid.initialize({ startOnLoad: true });
-    </script>
-    <script>
-      $(function () {
-        window.mermaid && mermaid.init();
-        $(IPython.events).on("rendered.MarkdownCell", function (evt, cell) {
-          mermaid.init();
-        });
-      });
-    </script>
+    <script>mermaid.initialize({ startOnLoad: true });</script>
     <style>
       body {
         margin: 0px;

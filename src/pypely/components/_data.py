@@ -1,10 +1,17 @@
+import uuid
+
 from dataclasses import dataclass, field
 from typing import Callable, List, Optional, Union
 
 
 @dataclass(frozen=True)
-class Fork:
-    branches: List[Callable]
+class Step:
+    id: uuid.UUID = field(default_factory=uuid.uuid4)
+
+
+@dataclass(frozen=True)
+class Fork(Step):
+    branches: List[Step] = field(default_factory=list)
     parallel: bool = False
 
     def __eq__(self, other: 'Fork'):
@@ -13,8 +20,8 @@ class Fork:
 
 
 @dataclass(frozen=True)
-class Merge:
-    func: Callable
+class Merge(Step):
+    func: Callable=None
 
     def __eq__(self, other: 'Merge'):
         if isinstance(other, Merge):
@@ -23,8 +30,8 @@ class Merge:
 
 
 @dataclass(frozen=True)
-class Operation:
-    func: Callable
+class Operation(Step):
+    func: Callable=None
 
     def __eq__(self, other: 'Operation'):
         if isinstance(other, Operation):
@@ -32,11 +39,11 @@ class Operation:
         return False
 
 
-MemorizableStep = Union[Fork, Merge, Operation, 'Pipeline']
-Step = Union[MemorizableStep, 'Memorizable']
+# MemorizableStep = Union[Fork, Merge, Operation, 'Pipeline']
+# Step = Union[MemorizableStep, 'Memorizable']
 @dataclass(frozen=True)
-class Pipeline:
-    steps: List[Step]
+class Pipeline(Step):
+    steps: List[Step] = field(default_factory=list)
 
     def __eq__(self, other: 'Pipeline'):
         if isinstance(other, Pipeline):
@@ -44,9 +51,9 @@ class Pipeline:
 
 
 @dataclass(frozen=True)
-class Memorizable:
-    func: MemorizableStep
-    read_attributes: List[str]=field(default_factory=lambda: [])
+class Memorizable(Step):
+    func: Step = None
+    read_attributes: List[str]=field(default_factory=list)
     write_attribute: Optional[str] = None
 
     def __eq__(self, other: 'Memorizable'):
