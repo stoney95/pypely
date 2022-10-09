@@ -4,24 +4,24 @@ from pypely.helpers import flatten
 from pypely._types import PypelyTuple
 from pypely.memory import memorizable
 from pypely.memory._context import PipelineMemoryContext
-from pypely.core._debug_helpers import debugable_reduce, DebugMemory
+from pypely.core._debug_helpers import debugable_reduce, DebugMemory, _wrap_with_error_handling
 from pypely.core.errors import MergeError
 
 T = TypeVar("T")
 
 
-
 def pipeline(*funcs: Callable) -> Callable:
-    initial = DebugMemory(combine=funcs[0], first=funcs[0], last=funcs[0])
-    _pipeline = reduce(debugable_reduce, funcs[1:], initial).combine
+    initial = _wrap_with_error_handling(funcs[0])
+    _pipeline = reduce(debugable_reduce, funcs[1:], initial)
 
     @memorizable
     def _call(*args):
         with PipelineMemoryContext() as _:
             return _pipeline(*args)
+    
+    _call.__annotations__ = _pipeline.__annotations__
 
     return _call
-
 
 
 def fork(*funcs: Callable) -> Callable[..., PypelyTuple]:

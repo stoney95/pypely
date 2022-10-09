@@ -1,4 +1,4 @@
-from pypely.core.errors._formating import format_args, func_details
+from pypely.core.errors._formating import format_parameter_signature, func_details
 from pypely._types import PypelyError
 
 
@@ -11,6 +11,6 @@ class MergeError(PypelyError):
         return "\n".join([
             f"Given arguments do not match '{func.__name__}' arguments",
             f"  Given arguments: {used_args}",
-            f"  '{func.__name__}' consumes: {format_args(func)}",
+            f"  '{func.__name__}' consumes: {format_parameter_signature(func)}",
             f"  {func_details(func)}"
         ])

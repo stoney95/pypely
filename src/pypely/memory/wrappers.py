@@ -17,6 +17,7 @@ class Memorizable:
         self.written_attribute = None
 
         self.__qualname__ = func.__qualname__
+        self.__annotations__ = func.__annotations__
         self._execute = func
 
     @property
