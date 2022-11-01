@@ -1,25 +1,29 @@
 from functools import reduce
-from typing import Callable, TypeVar
+from typing import Any, Callable, TypeVar, Tuple
 from pypely.helpers import flatten
 from pypely._types import PypelyTuple
 from pypely.memory import memorizable
 from pypely.memory._context import PipelineMemoryContext
-from pypely.core._debug_helpers import debugable_reduce, DebugMemory, _wrap_with_error_handling
+from pypely.core._debug_helpers import debugable_combine, _wrap_with_error_handling
 from pypely.core.errors import MergeError
+from typing_extensions import Unpack, ParamSpec
 
 T = TypeVar("T")
+P = ParamSpec("P")
+Output = TypeVar("Output")
 
 
-def pipeline(*funcs: Callable) -> Callable:
-    initial = _wrap_with_error_handling(funcs[0])
-    _pipeline = reduce(debugable_reduce, funcs[1:], initial)
+def pipeline(*funcs: Unpack[Tuple[Callable[P, Any], Unpack[Tuple[Callable, ...]], Callable[..., Output]]]) -> Callable[P, Output]:
+    first, *remaining = funcs
+    initial = _wrap_with_error_handling(first) #Only the second function is wrapped with error handling in debugable_combine
+    _pipeline = reduce(debugable_combine, remaining, initial)
 
     @memorizable
-    def _call(*args):
+    def _call(*args: P.args, **kwargs: P.kwargs) -> Output:
         with PipelineMemoryContext() as _:
-            return _pipeline(*args)
+            return _pipeline(*args, **kwargs)
     
-    _call.__annotations__ = _pipeline.__annotations__
+    # _call.__annotations__ = _pipeline.__annotations__
 
     return _call
 

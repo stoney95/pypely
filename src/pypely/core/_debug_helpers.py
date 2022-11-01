@@ -5,6 +5,7 @@ import copy
 from functools import wraps
 from typing import Callable, TypeVar
 import inspect
+from typing_extensions import ParamSpec
 
 from pypely.core.errors import PipelineCallError, PipelineForwardError, PipelineStepError, ParameterAnnotationsMissingError, ReturnTypeAnnotationMissingError, OutputInputDoNotMatchError
 from pypely._types import PypelyError
@@ -13,8 +14,11 @@ DebugMemory = namedtuple('DebugMemory', ['combine', 'first', 'last'])
 ExceptionSubstitution = namedtuple('ExceptionSubstitution', ['exception', 'pypely_error'])
 
 T = TypeVar("T")
+P = ParamSpec("P")
+CombineFirstOutput = TypeVar("CombineFirstOutput")
+CombineSecondOutput = TypeVar("CombineSecondOutput")
 
-def debugable_reduce(func1: Callable, func2: Callable) -> Callable:
+def debugable_combine(func1: Callable[P, CombineFirstOutput], func2: Callable[[CombineFirstOutput], CombineSecondOutput]) -> Callable[P, CombineSecondOutput]:
     """I test if two functions can be combined and do so if they fit.
 
     Args:
@@ -22,7 +26,7 @@ def debugable_reduce(func1: Callable, func2: Callable) -> Callable:
         func2 (Callable): The second function
 
     Returns:
-        Callable: A function that forwards the result of func1 to func2.
+        Callable[P, CombineSecondOutput]: A function that forwards the result of func1 to func2.
     """
     _check_if_annotations_given(func1)
     _check_if_annotations_given(func2)
@@ -34,7 +38,7 @@ def debugable_reduce(func1: Callable, func2: Callable) -> Callable:
     def _combine(*args):
         return func2(func1(*args))
 
-    _combine.__annotations__ = func1.__annotations__
+    _combine.__annotations__ = copy.copy(func1.__annotations__)
     _combine.__annotations__["return"] = func2.__annotations__["return"]
 
     return _combine
