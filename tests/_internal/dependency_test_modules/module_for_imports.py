@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 
+import json
+
 from numpy.testing import assert_array_equal
 
 
@@ -12,6 +14,8 @@ def add(x: int, y: int) -> int:
 
 
 def process(df: pd.DataFrame) -> np.ndarray:
+    json.dumps(dict(test=2))
+
     arr = df.to_numpy()
     ones = np.ones(arr.shape)
 
