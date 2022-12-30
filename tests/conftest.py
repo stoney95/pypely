@@ -1,4 +1,5 @@
 from pytest import fixture
+from pathlib import Path
 
 
 @fixture
@@ -16,3 +17,9 @@ def mul():
 @fixture
 def sub():
     return lambda x, y: x - y
+
+
+@fixture
+def root_dir():
+    file_dir = Path(__file__).parent.resolve()
+    return file_dir.parent.resolve()
