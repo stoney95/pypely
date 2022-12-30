@@ -414,6 +414,8 @@ def _is_available_on_pypi(package_name: str) -> bool:
         pass
     except pkg_resources.extern.packaging.requirements.InvalidRequirement:
         pass
+    except ValueError:
+        pass
     
     return False
 
@@ -446,6 +448,10 @@ def _identify_version_of_package(package_name: str) -> Optional[str]:
             f"The package {package_name} is currently not installed. \
             The version cannot be identified. \
             The package will be installed with the latest version in a remote environment."
+        )
+    except ValueError:
+        logger.warning(
+            f"You have specified an invalid name: '{package_name}'. No version will be retrieved."
         )
 
 

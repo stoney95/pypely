@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 import requests
 
-from pypely._internal.dependencies import StandardLibDependency, create_environment, identify_dependencies, parse_pip_dependencies, parse_local_dependencies, identify_recursive_dependencies, PipDependency, LocalDependency, DependencyImport, DependencyFromImport, Environment
+from pypely._internal.dependencies import StandardLibDependency, _identify_version_of_package, _is_available_on_pypi, create_environment, identify_dependencies, parse_pip_dependencies, parse_local_dependencies, identify_recursive_dependencies, PipDependency, LocalDependency, DependencyImport, DependencyFromImport, Environment
 
 
 def test_identify_dependencies_identifies_all_direct_dependencies():
@@ -17,6 +17,7 @@ def test_identify_dependencies_identifies_all_direct_dependencies():
         DependencyImport(package="pandas", alias="pd", direct_import=True),
         DependencyImport(package="numpy", alias="np", direct_import=True),
         DependencyFromImport(package="numpy.testing", functionality="assert_array_equal", direct_import=True, alias=None),
+        DependencyFromImport(package="pandas.testing", functionality="assert_frame_equal", direct_import=True, alias="equal_frame"),
     ]
 
     # Act
@@ -48,7 +49,7 @@ def test_identify_recursive_dependencies_identifies_all_imports():
         DependencyImport(package="json", direct_import=False, alias=None),
         DependencyFromImport(package="dependency_test_modules.yet_another_module", functionality="another_helper", direct_import=False, alias=None),
         DependencyFromImport(package="dependency_test_modules.a.very.nested.package.deep_module", functionality="print_low_level", direct_import=False, alias=None),
-        DependencyFromImport(package="dependency_test_modules.a.very.higher_level_module", functionality="print_level", direct_import=False, alias=None),
+        DependencyFromImport(package="dependency_test_modules.a.very.higher_level_module", functionality="print_level", direct_import=False, alias="high_level_print"),
     ]
 
     # Act
@@ -106,7 +107,7 @@ def test_identify_local_dependencies_resolves_local_packages_correctly(root_dir)
         LocalDependency(
             path=root_dir / "tests" / "_internal" / "dependency_test_modules"  / "a" / "very" / "higher_level_module.py", 
             relative_path=Path("dependency_test_modules/a/very"), 
-            usages=set([DependencyFromImport(package="dependency_test_modules.a.very.higher_level_module", functionality="print_level", direct_import=False, alias=None)]),
+            usages=set([DependencyFromImport(package="dependency_test_modules.a.very.higher_level_module", functionality="print_level", direct_import=False, alias="high_level_print")]),
         ),
     ]
 
@@ -117,7 +118,7 @@ def test_identify_local_dependencies_resolves_local_packages_correctly(root_dir)
         DependencyFromImport(package="dependency_test_modules.helper_module", functionality="try_request", direct_import=True, alias=None),
         DependencyFromImport(package="dependency_test_modules.yet_another_module", functionality="another_helper", direct_import=False, alias=None),
         DependencyFromImport(package="dependency_test_modules.a.very.nested.package.deep_module", functionality="print_low_level", direct_import=False, alias=None),
-        DependencyFromImport(package="dependency_test_modules.a.very.higher_level_module", functionality="print_level", direct_import=False, alias=None)
+        DependencyFromImport(package="dependency_test_modules.a.very.higher_level_module", functionality="print_level", direct_import=False, alias="high_level_print")
     ]
     local_dependencies = parse_local_dependencies(dependencies)
 
@@ -130,7 +131,7 @@ def test_environment_gets_created_correctly_for_process():
     # Prepare
     expected = Environment(
         pip_dependencies=set([
-            PipDependency(name="pandas", version=pd.__version__, usages=set([DependencyImport(package="pandas", alias="pd", direct_import=True)])),
+            PipDependency(name="pandas", version=pd.__version__, usages=set([DependencyImport(package="pandas", alias="pd", direct_import=True), DependencyFromImport(package="pandas.testing", functionality="assert_frame_equal", direct_import=True, alias="equal_frame")])),
             PipDependency(name="numpy", version=np.__version__, usages=set([DependencyImport(package="numpy", alias="np", direct_import=True), DependencyFromImport(package="numpy.testing", functionality="assert_array_equal", direct_import=True, alias=None)])),
         ]),
         local_dependencies=set(),
@@ -171,7 +172,7 @@ def test_environment_gets_created_correctly_for_add(root_dir):
             LocalDependency(
                 path=root_dir / "tests" / "_internal" / "dependency_test_modules"  / "a" / "very" / "higher_level_module.py", 
                 relative_path=Path("dependency_test_modules/a/very"), 
-                usages=set([DependencyFromImport(package="dependency_test_modules.a.very.higher_level_module", functionality="print_level", direct_import=False, alias=None)]),
+                usages=set([DependencyFromImport(package="dependency_test_modules.a.very.higher_level_module", functionality="print_level", direct_import=False, alias="high_level_print")]),
             ),
         ]),
         standard_lib_dependencies=set([
@@ -184,6 +185,28 @@ def test_environment_gets_created_correctly_for_add(root_dir):
 
     # Compare
     assert add_environment == expected
+
+
+def test_is_pypi_package_works_with_invalid_package_name():
+    # Prepare
+    names = [".module", "module/some/thing", "1s", ""]
+
+    # Act
+    results = [_is_available_on_pypi(name) for name in names]
+
+    # Compare
+    all([not r for r in results])
+
+
+def test_identify_version_works_with_uninstalled_package():
+    # Prepare
+    names = ["tensorflow", ".invalid", ""]
+
+    # Act
+    results = [_identify_version_of_package(name) for name in names]
+
+    # Compare
+    all([r is None for r in results])
 
 
 def assert_dependencies_match(arr1: Iterable[str], arr2: Iterable[str]) -> None:
