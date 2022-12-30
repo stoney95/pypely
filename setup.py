@@ -23,7 +23,9 @@ setuptools.setup(
     packages=setuptools.find_packages(where="src"),
     package_dir={'': 'src'},
     python_requires=">=3.7",
-    install_requires=[],
+    install_requires=[
+        "isort==5.11.4"
+    ],
     extras_require={
         'dev': []
     },
