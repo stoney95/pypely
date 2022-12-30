@@ -28,6 +28,7 @@ setuptools.setup(
     install_requires=[
         "beautifulsoup4",        
         "IPython"
+        "isort==5.11.4"
     ],
     extras_require={
         'dev': []
