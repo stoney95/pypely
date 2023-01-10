@@ -16,8 +16,9 @@ def format_return_type_annotation(func: Callable) -> Union[Type, Tuple[Type, ...
         str: A clean form of the return type
     """
     return_type = func.__annotations__["return"]
-    if return_type.__origin__ == tuple:
-        return return_type.__args__
+    if hasattr(return_type, "__origin__"):
+        if return_type.__origin__ == tuple:
+            return return_type.__args__
     return return_type
 
 

@@ -1,13 +1,13 @@
 name: pypely
 dependencies:
-  - python=3.7
+  - python=3.9
   - pip:
     - twine
     - seaborn
     - pytest
     - pytest-mock
     - pytest-html
-    - "."
+    - ". -e"
     - torch
     - numpy
     - pandas

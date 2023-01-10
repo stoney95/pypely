@@ -4,7 +4,7 @@ from pypely.helpers import flatten
 from pypely._types import PypelyTuple
 from pypely.memory import memorizable
 from pypely.memory._context import PipelineMemoryContext
-from pypely.core._debug_helpers import debugable_combine, _wrap_with_error_handling
+from pypely.core._safe_composition import check_and_compose, _wrap_with_error_handling
 from pypely.core.errors import MergeError
 from typing_extensions import Unpack, ParamSpec
 
@@ -16,7 +16,7 @@ Output = TypeVar("Output")
 def pipeline(*funcs: Unpack[Tuple[Callable[P, Any], Unpack[Tuple[Callable, ...]], Callable[..., Output]]]) -> Callable[P, Output]:
     first, *remaining = funcs
     initial = _wrap_with_error_handling(first) #Only the second function is wrapped with error handling in debugable_combine
-    _pipeline = reduce(debugable_combine, remaining, initial)
+    _pipeline = reduce(check_and_compose, remaining, initial)
 
     @memorizable
     def _call(*args: P.args, **kwargs: P.kwargs) -> Output:

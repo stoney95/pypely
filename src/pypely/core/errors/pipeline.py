@@ -78,7 +78,7 @@ class OutputInputDoNotMatchError(PypelyError):
         message = self.__error_message(func1, func2)
         super().__init__(message)
 
-    def __error_message(func1: Callable, func2: Callable) -> str:
+    def __error_message(self, func1: Callable, func2: Callable) -> str:
         return_type = format_return_type_annotation(func1)
         expected_parameters = format_parameter_signature(func2)
 

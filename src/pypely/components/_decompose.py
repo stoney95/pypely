@@ -1,6 +1,6 @@
 from typing import Callable
 from pypely.components._data import Pipeline, Fork, Merge, Operation, Memorizable as MemorizableContainer, Step
-from pypely.core._debug_helpers import DebugMemory
+from pypely.core._safe_composition import DebugMemory
 from pypely.memory.wrappers import Memorizable
 
 
