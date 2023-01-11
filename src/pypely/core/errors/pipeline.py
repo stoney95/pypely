@@ -11,10 +11,10 @@ class PipelineStepError(PypelyError):
         message = self.__error_message(func, exception)
         super(PipelineStepError, self).__init__(message)
 
-    def __error_message(self, func: Callable, execption: Exception):
+    def __error_message(self, func: Callable, exception: Exception):
         return "\n".join([
             f"The step {func_details(func)} failed",
-            f"  The occured exception is: {execption}"
+            f"  The occurred exception is: {exception}"
         ])
 
 
