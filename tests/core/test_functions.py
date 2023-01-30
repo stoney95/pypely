@@ -1,4 +1,5 @@
-from typing import Any, Callable, Iterable, List, Optional, TypeVar
+from dataclasses import dataclass
+from typing import Any, Callable, Iterable, List, Optional, Tuple, TypeVar
 from pypely.memory.wrappers import MemoryEntry
 import pytest
 
@@ -208,6 +209,19 @@ def test_pipeline_with_optional_input_steps():
     assert result == 1
 
 
+def test_pipeline_fails_safely_with_non_matching_multiple_output_function():
+    # Prepare
+    def create_triple(val: float) -> Tuple[float, float, float]:
+        return (val, val, val)
+
+    with pytest.raises(OutputInputDoNotMatchError):
+        pipeline(
+            add,
+            create_triple,
+            add
+        )
+
+
 
 def test_pipeline_works_with_memory():
     """I test that a pipeline works when the memory is used.
@@ -306,7 +320,7 @@ def test_pipeline_fails_for_double_asterisk_function_with_invalid_parameter_defi
         )
 
 
-def test_pipeline_fails_safely_with_errornous_function():
+def test_pipeline_fails_safely_with_failing_function():
     """I test that the right error is raised when a function inside a pipeline fails."""
     # Prepare
     def i_fail(val: float) -> float:
@@ -344,3 +358,72 @@ def test_pipeline_can_be_used_as_input_to_other_pipeline():
 
     # Compare
     assert result == [54]
+
+
+def test_pipeline_with_to():
+    """I test that `to` can be used in a `pipeline`"""
+    # Prepare
+    @dataclass
+    class TestObject():
+        val1: float
+        val2: float
+
+    to_test = pipeline(
+        add,
+        fork(
+            multiply_by(1.5),
+            multiply_by(2.5)
+        ),
+        to(TestObject)
+    )
+
+    # Act
+    result = to_test(1,1)
+
+    # Compare
+    assert result == TestObject(3.0, 5.0)
+
+
+def test_pipeline_with_to_using_fields():
+    @dataclass
+    class TestObject():
+        val1: float
+        val2: float
+
+    def process_object(obj: TestObject) -> float:
+        return obj.val1 - obj.val2
+
+    to_test = pipeline(
+        add,
+        fork(
+            multiply_by(1.5),
+            multiply_by(2.5)
+        ),
+        to(TestObject, "val2", "val1"),
+        process_object
+    )
+
+    # Act
+    result = to_test(1,1)
+
+    # Compare
+    assert result == 2.0
+
+
+def test_pipeline_with_identity():
+    # Prepare
+    to_test = pipeline(
+        add,
+        fork(
+            multiply_by(1.5),
+            multiply_by(0.5)
+        ),
+        identity,
+        merge(add)
+    )
+
+    # Act
+    result = to_test(1, 1)
+
+    # Compare
+    assert result == 4.0
