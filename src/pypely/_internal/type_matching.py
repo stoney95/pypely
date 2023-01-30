@@ -1,9 +1,51 @@
-from typing import Any, get_args, TypeVar
+from typing import Any, Union, get_args, TypeVar, get_origin
 import typing
 from collections.abc import Callable, Mapping, MutableMapping, Iterable
 import collections
+import inspect
+from pypely.core.errors import InvalidParameterAnnotationError, ParameterAnnotationsMissingError, ReturnTypeAnnotationMissingError
 
 from itertools import zip_longest
+
+
+def check_if_annotations_given(func: Callable) -> None:
+    """I check if the function has type annotations.
+
+    Args:
+        func (Callable): The function that should be checked.
+
+    Raises:
+        ParameterAnnotationsMissingError: if the function has parameters without type annotations.
+        ReturnTypeAnnotationMissingError: if the function has no return type annotation.
+    """
+
+    def _is_parameter_annotated(param: inspect.Parameter) -> bool:
+        return not param.annotation == inspect._empty
+
+    def _is_annotation_valid(param: inspect.Parameter) -> bool:
+        invalid_types = [
+            inspect.Parameter.KEYWORD_ONLY, # (arg, *, keyword_only_arg)
+            inspect.Parameter.VAR_POSITIONAL, # (*args)
+            inspect.Parameter.VAR_KEYWORD, # (**kwargs)
+        ]
+
+        if param.kind in invalid_types:
+            return False
+
+        return True
+
+    parameters = inspect.signature(func).parameters
+    parameters_annotated = map(_is_parameter_annotated, parameters.values())
+    if not all(parameters_annotated):
+        raise ParameterAnnotationsMissingError(func)
+
+    if not "return" in func.__annotations__:
+        raise ReturnTypeAnnotationMissingError(func)
+
+    for param in parameters.values():
+        if not _is_annotation_valid(param):
+            raise InvalidParameterAnnotationError(func, param)
+
 
 
 def is_subtype(type1: type[Any], type2: type[Any]) -> bool:
@@ -23,6 +65,11 @@ def is_subtype(type1: type[Any], type2: type[Any]) -> bool:
 
     return _do_types_match(type1, type2)
 
+
+def is_optional(_type: type):
+    return get_origin(_type) is Union and \
+        type(None) in get_args(_type)
+        
 
 def _do_types_match(
     actual: type[typing.Any], expected: type[typing.Any]

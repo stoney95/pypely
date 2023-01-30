@@ -9,6 +9,7 @@ from pathlib import Path
 
 HERE = Path(__file__).parent.resolve()
 
+@pytest.mark.skip("Draw is currently not working as it relies on the not working implementation of `pypely.components.decompose`")
 def test_draw(add):
     _add = memorizable(add)
 

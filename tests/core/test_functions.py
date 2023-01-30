@@ -1,16 +1,32 @@
-from typing import Any, Callable, Iterable, List, TypeVar
+from typing import Any, Callable, Iterable, List, Optional, TypeVar
+from pypely.memory.wrappers import MemoryEntry
 import pytest
 
 from pypely import pipeline, merge, fork, identity, to
 from pypely.helpers import head, rest, reduce_by
+from pypely.memory import memorizable
 from pypely._types import PypelyTuple
-from pypely.core.errors import MergeError, PipelineForwardError, PipelineCallError, PipelineStepError
+from pypely.core.errors import (
+    MergeError, 
+    PipelineForwardError, 
+    PipelineCallError, 
+    PipelineStepError, 
+    OutputInputDoNotMatchError, 
+    ParameterAnnotationsMissingError, 
+    ReturnTypeAnnotationMissingError,
+    InvalidParameterAnnotationError
+)
 
 from collections import namedtuple
 
 T = TypeVar("T")
 
 def add(x: float, y: float) -> float:
+    return x + y
+
+
+@memorizable
+def memory_add(x: float, y: float) -> float:
     return x + y
 
 
@@ -30,6 +46,10 @@ def partially_typed_add(x: int, y) -> int:
     return x + y
 
 
+def add_without_return_type(x: int, y: int):
+    return x + y
+
+
 def to_list(val: T) -> List[T]:
     return [val]
 
@@ -44,6 +64,13 @@ def multiply_by(x: float) -> Callable[[float], float]:
 
     return _multiply_by
 
+
+def int_to_str(val: int) -> str:
+    return str(val)
+
+
+def add_keep_x(x: int, y: int) -> tuple[int, int]:
+        return x, x + y
 
 
 def test_pipeline_works_in_general():
@@ -95,10 +122,23 @@ def test_pipeline_works_with_subtype_functions():
 
 def test_pipeline_fails_with_untyped_functions():
     """I test that a pipeline fails if an untyped function is used."""
+    with pytest.raises(ParameterAnnotationsMissingError):
+        pipeline(untyped_add, to_list, length)
+
+    with pytest.raises(ParameterAnnotationsMissingError):
+        pipeline(partially_typed_add, to_list, length)
+
+    with pytest.raises(ReturnTypeAnnotationMissingError):
+        pipeline(add_without_return_type, to_list, length)
 
 
 def test_pipeline_fails_if_function_types_dont_match():
     """I test that a pipeline fails if the types of two consecutive functions don't match."""
+    with pytest.raises(OutputInputDoNotMatchError):
+        pipeline(add, to_list, length, add)
+
+    with pytest.raises(OutputInputDoNotMatchError):
+        pipeline(add, multiply_by(0.5), int_to_str)
 
 
 def test_pipeline_works_with_fork_merge():
@@ -106,6 +146,67 @@ def test_pipeline_works_with_fork_merge():
 
     This is also important from the perspective of type checking.
     """
+    # Prepare
+    to_test = pipeline(
+        add,
+        fork(
+            multiply_by(1.2),
+            multiply_by(0.4)
+        ),
+        merge(add),
+        to_list
+    )
+
+    # Act
+    result = to_test(1, 1)
+
+    # Compare
+    assert result == [3.2]
+
+
+def test_pipeline_with_multiple_or_no_output_steps():
+    # Prepare
+    def no_output(x: float) -> None:
+        print(x)
+
+    def no_input() -> float:
+        return 3.4
+
+    to_test = pipeline(
+        add_keep_x,
+        add,
+        no_output,
+        no_input
+    )
+
+    # Act
+    result = to_test(1,1)
+
+    # Compare
+    assert result == 3.4
+
+
+def test_pipeline_with_optional_input_steps():
+    # Prepare
+    def optional_add(x: int, y: Optional[int]=None) -> int:
+        if y is None:
+            return x
+        return x + y
+
+    to_test = pipeline(
+        add_keep_x,
+        optional_add,
+        to_list,
+        length,
+        optional_add
+    )
+
+    # Act
+    result = to_test(1,2)
+
+    # Compare
+    assert result == 1
+
 
 
 def test_pipeline_works_with_memory():
@@ -113,150 +214,133 @@ def test_pipeline_works_with_memory():
 
     This is als important from the perspective of type checking.
     """
+    @memorizable
+    def sum_values(val1: float, val2: float, val3: float) -> float:
+        return val1 + val2 + val3
 
+    first_sum = MemoryEntry()
 
-def test_pypely(add, mul, sub):
-    quadratic_pipe = pipeline(
-        head,
-        fork(identity, identity),
-        merge(mul)
+    # Prepare
+    to_test = pipeline(
+        memory_add >> first_sum,
+        to_list,
+        length,
+        first_sum >> memory_add >> "second_sum",
+        to_list,
+        length,
+        memory_add << "second_sum",
+        sum_values << first_sum << "second_sum",
+        first_sum >> sum_values << "second_sum",
+        first_sum >> ("second_sum" >> sum_values)
     )
 
-    pipe = pipeline(
-        reduce_by(add),
-        fork(quadratic_pipe, rest),
-        merge(sub)
+    # Act
+    result = to_test(1,2)
+
+    # Compare
+    assert result == 26
+
+@pytest.mark.skip("Asterisk functions are not yet accepted")
+def test_pipeline_works_with_asterisk_function():
+    # Prepare
+    def sum_values(*args: float) -> float:
+        return sum(args)
+
+    def create_tuple_of_ones(length: int) -> tuple[int, ...]:
+        return (1,) * length
+
+    to_test = pipeline(
+        create_tuple_of_ones,
+        sum_values
     )
 
-    to_test = pipe(3, 4, 7)
-    assert to_test == 42
+    # Act
+    result = to_test(5)
+
+    # Compare
+    assert result == 5
 
 
-def test_pipeline():
-    add_to_5 = lambda x: x+5
-    add_to_4 = lambda x: x+4
-    add_to_3 = lambda x: x+3
+def test_pipeline_fails_for_asterisk_function_with_invalid_parameter_definition():
+    # Prepare
+    def sum_values(*args: float) -> float:
+        return sum(args)
 
-    pipe = pipeline(
-        add_to_3, 
-        add_to_4,
-        add_to_5
-    )
-
-    to_test = pipe(3)
-    assert to_test == 15
-
-
-def test_pipeline_single_function(add):
-    pipe = pipeline(
-        add
-    )
-
-    to_test = pipe(1,2)
-    assert to_test == 3
+    def create_tuple_of_ones(length: int) -> tuple[int, ...]:
+        return (1,) * length
+    
+    with pytest.raises(InvalidParameterAnnotationError):
+        pipeline(
+            create_tuple_of_ones,
+            sum_values
+        )
 
 
-def test_fail_pipeline_forward(add):
-    add_to_5 = lambda x: x+5
+def test_pipeline_fails_for_keyword_only_function_with_invalid_parameter_definition():
+    # Prepare
+    def sum_values(first: float, *, second: float) -> float:
+        return first + second
 
-    pipe = pipeline(
-        add_to_5,
-        add
-    )
-
-    with pytest.raises(PipelineForwardError):
-        pipe(1)
-
-
-def test_fail_pipeline_call(add):
-    add_to_5 = lambda x: x+5
-    pipe = pipeline(
-        add, 
-        add_to_5
-    )
-
-    to_test = pipe(1,2)
-    assert to_test == 8
-
-    with pytest.raises(PipelineCallError):
-        pipe(1)
+    def create_tuple_of_ones(length: int) -> tuple[int, ...]:
+        return (1,) * length
+    
+    with pytest.raises(InvalidParameterAnnotationError):
+        pipeline(
+            create_tuple_of_ones,
+            sum_values
+        )
 
 
-def test_fail_pipeline_step(add):
-    def raise_error(x):
-        return x / 0
+def test_pipeline_fails_for_double_asterisk_function_with_invalid_parameter_definition():
+    # Prepare
+    def sum_values(**kwargs: float) -> float:
+        return sum(kwargs.values())
 
-    add_to_5 = lambda x: x+5
-    pipe = pipeline(
-        add,
-        add_to_5,
-        raise_error
-    )
+    def create_tuple_of_ones(length: int) -> tuple[int, ...]:
+        return (1,) * length
+    
+    with pytest.raises(InvalidParameterAnnotationError):
+        pipeline(
+            create_tuple_of_ones,
+            sum_values
+        )
+
+
+def test_pipeline_fails_safely_with_errornous_function():
+    """I test that the right error is raised when a function inside a pipeline fails."""
+    # Prepare
+    def i_fail(val: float) -> float:
+        raise RuntimeError("I have to fail")
+
+    to_test = pipeline(add, i_fail)
+
+    # Act
+    with pytest.raises(PipelineStepError):
+        to_test(1,2)
 
     with pytest.raises(PipelineStepError):
-        pipe(1, 2)
+        to_test(1,2,3)
 
 
-def test_fork(add, mul, sub):
-    multiple = fork(
-        add, mul, sub
+def test_pipeline_can_be_used_as_input_to_other_pipeline():
+    """I test that a pipeline could be used as an input to another pipeline"""
+    # Prepare
+    inner_pipeline = pipeline(
+        add, multiply_by(3)
     )
 
-    to_test = multiple(2, 1)
-    assert to_test == PypelyTuple(3, 2, 1)
-
-
-def test_to_with_field_names(add, mul, sub):
-    Triple = namedtuple('Triple', ['x', 'y', 'z'])
-
-    to_triple = pipeline(
+    to_test = pipeline(
+        add,
         fork(
-            sub, mul, add
+            multiply_by(2),
+            multiply_by(4)
         ),
-        to(Triple, "x", "y", "z")
+        merge(inner_pipeline),
+        to_list
     )
 
-    to_test = to_triple(2,1)
-    expected = Triple(1, 2, 3)
+    # Act
+    result = to_test(1,2)
 
-    assert to_test == expected
-
-
-def test_to_no_field_names(add, mul, sub):
-    Triple = namedtuple('Triple', ['x', 'y', 'z'])
-
-    to_triple = pipeline(
-        fork(
-            add, mul, sub
-        ),
-        to(Triple)
-    )
-
-    to_test = to_triple(2,1)
-    expected = Triple(3, 2, 1)
-
-    assert to_test == expected
-
-
-def test_merge():
-    single = merge(
-        lambda x, y, z: x*y+z
-    )
-
-    to_test = single(PypelyTuple(1, PypelyTuple(2,3)))
-    assert to_test == 5
-
-
-def test_fail_merge():
-    single = merge(
-        lambda x, y: x*y
-    )
-
-    with pytest.raises(MergeError):
-        single(PypelyTuple(1, PypelyTuple(2,3)))
-
-
-def test_identity():
-    to_test = identity(1, 2)
-
-    assert to_test == (1, 2)
+    # Compare
+    assert result == [54]

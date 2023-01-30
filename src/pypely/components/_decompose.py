@@ -1,6 +1,5 @@
 from typing import Callable
 from pypely.components._data import Pipeline, Fork, Merge, Operation, Memorizable as MemorizableContainer, Step
-from pypely.core._safe_composition import DebugMemory
 from pypely.memory.wrappers import Memorizable
 
 
@@ -49,7 +48,7 @@ def decompose(pipe: Callable) -> Step:
         return Operation(func=pipe)
 
 
-def _traverse(debug_memory: DebugMemory, memory=None):
+def _traverse(debug_memory, memory=None):
     if memory is None:
         memory = []
 

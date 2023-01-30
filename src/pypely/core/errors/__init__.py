@@ -1,2 +1,10 @@
 from .merge import MergeError
-from .pipeline import PipelineCallError, PipelineForwardError, PipelineStepError, ParameterAnnotationsMissingError, ReturnTypeAnnotationMissingError, OutputInputDoNotMatchError
+from .pipeline import (
+    PipelineCallError, 
+    PipelineForwardError, 
+    PipelineStepError, 
+    ParameterAnnotationsMissingError, 
+    ReturnTypeAnnotationMissingError, 
+    OutputInputDoNotMatchError,
+    InvalidParameterAnnotationError
+)

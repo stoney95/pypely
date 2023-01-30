@@ -1,15 +1,16 @@
-from collections import namedtuple
+from collections import OrderedDict, namedtuple
 import copy
 from functools import wraps
 from itertools import zip_longest
-from typing import Any, Callable, List, Tuple, Type, TypeVar, get_args
+from typing import Any, Callable, List, Optional, Tuple, Type, TypeVar, get_args
 import inspect
+import typing
 from typing_extensions import ParamSpec
-from typeguard import check_type
 
-from pypely.core.errors import PipelineStepError, ParameterAnnotationsMissingError, ReturnTypeAnnotationMissingError, OutputInputDoNotMatchError
-from pypely._types import PypelyError
-from pypely._internal.type_matching import is_subtype
+from pypely.core.errors import PipelineStepError, OutputInputDoNotMatchError
+from pypely._types import PypelyError, PypelyTuple
+from pypely._internal.type_matching import is_subtype, is_optional, check_if_annotations_given
+from pypely._internal.function_manipulation import define_annotation, define_signature
 
 T = TypeVar("T")
 P = ParamSpec("P")
@@ -26,52 +27,29 @@ def check_and_compose(func1: Callable[P, CombineFirstOutput], func2: Callable[[C
     Returns:
         Callable[P, CombineSecondOutput]: A function that forwards the result of func1 to func2.
     """
-    _check_if_annotations_given(func1)
-    _check_if_annotations_given(func2)
+    check_if_annotations_given(func1)
+    check_if_annotations_given(func2)
     _check_if_annotations_match(func1, func2)
 
     func2 = _wrap_with_error_handling(func2)
 
     def _composition(*args: P.args, **kwargs: P.kwargs) -> CombineSecondOutput:
-        return func2(func1(*args, **kwargs))
+        _result = func1(*args, **kwargs)
+        if type(_result) == tuple and type(_result) != PypelyTuple:
+            return func2(*_result)
 
-    _annotations = copy.copy(func1.__annotations__)
-    _annotations["return"] = func2.__annotations__["return"]
+        if _result is None:
+            return func2()
 
-    _signature = inspect.Signature(
-        inspect.signature(func1).parameters.values(),
-        return_annotation=inspect.signature(func2).return_annotation
-    )
+        return func2(_result)
 
-    _composition.__annotations__ = _annotations
-    _composition.__signature__ = _signature
+    _composition = define_annotation(_composition, func1, func2.__annotations__["return"])
+    _composition = define_signature(_composition, func1, func2.__annotations__["return"])
+
     if hasattr(func2, "_typevar_usage"):
         _composition._typevar_usage = func2._typevar_usage
 
     return _composition
-
-
-def _check_if_annotations_given(func: Callable) -> None:
-    """I check if the function has type annotations.
-
-    Args:
-        func (Callable): The function that should be checked.
-
-    Raises:
-        ParameterAnnotationsMissingError: if the function has parameters without type annotations.
-        ReturnTypeAnnotationMissingError: if the function has no return type annotation.
-    """
-
-    def _is_parameter_annotated(param: inspect.Parameter) -> bool:
-        return not param.annotation == inspect._empty
-
-    parameters = inspect.signature(func).parameters
-    parameters_annotated = map(_is_parameter_annotated, parameters.values())
-    if not all(parameters_annotated):
-        raise ParameterAnnotationsMissingError(func)
-
-    if not "return" in func.__annotations__:
-        raise ReturnTypeAnnotationMissingError(func)
 
 
 def _check_if_annotations_match(func1: Callable, func2: Callable) -> None:
@@ -84,12 +62,12 @@ def _check_if_annotations_match(func1: Callable, func2: Callable) -> None:
     Raises:
         OutputInputDoNotMatchError: Is raised if the output type defers from the input type.
     """
-    _is_same_length = lambda it1, it2: len(it1) == len(it2)
-
     return_types, expected_parameters = _collect_types(func1, func2)
-
-    if not _is_same_length(return_types, expected_parameters):
-        raise OutputInputDoNotMatchError(func1, func2)
+    
+    try:
+        expected_parameters = _trim_optional_expected_parameters(len(return_types), expected_parameters)
+    except RuntimeError as re:
+        raise OutputInputDoNotMatchError(func1, func2, re)
 
 
     for (t1, t2) in zip(return_types, expected_parameters):
@@ -114,17 +92,54 @@ def _collect_types(func1: Callable, func2: Callable) -> Tuple[List[Type], List[T
             A list with all annotated input types of `func2`
         )
     """
+    _filter_none_annotations = lambda types: [t for t in types if t is not None]
+
     return_type = func1.__annotations__["return"]
-    expected_parameters = copy.copy(func2.__annotations__)
-    expected_parameters.pop("return")
+    expected_parameters = inspect.signature(func2).parameters
 
     return_types = (return_type,)
     if hasattr(return_type, "__origin__"):
         if return_type.__origin__ == tuple:
-            return_types = return_type.__args__
+            return_types = get_args(return_type)
 
     _return_types = _resolve_type_var_usage(return_types, func1)
-    return _return_types, list(expected_parameters.values())
+    _return_types = _filter_none_annotations(_return_types)
+    _expected_types = _resolve_memory_usage(expected_parameters, func2)
+    return _return_types, _expected_types
+
+
+def _trim_optional_expected_parameters(number_return_types: int, expected_parameters: list[type]) -> list[type]:
+    """I trim all optional arguments so that `expected_parameters` matches the return types.
+
+    Args:
+        number_return_types (int): The number of types returned from the previous function.
+        expected_parameters (list[type]): The list of all expected parameters.
+
+    Returns:
+        list[type]: The list of expected parameters that fit the number of returned types.
+
+    Raises:
+        RuntimeError: if there are more non optional `expected_parameters` than number of return types.
+    """
+    non_optional_types = filter(lambda t: not is_optional(t), expected_parameters)
+    number_non_optional_expected_parameters = len(list(non_optional_types))
+    number_all_expected_parameters = len(expected_parameters)
+
+    if number_non_optional_expected_parameters > number_return_types:
+        raise RuntimeError(
+            f"Could not trim expected_parameters. There are too many non optional parameters. \
+            number of return types: {number_return_types}. \
+            number of non optional expected parameters: {number_non_optional_expected_parameters}"
+        )
+
+    if number_all_expected_parameters < number_return_types:
+        raise RuntimeError(
+            f"There are too many arguments provided. \
+            number of return types: {number_return_types}. \
+            number of all expected parameters: {number_all_expected_parameters}"
+        )
+
+    return expected_parameters[:number_return_types]
 
 
 def _resolve_type_var_usage(types: List[Type], func: Callable) -> List[Type]:
@@ -166,6 +181,27 @@ def _resolve_type_var_usage(types: List[Type], func: Callable) -> List[Type]:
         resolved_types.append(func._typevar_usage[_type.__name__])
 
     return resolved_types
+
+
+def _resolve_memory_usage(parameter_annotations: OrderedDict[str, inspect.Parameter], func: Callable) -> List[type]:
+    """I check if the function has parameters that are filled from the memory.
+
+    If a parameter is filled from the memory it is removed from the list of expected types.
+
+    Args:
+        parameter_annotations (dict[str, type]): The parameter annotations of the given function.
+        func (Callable): The function. If it is a `memorizable` it has stored which parameters are set by the memory.
+
+    Returns:
+        List[type]: The list of all types that are expected to be provided by the previous function.
+    """
+    memory_parameters = getattr(func, "attributes_set_by_memory", set())
+    function_parameters = set(parameter_annotations.keys())
+    expected_parameters = function_parameters.difference(memory_parameters)
+
+    # It's important to keep the order. This can only be guaranteed when looping over the parameter_annotations
+    expected_types = [parameter_annotations[name].annotation for name in parameter_annotations if name in expected_parameters]
+    return expected_types
 
 
 def _track_type_var_usage(t1: type[Any], t2: type[Any], func: Callable) -> Callable:

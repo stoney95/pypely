@@ -1,5 +1,6 @@
 from functools import reduce
 from typing import Any, Callable, TypeVar, Tuple
+from pypely._internal.function_manipulation import define_annotation, define_signature
 from pypely.helpers import flatten
 from pypely._types import PypelyTuple
 from pypely.memory import memorizable
@@ -15,23 +16,27 @@ Output = TypeVar("Output")
 
 def pipeline(*funcs: Unpack[Tuple[Callable[P, Any], Unpack[Tuple[Callable, ...]], Callable[..., Output]]]) -> Callable[P, Output]:
     first, *remaining = funcs
-    initial = _wrap_with_error_handling(first) #Only the second function is wrapped with error handling in debugable_combine
+    initial = _wrap_with_error_handling(first) #Only the second function is wrapped with error handling in check_and_compose
     _pipeline = reduce(check_and_compose, remaining, initial)
 
     @memorizable
     def _call(*args: P.args, **kwargs: P.kwargs) -> Output:
         with PipelineMemoryContext() as _:
             return _pipeline(*args, **kwargs)
-    
-    # _call.__annotations__ = _pipeline.__annotations__
+
+    _call = define_annotation(_call, funcs[0], funcs[-1].__annotations__["return"])
+    _call = define_signature(_call, funcs[0], funcs[-1].__annotations__["return"])
 
     return _call
 
 
-def fork(*funcs: Callable) -> Callable[..., PypelyTuple]:
+def fork(*funcs: Callable[P, Any]) -> Callable[P, PypelyTuple]:
     @memorizable(allow_ingest=False)
-    def _fork(*args):
-        return PypelyTuple(*[func(*args) for func in funcs])
+    def _fork(*args: P.args, **kwargs: P.kwargs) -> PypelyTuple:
+        return PypelyTuple(*(func(*args, **kwargs) for func in funcs))
+
+    _fork = define_annotation(_fork, funcs[0], PypelyTuple)
+    _fork = define_signature(_fork, funcs[0], PypelyTuple)
 
     return _fork
 
@@ -50,9 +55,9 @@ def to(obj: T, *set_fields: str) -> Callable[[PypelyTuple], T]:
     return _to
 
 
-def merge(func: Callable[..., T]) -> Callable[[PypelyTuple], T]:
+def merge(func: Callable[P, T]) -> Callable[[PypelyTuple], T]:
     @memorizable(allow_ingest=False)
-    def _merge(branches):
+    def _merge(branches: PypelyTuple) -> T:
         flat_branches = flatten(branches)
         try:
             return func(*flat_branches)

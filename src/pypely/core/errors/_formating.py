@@ -1,7 +1,7 @@
 from __future__ import annotations
 import inspect
 from collections import defaultdict
-from typing import Callable, Tuple, Type, Union
+from typing import Callable, Tuple, Type, Union, get_args
 
 
 def format_return_type_annotation(func: Callable) -> Union[Type, Tuple[Type, ...]]:
@@ -18,7 +18,7 @@ def format_return_type_annotation(func: Callable) -> Union[Type, Tuple[Type, ...
     return_type = func.__annotations__["return"]
     if hasattr(return_type, "__origin__"):
         if return_type.__origin__ == tuple:
-            return return_type.__args__
+            return get_args(return_type)
     return return_type
 
 
@@ -36,9 +36,6 @@ def format_parameter_signature(func: Callable) -> str:
 
     args = ', '.join([f'{x}{_annotate(annotations[x])}' for x in argspec.args])
     return f'({args})'
-
-
-
 
 
 def func_details(func):

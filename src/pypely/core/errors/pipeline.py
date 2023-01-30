@@ -1,7 +1,8 @@
 from ast import Call
 from email import message
+import inspect
 import re
-from typing import Any, Callable
+from typing import Any, Callable, Optional
 from pypely.core.errors._formating import format_return_type_annotation, format_parameter_signature, func_details
 from pypely._types import PypelyError
 
@@ -65,7 +66,7 @@ class ReturnTypeAnnotationMissingError(PypelyError):
         message = self.__error_message(func)
         super().__init__(message)
 
-    def __error_message(func: Callable) -> str:
+    def __error_message(self, func: Callable) -> str:
         return "\n".join([
             f"Return type is missing for {func_details(func)}",
             f"  pypely relies on annotations to match function input and output of consecutive functions.",
@@ -73,18 +74,36 @@ class ReturnTypeAnnotationMissingError(PypelyError):
         ])
 
 
-class OutputInputDoNotMatchError(PypelyError):
-    def __init__(self, func1: Callable, func2: Callable):
-        message = self.__error_message(func1, func2)
+class InvalidParameterAnnotationError(PypelyError):
+    def __init__(self, func: Callable, param: inspect.Parameter):
+        message = self.__error_message(func, param)
         super().__init__(message)
 
-    def __error_message(self, func1: Callable, func2: Callable) -> str:
+    def __error_message(self, func: Callable, param: inspect.Parameter) -> str:
+        return "\n".join([
+            f"Parameter annotation is invalid for {func_details(func)}",
+            f"  Parameter {param.name} has annotation {param.annotation}."
+            f"  Annotation of kind {param.kind} is currently not supported."
+        ])
+
+
+class OutputInputDoNotMatchError(PypelyError):
+    def __init__(self, func1: Callable, func2: Callable, inner_exception: Optional[Exception]=None):
+        message = self.__error_message(func1, func2, inner_exception)
+        super().__init__(message)
+
+    def __error_message(self, func1: Callable, func2: Callable, inner_exception: Optional[Exception]=None) -> str:
         return_type = format_return_type_annotation(func1)
         expected_parameters = format_parameter_signature(func2)
 
-        return "\n".join([
+        msg = [
             f"{func_details(func2)} couldn't be added to the pipeline.",
             f"  The provided output at this stage of the pipeline has this format: {return_type}.",
             f"  The provided function expects these parameters: {expected_parameters}.",
             f"  Please adjust either the output or the input types."
-        ])
+        ]
+
+        if inner_exception is not None:
+            msg.append(f"  This error was raised due to an inner exception: {inner_exception}")
+
+        return "\n".join(msg)
