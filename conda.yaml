@@ -7,7 +7,7 @@ dependencies:
     - pytest
     - pytest-mock
     - pytest-html
-    - ". -e"
+    - "-e ."
     - torch
     - numpy
     - pandas
