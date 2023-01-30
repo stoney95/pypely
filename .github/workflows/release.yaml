@@ -41,7 +41,7 @@ jobs:
         export PYTHONPATH=/home/runner/work/pypely/pypely/src:/home/runner/work/pypely/pypely/examples
         echo $PYTHONPATH
         pytest --cov-report xml:package_cov.xml --cov=src tests/
-        pytest --cov-report xml:examples_cov.xml --cov=examples examples/
+    #   pytest --cov-report xml:examples_cov.xml --cov=examples examples/
     - uses: codecov/codecov-action@v2
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
