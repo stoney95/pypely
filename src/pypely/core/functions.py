@@ -63,7 +63,5 @@ def merge(func: Callable[P, T]) -> Callable[[PypelyTuple], T]:
     return _merge
 
 
-def identity(*x):
-    if len(x) == 1:
-        return x[0]
+def identity(x: T) -> T:
     return x
