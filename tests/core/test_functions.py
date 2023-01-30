@@ -4,13 +4,8 @@ from pypely.memory.wrappers import MemoryEntry
 import pytest
 
 from pypely import pipeline, merge, fork, identity, to
-from pypely.helpers import head, rest, reduce_by
 from pypely.memory import memorizable
-from pypely._types import PypelyTuple
 from pypely.core.errors import (
-    MergeError, 
-    PipelineForwardError, 
-    PipelineCallError, 
     PipelineStepError, 
     OutputInputDoNotMatchError, 
     ParameterAnnotationsMissingError, 
