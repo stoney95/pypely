@@ -6,7 +6,6 @@ from pypely._types import PypelyTuple
 from pypely.memory import memorizable
 from pypely.memory._context import PipelineMemoryContext
 from pypely.core._safe_composition import check_and_compose, _wrap_with_error_handling
-from pypely.core.errors import MergeError
 from typing_extensions import Unpack, ParamSpec
 
 T = TypeVar("T")
@@ -59,10 +58,7 @@ def merge(func: Callable[P, T]) -> Callable[[PypelyTuple], T]:
     @memorizable(allow_ingest=False)
     def _merge(branches: PypelyTuple) -> T:
         flat_branches = flatten(branches)
-        try:
-            return func(*flat_branches)
-        except TypeError:
-            raise MergeError(func, branches)
+        return func(*flat_branches)
 
     return _merge
 
