@@ -14,3 +14,13 @@ class MemoryAttributeNotFoundError(AttributeError, PypelyError):
 class MemoryIngestNotAllowedError(RuntimeError, PypelyError):
     def __init__(self, message):
         super(RuntimeError, self).__init__(message)
+
+
+class MemoryTypeDoesNotMatchError(RuntimeError, PypelyError):
+    def __init__(self, message):
+        super(RuntimeError, self).__init__(message)
+
+
+class InvalidMemoryAttributeError(AttributeError, PypelyError):
+    def __init__(self, message: str) -> None:
+        super().__init__(message)

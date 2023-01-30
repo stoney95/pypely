@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="wrapper">
+<header id="header">pypely - Your Pipeline</header>
+<div id="content">
+<div class="mermaid-wrapper">
+<div class="mermaid">flowchart LR
+classDef operation fill:#053C5E,color:white,stroke:#797B84,stroke-width:1px;
+classDef operation-memory fill:#053C5E,color:white,stroke:#f7948d,stroke-width:3px;
+classDef pipeline fill:#a9ffffb3,stroke:grey,stroke-width:1px;
+classDef pipeline-memory fill:#a9ffffb3,stroke:#f7948d,stroke-width:3px;
+classDef fork fill:#90c8f9b3,stroke:grey,stroke-width:1px;
+classDef fork-memory fill:#90c8f9b3,stroke:#f7948d,stroke-width:3px;
+classDef merge fill:#a5ffd6b3,stroke:grey,stroke-width:1px;
+classDef merge-memory fill:#a5ffd6b3,stroke:#f7948d,stroke-width:3px;
+subgraph initialPipeline [ ]
+direction LR
+    step0([add])
+    class step0 operation-memory
+  step1([multiply by])
+  class step1 operation
+    subgraph pipeline2 [ ]
+      subgraph fork2 [ ]
+        step3([add])
+        class step3 operation
+        step4([add])
+        class step4 operation
+      end
+      class fork2 fork
+      step5([multiply by])
+      class step5 operation
+    end
+class pipeline2 pipeline-memory
+    step6([multiply by])
+    class step6 operation-memory
+  subgraph fork7 [ ]
+    step8([multiply by])
+    class step8 operation
+      step9([add])
+      class step9 operation-memory
+  end
+  class fork7 fork
+  subgraph merge10 [ ]
+  step10([add])
+  class step10 operation
+  end
+  class merge10 merge
+    step11([add])
+    class step11 operation-memory
+  step0--&gt;step1
+  step1--&gt;step3
+  step1--&gt;step4
+  step3--&gt;step5
+  step4--&gt;step5
+  step5--&gt;step6
+  step6--&gt;step8
+  step6--&gt;step9
+  step8--&gt;step10
+  step9--&gt;step10
+  step10--&gt;step11
+  end
+style initialPipeline fill:white,stroke-width:0px;
+subgraph memory [ ]
+direction LR
+memory0[(test)]
+step0o-.-&gt;memory0
+memory0o-.-&gt;step3
+memory2[(inner)]
+step6o-.-&gt;memory2
+memory2o-.-&gt;step9
+memory0o-.-&gt;step11
+end
+style memory fill:#f7948d,stroke-width:0px;</div>
+</div>
+<div class="legend">
+<div class="legend-entry" id="operation">
+<span class="marker"></span>
+<span class="description">Operation</span>
+</div>
+<div class="legend-entry" id="pipeline">
+<span class="marker"></span>
+<span class="description">Sub-Pipeline</span>
+</div>
+<div class="legend-entry" id="fork">
+<span class="marker"></span>
+<span class="description">Fork</span>
+</div>
+<div class="legend-entry" id="merge">
+<span class="marker"></span>
+<span class="description">Merge</span>
+</div>
+<div class="legend-entry" id="memory">
+<span class="marker"></span>
+<span class="description">Memory</span>
+</div>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true });</script>
+<style>
+      body {
+        margin: 0px;
+        font-family: "trebuchet ms", verdana, arial, sans-serif;
+      }
+      #wrapper {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      #header {
+        font-size: 20px;
+        padding: 20px 0px 20px 10px;
+        background: #b4fffb;
+      }
+      #content {
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+      }
+      .mermaid-wrapper {
+        background: white;
+        flex: 1;
+        overflow: scroll;
+      }
+      .mermaid {
+        flex-grow: 5;
+      }
+      svg {
+        width: 100000%;
+      }
+      .legend {
+        display: flex;
+        flex-direction: column;
+        width: 250px;
+        padding-left: 10px;
+        padding-top: 10px;
+        box-shadow: 0px 8px 15px #5858589d;
+      }
+      .legend-entry {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .marker {
+        height: 25px;
+        width: 25px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+      .description {
+        margin-left: 5px;
+      }
+      #operation .marker {
+        background-color: #053c5e;
+      }
+      #pipeline .marker {
+        background-color: #a9ffff;
+        background-color: #a9ffffb3;
+      }
+      #fork .marker {
+        background-color: #90c8f9;
+        background-color: #90c8f9b3;
+      }
+      #merge .marker {
+        background-color: #a5ffd6;
+      }
+      #memory .marker {
+        background-color: #f7948d;
+      }
+    </style>
+</body>
+</html>

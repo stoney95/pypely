@@ -4,19 +4,23 @@ from pathlib import Path
 
 @fixture
 def add():
-    def _add(x: int, y) -> int:
+    def _add(x: int, y: int) -> int:
         return x + y
     return _add
 
 
 @fixture
 def mul():
-    return lambda x, y: x * y
+    def _mul(x: int, y: int) -> int:
+        return x * y
+    return _mul
 
 
 @fixture
 def sub():
-    return lambda x, y: x - y
+    def _sub(x: int, y: int) -> int:
+        return x - y
+    return _sub
 
 
 @fixture

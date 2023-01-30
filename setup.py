@@ -22,8 +22,12 @@ setuptools.setup(
     ],
     packages=setuptools.find_packages(where="src"),
     package_dir={'': 'src'},
-    python_requires=">=3.7",
+    package_data={'': ["*.html"]},
+    include_package_data=True,
+    python_requires=">=3.9",
     install_requires=[
+        "beautifulsoup4",        
+        "IPython",
         "isort==5.11.4"
     ],
     extras_require={
