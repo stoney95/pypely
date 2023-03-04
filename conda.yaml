@@ -2,6 +2,7 @@ name: pypely
 dependencies:
   - python=3.9
   - pip:
+    - toml
     - pre-commit
     - twine
     - seaborn
