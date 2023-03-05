@@ -1,3 +1,11 @@
+"""I define the API of pypely.
+
+`pipeline` is the core of pypely. This function lets you define pipelines from bare python functions. 
+You can use `fork`, `merge`, `to` and `identity` to create more complex pipelines. 
+
+You can find more detailed examples in the examples directory.
+"""
+
 from functools import reduce
 from typing import Any, Callable, Tuple, Type, TypeVar
 
@@ -6,7 +14,6 @@ from typing_extensions import ParamSpec, Unpack
 from pypely._internal.function_manipulation import define_annotation, define_signature
 from pypely._types import PypelyTuple
 from pypely.core._safe_composition import _wrap_with_error_handling, check_and_compose
-from pypely.helpers import flatten
 from pypely.memory import memorizable
 from pypely.memory._context import PipelineMemoryContext
 
@@ -110,7 +117,7 @@ def to(obj: Type[T], *set_fields: str) -> Callable[[PypelyTuple], T]:
 
     @memorizable(allow_ingest=False)
     def _to(vals: PypelyTuple) -> T:
-        vals_flattened = flatten(vals)
+        vals_flattened = _flatten(vals)
         if not set_fields == ():
             assert len(vals_flattened) == len(set_fields)
             fields_named = {field_name: val for field_name, val in zip(set_fields, vals_flattened)}
@@ -138,7 +145,7 @@ def merge(func: Callable[P, T]) -> Callable[[PypelyTuple], T]:
 
     @memorizable(allow_ingest=False)
     def _merge(branches: PypelyTuple) -> T:
-        flat_branches = flatten(branches)
+        flat_branches = _flatten(branches)
         return func(*flat_branches)
 
     return _merge
@@ -157,3 +164,29 @@ def identity(x: T) -> T:
         T: The input is unchanged.
     """
     return x
+
+
+def _flatten(_tuple: PypelyTuple) -> PypelyTuple:
+    """I transform nested `PypelyTuples` into a flat `PypelyTuple`.
+
+    Args:
+        _tuple (PypelyTuple): A potentially nested `PypelyTuple`
+
+    Raises:
+        ValueError: if the input is not a `PypelyTuple`
+
+    Returns:
+        PypelyTuple: the flat `PypelyTuple`
+    """
+    result = []
+    if isinstance(_tuple, PypelyTuple):
+        for elem in _tuple:
+            if isinstance(elem, PypelyTuple):
+                if any(isinstance(x, PypelyTuple) for x in elem):
+                    result += list(_flatten(elem))
+                else:
+                    result += list(elem)
+            else:
+                result.append(elem)
+        return PypelyTuple(*result)
+    raise ValueError(f"You can use flatten only with 'PypelyTuple'. Input is of type: {type(_tuple)}")
