@@ -55,8 +55,8 @@ pipeline(
 ```
 """
 
-from pypely.memory.wrappers import memorizable, MemoryEntry
-from pypely.memory._impl import PipelineMemory
 from pypely.memory import errors
+from pypely.memory._impl import PipelineMemory
+from pypely.memory.wrappers import MemoryEntry, memorizable
 
-__all__ = ['PipelineMemory', 'memorizable', 'errors']
+__all__ = ["PipelineMemory", "memorizable", "errors", "MemoryEntry"]
