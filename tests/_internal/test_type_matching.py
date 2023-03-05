@@ -1,4 +1,5 @@
 from typing import Dict, Iterable, List, TypeVar, Union
+
 from pypely._internal.type_matching import is_subtype
 
 
@@ -19,12 +20,12 @@ def test_is_subtype():
         (str, Union[int, str], True),
         (float, Union[int, str], False),
         (int, Union[float, str], False),
-        (TypeVar('T', bound=Union[int, str]), Union[int, str], True),
-        (TypeVar('t'), Union[int, str], True),
+        (TypeVar("T", bound=Union[int, str]), Union[int, str], True),
+        (TypeVar("t"), Union[int, str], True),
         (int, float, True),
-        (int, TypeVar('test', bound=str), False),
-        (int, TypeVar('test', bound=int), True),
-        (int, TypeVar('test'), True),
+        (int, TypeVar("test", bound=str), False),
+        (int, TypeVar("test", bound=int), True),
+        (int, TypeVar("test"), True),
         (List[int], List[str], False),
         (Dict[str, List[int]], Dict[str, List[str]], False),
         (Dict[str, List[int]], Dict[str, List[int]], True),

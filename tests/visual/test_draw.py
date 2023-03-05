@@ -17,7 +17,7 @@
 #         @memorizable
 #         def _multiply_by(y):
 #             return x * y
-        
+
 #         return _multiply_by
 
 #     inner_pipeline = pipeline(

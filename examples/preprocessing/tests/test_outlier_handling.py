@@ -1,9 +1,16 @@
-from preprocessing.src.outlier_handling import *
-
 import pandas as pd
-DF = pd.DataFrame.from_dict({
-    "test": [-100, 1,2,3,4,5,6,7,8,9,10, 100]
-})
+from preprocessing.src.outlier_handling import (
+    calculate_quantile,
+    delete_outliers,
+    fill_outliers,
+    load_data,
+    main,
+    outlier_boundaries,
+    select_numeric_columns,
+)
+
+DF = pd.DataFrame.from_dict({"test": [-100, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100]})
+
 
 def test_calculate_quantile():
     quantile_25 = calculate_quantile(0.25)
@@ -33,9 +40,7 @@ def test_delete_outliers():
     to_test = delete_outliers(DF, boundaries)
     to_test = to_test.reset_index(drop=True)
 
-    expected = pd.DataFrame.from_dict({
-        "test": [1,2,3,4,5,6,7,8,9,10]
-    }).reset_index(drop=True)
+    expected = pd.DataFrame.from_dict({"test": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}).reset_index(drop=True)
 
     print(to_test)
     print()
@@ -47,14 +52,11 @@ def test_delete_outliers():
 def test_fill_outliers():
     boundaries = outlier_boundaries(DF)
     fill_with_boundaries = fill_outliers(
-        lambda _, boundaries: boundaries.lower, 
-        lambda _, boundaries: boundaries.upper
+        lambda _, boundaries: boundaries.lower, lambda _, boundaries: boundaries.upper
     )
 
-    to_test = fill_with_boundaries(DF, boundaries).reset_index(drop=True)    
-    expected = pd.DataFrame.from_dict({
-        "test": [-5.5,1,2,3,4,5,6,7,8,9,10, 16.5]
-    })
+    to_test = fill_with_boundaries(DF, boundaries).reset_index(drop=True)
+    expected = pd.DataFrame.from_dict({"test": [-5.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16.5]})
 
     assert to_test.equals(expected)
 
@@ -67,9 +69,6 @@ def test_load_data():
 
 
 def test_main(mocker):
-    mocker.patch(
-        'preprocessing.src.outlier_handling.load_data',
-        return_value=DF
-    )
+    mocker.patch("preprocessing.src.outlier_handling.load_data", return_value=DF)
 
     main()

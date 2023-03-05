@@ -22,7 +22,7 @@
 #         path (Path, optional): If given the chart will be stored in that path. Defaults to None.
 #         print_info (bool, optional): If provided the function will print the number of steps and edges. Defaults to False.
 #     """
-#     components = decompose(pipeline) 
+#     components = decompose(pipeline)
 #     chart, edges, number_of_steps, _ = _flowchart(components.steps)
 #     html = _create_html(chart)
 
@@ -40,22 +40,22 @@
 
 
 # def _flowchart(
-#     steps: List[Step], 
-#     chart: str=None, 
-#     edges: List[Tuple[str, str]]=None, 
-#     memory_connections: List[MemoryConnection]=None, 
+#     steps: List[Step],
+#     chart: str=None,
+#     edges: List[Tuple[str, str]]=None,
+#     memory_connections: List[MemoryConnection]=None,
 #     prev_nodes: List[str]=None,
 #     consumers: List[int]=None,
-#     i=0, 
-#     level=1, 
+#     i=0,
+#     level=1,
 #     memorizable=False
 # ) -> Tuple[str, List[Tuple[str, str]], int, List[int]]:
 #     """I create a flow chart of pipeline.
 
 #     This function is only used internally!
 #     The input is the result of `pypely.components.decompose`.
-#     The function is used recursively. Many arguments are used to 
-#     store the state of the recursion. Please see the description 
+#     The function is used recursively. Many arguments are used to
+#     store the state of the recursion. Please see the description
 #     of the arguments for details.
 #     The function will process each step in the list of steps and create the chart step by step.
 
@@ -176,13 +176,13 @@
 
 #     This includes the definitions of the chart type and the classes that are used to style the chart.
 #     The flowchart is built using mermaid-js. The `flowchart` chart type is used to visualize a pipeline.
-#     There are two classes for each component: One to define the style of the class, another one to adjust 
+#     There are two classes for each component: One to define the style of the class, another one to adjust
 #     the style when the class interacts with the memory.
 
 #     Returns:
 #         str: The basic definitions of the flowchart
 #     """
-#     chart = f"flowchart LR" 
+#     chart = f"flowchart LR"
 #     chart += "\nclassDef operation fill:#053C5E,color:white,stroke:#797B84,stroke-width:1px;"
 #     chart += "\nclassDef operation-memory fill:#053C5E,color:white,stroke:#f7948d,stroke-width:3px;"
 #     chart += "\nclassDef pipeline fill:#a9ffffb3,stroke:grey,stroke-width:1px;"
@@ -195,7 +195,7 @@
 #     chart += f"\ndirection LR"
 
 #     return chart
-    
+
 # def _function_name(func: Callable) -> str:
 #     """I retrieve the name of a function.
 
@@ -289,11 +289,11 @@
 #     """
 #     with open(path, 'w') as f:
 #         f.write(html)
-    
+
 #     if browser:
 #         _open_file_in_browser(path)
 
-    
+
 # def _open_file_in_browser(html_file: str) -> None:
 #     """I open an HTML file in the browser.
 

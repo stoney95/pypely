@@ -1,21 +1,21 @@
 from dataclasses import dataclass
-from typing import Any, Callable, Iterable, List, Optional, Tuple, TypeVar
-from pypely.memory.wrappers import MemoryEntry
+from typing import Callable, Iterable, List, Optional, Tuple, TypeVar
+
 import pytest
 
-from pypely import pipeline, merge, fork, identity, to
-from pypely.memory import memorizable
+from pypely import fork, identity, merge, pipeline, to
 from pypely.core.errors import (
-    PipelineStepError, 
-    OutputInputDoNotMatchError, 
-    ParameterAnnotationsMissingError, 
+    InvalidParameterAnnotationError,
+    OutputInputDoNotMatchError,
+    ParameterAnnotationsMissingError,
+    PipelineStepError,
     ReturnTypeAnnotationMissingError,
-    InvalidParameterAnnotationError
 )
-
-from collections import namedtuple
+from pypely.memory import memorizable
+from pypely.memory.wrappers import MemoryEntry
 
 T = TypeVar("T")
+
 
 def add(x: float, y: float) -> float:
     return x + y
@@ -66,7 +66,7 @@ def int_to_str(val: int) -> str:
 
 
 def add_keep_x(x: int, y: int) -> tuple[int, int]:
-        return x, x + y
+    return x, x + y
 
 
 def test_pipeline_works_in_general():
@@ -75,13 +75,9 @@ def test_pipeline_works_in_general():
     This includes that the functions of the pipeline are typed correctly.
     """
     # Prepare
-    to_test = pipeline(
-        add,
-        multiply_by(5),
-        multiply_by(2)
-    )
+    to_test = pipeline(add, multiply_by(5), multiply_by(2))
 
-    input = (1,2)
+    input = (1, 2)
     expected_result = 30
 
     # Act
@@ -106,7 +102,7 @@ def test_pipeline_works_with_subtype_functions():
         multiply_by(2),
     )
 
-    input = (1,2)
+    input = (1, 2)
     expected_result = 10
 
     # Act
@@ -143,15 +139,7 @@ def test_pipeline_works_with_fork_merge():
     This is also important from the perspective of type checking.
     """
     # Prepare
-    to_test = pipeline(
-        add,
-        fork(
-            multiply_by(1.2),
-            multiply_by(0.4)
-        ),
-        merge(add),
-        to_list
-    )
+    to_test = pipeline(add, fork(multiply_by(1.2), multiply_by(0.4)), merge(add), to_list)
 
     # Act
     result = to_test(1, 1)
@@ -168,15 +156,10 @@ def test_pipeline_with_multiple_or_no_output_steps():
     def no_input() -> float:
         return 3.4
 
-    to_test = pipeline(
-        add_keep_x,
-        add,
-        no_output,
-        no_input
-    )
+    to_test = pipeline(add_keep_x, add, no_output, no_input)
 
     # Act
-    result = to_test(1,1)
+    result = to_test(1, 1)
 
     # Compare
     assert result == 3.4
@@ -184,21 +167,15 @@ def test_pipeline_with_multiple_or_no_output_steps():
 
 def test_pipeline_with_optional_input_steps():
     # Prepare
-    def optional_add(x: int, y: Optional[int]=None) -> int:
+    def optional_add(x: int, y: Optional[int] = None) -> int:
         if y is None:
             return x
         return x + y
 
-    to_test = pipeline(
-        add_keep_x,
-        optional_add,
-        to_list,
-        length,
-        optional_add
-    )
+    to_test = pipeline(add_keep_x, optional_add, to_list, length, optional_add)
 
     # Act
-    result = to_test(1,2)
+    result = to_test(1, 2)
 
     # Compare
     assert result == 1
@@ -210,12 +187,7 @@ def test_pipeline_fails_safely_with_non_matching_multiple_output_function():
         return (val, val, val)
 
     with pytest.raises(OutputInputDoNotMatchError):
-        pipeline(
-            add,
-            create_triple,
-            add
-        )
-
+        pipeline(add, create_triple, add)
 
 
 def test_pipeline_works_with_memory():
@@ -223,6 +195,7 @@ def test_pipeline_works_with_memory():
 
     This is als important from the perspective of type checking.
     """
+
     @memorizable
     def sum_values(val1: float, val2: float, val3: float) -> float:
         return val1 + val2 + val3
@@ -240,14 +213,15 @@ def test_pipeline_works_with_memory():
         memory_add << "second_sum",
         sum_values << first_sum << "second_sum",
         first_sum >> sum_values << "second_sum",
-        first_sum >> ("second_sum" >> sum_values)
+        first_sum >> ("second_sum" >> sum_values),
     )
 
     # Act
-    result = to_test(1,2)
+    result = to_test(1, 2)
 
     # Compare
     assert result == 26
+
 
 @pytest.mark.skip("Asterisk functions are not yet accepted")
 def test_pipeline_works_with_asterisk_function():
@@ -258,10 +232,7 @@ def test_pipeline_works_with_asterisk_function():
     def create_tuple_of_ones(length: int) -> tuple[int, ...]:
         return (1,) * length
 
-    to_test = pipeline(
-        create_tuple_of_ones,
-        sum_values
-    )
+    to_test = pipeline(create_tuple_of_ones, sum_values)
 
     # Act
     result = to_test(5)
@@ -277,12 +248,9 @@ def test_pipeline_fails_for_asterisk_function_with_invalid_parameter_definition(
 
     def create_tuple_of_ones(length: int) -> tuple[int, ...]:
         return (1,) * length
-    
+
     with pytest.raises(InvalidParameterAnnotationError):
-        pipeline(
-            create_tuple_of_ones,
-            sum_values
-        )
+        pipeline(create_tuple_of_ones, sum_values)
 
 
 def test_pipeline_fails_for_keyword_only_function_with_invalid_parameter_definition():
@@ -292,12 +260,9 @@ def test_pipeline_fails_for_keyword_only_function_with_invalid_parameter_definit
 
     def create_tuple_of_ones(length: int) -> tuple[int, ...]:
         return (1,) * length
-    
+
     with pytest.raises(InvalidParameterAnnotationError):
-        pipeline(
-            create_tuple_of_ones,
-            sum_values
-        )
+        pipeline(create_tuple_of_ones, sum_values)
 
 
 def test_pipeline_fails_for_double_asterisk_function_with_invalid_parameter_definition():
@@ -307,12 +272,9 @@ def test_pipeline_fails_for_double_asterisk_function_with_invalid_parameter_defi
 
     def create_tuple_of_ones(length: int) -> tuple[int, ...]:
         return (1,) * length
-    
+
     with pytest.raises(InvalidParameterAnnotationError):
-        pipeline(
-            create_tuple_of_ones,
-            sum_values
-        )
+        pipeline(create_tuple_of_ones, sum_values)
 
 
 def test_pipeline_fails_safely_with_failing_function():
@@ -325,31 +287,21 @@ def test_pipeline_fails_safely_with_failing_function():
 
     # Act
     with pytest.raises(PipelineStepError):
-        to_test(1,2)
+        to_test(1, 2)
 
     with pytest.raises(PipelineStepError):
-        to_test(1,2,3)
+        to_test(1, 2, 3)
 
 
 def test_pipeline_can_be_used_as_input_to_other_pipeline():
     """I test that a pipeline could be used as an input to another pipeline"""
     # Prepare
-    inner_pipeline = pipeline(
-        add, multiply_by(3)
-    )
+    inner_pipeline = pipeline(add, multiply_by(3))
 
-    to_test = pipeline(
-        add,
-        fork(
-            multiply_by(2),
-            multiply_by(4)
-        ),
-        merge(inner_pipeline),
-        to_list
-    )
+    to_test = pipeline(add, fork(multiply_by(2), multiply_by(4)), merge(inner_pipeline), to_list)
 
     # Act
-    result = to_test(1,2)
+    result = to_test(1, 2)
 
     # Compare
     assert result == [54]
@@ -359,21 +311,14 @@ def test_pipeline_with_to():
     """I test that `to` can be used in a `pipeline`"""
     # Prepare
     @dataclass
-    class TestObject():
+    class TestObject:
         val1: float
         val2: float
 
-    to_test = pipeline(
-        add,
-        fork(
-            multiply_by(1.5),
-            multiply_by(2.5)
-        ),
-        to(TestObject)
-    )
+    to_test = pipeline(add, fork(multiply_by(1.5), multiply_by(2.5)), to(TestObject))
 
     # Act
-    result = to_test(1,1)
+    result = to_test(1, 1)
 
     # Compare
     assert result == TestObject(3.0, 5.0)
@@ -381,25 +326,17 @@ def test_pipeline_with_to():
 
 def test_pipeline_with_to_using_fields():
     @dataclass
-    class TestObject():
+    class TestObject:
         val1: float
         val2: float
 
     def process_object(obj: TestObject) -> float:
         return obj.val1 - obj.val2
 
-    to_test = pipeline(
-        add,
-        fork(
-            multiply_by(1.5),
-            multiply_by(2.5)
-        ),
-        to(TestObject, "val2", "val1"),
-        process_object
-    )
+    to_test = pipeline(add, fork(multiply_by(1.5), multiply_by(2.5)), to(TestObject, "val2", "val1"), process_object)
 
     # Act
-    result = to_test(1,1)
+    result = to_test(1, 1)
 
     # Compare
     assert result == 2.0
@@ -407,15 +344,7 @@ def test_pipeline_with_to_using_fields():
 
 def test_pipeline_with_identity():
     # Prepare
-    to_test = pipeline(
-        add,
-        fork(
-            multiply_by(1.5),
-            multiply_by(0.5)
-        ),
-        identity,
-        merge(add)
-    )
+    to_test = pipeline(add, fork(multiply_by(1.5), multiply_by(0.5)), identity, merge(add))
 
     # Act
     result = to_test(1, 1)

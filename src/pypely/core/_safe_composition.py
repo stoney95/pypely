@@ -1,23 +1,25 @@
-from collections import OrderedDict, namedtuple
-import copy
+import inspect
 from functools import wraps
 from itertools import zip_longest
-from typing import Any, Callable, List, Optional, Tuple, Type, TypeVar, get_args
-import inspect
-import typing
+from types import MappingProxyType
+from typing import Any, Callable, Iterable, List, Set, Tuple, Type, TypeVar, get_args
+
 from typing_extensions import ParamSpec
 
-from pypely.core.errors import PipelineStepError, OutputInputDoNotMatchError
-from pypely._types import PypelyError, PypelyTuple
-from pypely._internal.type_matching import is_subtype, is_optional, check_if_annotations_given
 from pypely._internal.function_manipulation import define_annotation, define_signature
+from pypely._internal.type_matching import check_if_annotations_given, is_optional, is_subtype
+from pypely._types import PypelyError, PypelyTuple
+from pypely.core.errors import OutputInputDoNotMatchError, PipelineStepError
 
 T = TypeVar("T")
 P = ParamSpec("P")
 CombineFirstOutput = TypeVar("CombineFirstOutput")
 CombineSecondOutput = TypeVar("CombineSecondOutput")
 
-def check_and_compose(func1: Callable[P, CombineFirstOutput], func2: Callable[[CombineFirstOutput], CombineSecondOutput]) -> Callable[P, CombineSecondOutput]:
+
+def check_and_compose(
+    func1: Callable[P, CombineFirstOutput], func2: Callable[[CombineFirstOutput], CombineSecondOutput]
+) -> Callable[P, CombineSecondOutput]:
     """I test if two functions can be combined and do so if they fit.
 
     Args:
@@ -47,7 +49,8 @@ def check_and_compose(func1: Callable[P, CombineFirstOutput], func2: Callable[[C
     _composition = define_signature(_composition, func1, func2.__annotations__["return"])
 
     if hasattr(func2, "_typevar_usage"):
-        _composition._typevar_usage = func2._typevar_usage
+        _typevar_usage = getattr(func2, "_typevar_usage")
+        setattr(_composition, "_typevar_usage", _typevar_usage)
 
     return _composition
 
@@ -63,17 +66,16 @@ def _check_if_annotations_match(func1: Callable, func2: Callable) -> None:
         OutputInputDoNotMatchError: Is raised if the output type defers from the input type.
     """
     return_types, expected_parameters = _collect_types(func1, func2)
-    
+
     try:
         expected_parameters = _trim_optional_expected_parameters(len(return_types), expected_parameters)
     except RuntimeError as re:
         raise OutputInputDoNotMatchError(func1, func2, re)
 
-
     for (t1, t2) in zip(return_types, expected_parameters):
         if not is_subtype(t1, t2):
             raise OutputInputDoNotMatchError(func1, func2)
-        
+
         _track_type_var_usage(t1, t2, func2)
 
 
@@ -97,7 +99,7 @@ def _collect_types(func1: Callable, func2: Callable) -> Tuple[List[Type], List[T
     return_type = func1.__annotations__["return"]
     expected_parameters = inspect.signature(func2).parameters
 
-    return_types = (return_type,)
+    return_types: Tuple[Type, ...] = (return_type,)
     if hasattr(return_type, "__origin__"):
         if return_type.__origin__ == tuple:
             return_types = get_args(return_type)
@@ -142,7 +144,7 @@ def _trim_optional_expected_parameters(number_return_types: int, expected_parame
     return expected_parameters[:number_return_types]
 
 
-def _resolve_type_var_usage(types: List[Type], func: Callable) -> List[Type]:
+def _resolve_type_var_usage(types: Iterable[Type], func: Callable) -> List[Type]:
     """I check if a type var has been used in the context of the given function with a more specific type.
 
     If a type var has been used it is replaced by that more specific type.
@@ -169,7 +171,7 @@ def _resolve_type_var_usage(types: List[Type], func: Callable) -> List[Type]:
         if not type(_type) == TypeVar:
             resolved_types.append(_type)
             continue
-    
+
         if not hasattr(func, "_typevar_usage"):
             resolved_types.append(_type)
             continue
@@ -183,24 +185,28 @@ def _resolve_type_var_usage(types: List[Type], func: Callable) -> List[Type]:
     return resolved_types
 
 
-def _resolve_memory_usage(parameter_annotations: OrderedDict[str, inspect.Parameter], func: Callable) -> List[type]:
+def _resolve_memory_usage(
+    parameter_annotations: MappingProxyType[str, inspect.Parameter], func: Callable
+) -> List[type]:
     """I check if the function has parameters that are filled from the memory.
 
     If a parameter is filled from the memory it is removed from the list of expected types.
 
     Args:
-        parameter_annotations (dict[str, type]): The parameter annotations of the given function.
+        parameter_annotations (MappingProxyType[str, type]): The parameter annotations of the given function.
         func (Callable): The function. If it is a `memorizable` it has stored which parameters are set by the memory.
 
     Returns:
         List[type]: The list of all types that are expected to be provided by the previous function.
     """
-    memory_parameters = getattr(func, "attributes_set_by_memory", set())
+    memory_parameters: Set[str] = getattr(func, "attributes_set_by_memory", set())
     function_parameters = set(parameter_annotations.keys())
     expected_parameters = function_parameters.difference(memory_parameters)
 
     # It's important to keep the order. This can only be guaranteed when looping over the parameter_annotations
-    expected_types = [parameter_annotations[name].annotation for name in parameter_annotations if name in expected_parameters]
+    expected_types = [
+        parameter_annotations[name].annotation for name in parameter_annotations if name in expected_parameters
+    ]
     return expected_types
 
 
@@ -222,12 +228,12 @@ def _track_type_var_usage(t1: type[Any], t2: type[Any], func: Callable) -> Calla
 
     if t1_args and t2_args:
         for (_t1, _t2) in zip_longest(t1_args, t2_args, fillvalue=Any):
-            _track_type_var_usage(_t1, _t2, func)
+            _track_type_var_usage(_t1, _t2, func)  # type: ignore
 
     if type(t2) == TypeVar:
         if not hasattr(func, "_typevar_usage"):
-            func._typevar_usage = dict()
-        func._typevar_usage[t2.__name__] = t1
+            setattr(func, "_typevar_usage", dict())
+        func._typevar_usage[t2.__name__] = t1  # type: ignore
 
     return func
 
@@ -241,6 +247,7 @@ def _wrap_with_error_handling(func: Callable[P, T]) -> Callable[P, T]:
     Returns:
         Callable: The wrapped version of the user provided function
     """
+
     @wraps(func)
     def wrap(*args: P.args, **kwargs: P.kwargs) -> T:
         try:
@@ -249,6 +256,7 @@ def _wrap_with_error_handling(func: Callable[P, T]) -> Callable[P, T]:
             if isinstance(e, PypelyError):
                 raise e
             raise PipelineStepError(func, e)
+
     wrap.__annotations__ = func.__annotations__
-    wrap.__signature__ = inspect.signature(func)
+    wrap.__signature__ = inspect.signature(func)  # type: ignore
     return wrap

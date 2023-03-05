@@ -20,11 +20,13 @@ repos:
     hooks:
       - id: mypy
         args: ["--ignore-missing-imports", "--install-types", "--non-interactive"]
+        exclude: ".*tests/.*"
   - repo: https://github.com/PyCQA/pydocstyle
-    rev: 6.1.1
+    rev: 6.3.0
     hooks:
       - id: pydocstyle
         args: ["--add-ignore=D107"]
+        exclude: ".*tests/.*"
   - repo: https://github.com/terrencepreilly/darglint
     rev: v1.8.1
     hooks:
