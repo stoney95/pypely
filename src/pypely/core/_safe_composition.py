@@ -71,7 +71,7 @@ def _check_if_annotations_match(func1: Callable, func2: Callable) -> None:
     except RuntimeError as re:
         raise OutputInputDoNotMatchError(func1, func2, re)
 
-    for (t1, t2) in zip(return_types, expected_parameters):
+    for t1, t2 in zip(return_types, expected_parameters):
         if not is_subtype(t1, t2):
             raise OutputInputDoNotMatchError(func1, func2)
 
@@ -225,7 +225,7 @@ def _track_type_var_usage(t1: type[Any], t2: type[Any], func: Callable) -> Calla
     t2_args = get_args(t2)
 
     if t1_args and t2_args:
-        for (_t1, _t2) in zip_longest(t1_args, t2_args, fillvalue=Any):
+        for _t1, _t2 in zip_longest(t1_args, t2_args, fillvalue=Any):
             _track_type_var_usage(_t1, _t2, func)  # type: ignore
 
     if type(t2) == TypeVar:

@@ -279,6 +279,7 @@ def test_pipeline_fails_for_double_asterisk_function_with_invalid_parameter_defi
 
 def test_pipeline_fails_safely_with_failing_function():
     """I test that the right error is raised when a function inside a pipeline fails."""
+
     # Prepare
     def i_fail(val: float) -> float:
         raise RuntimeError("I have to fail")
@@ -309,6 +310,7 @@ def test_pipeline_can_be_used_as_input_to_other_pipeline():
 
 def test_pipeline_with_to():
     """I test that `to` can be used in a `pipeline`"""
+
     # Prepare
     @dataclass
     class TestObject:

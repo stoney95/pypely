@@ -43,5 +43,5 @@ def test_is_subtype():
 
     # Act
     # Compare
-    for (t1, t2, expected) in test_cases:
+    for t1, t2, expected in test_cases:
         assert is_subtype(t1, t2) == expected
