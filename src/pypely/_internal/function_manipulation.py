@@ -58,6 +58,3 @@ def define_signature(func: Callable[P, T], copy_parameters_from: Callable[P, Any
 
     setattr(func, "__signature__", signature)
     return func
-
-    func.__signature__ = signature
-    return func

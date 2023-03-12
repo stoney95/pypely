@@ -148,7 +148,7 @@ def _get_base_type(type_: type[typing.Any]) -> type[typing.Any]:
         base_type: type[typing.Any] = type_.__origin__
     elif _is_newtype(type_):
         base_type = type_.__supertype__
-    elif getattr(type_, "__args__", None) or getattr(type_, "__values__", None):
+    elif getattr(type_, "__args__", None) or getattr(type_, "__values__", None):  # When is this triggered?
         base_type = type(type_)
     else:
         base_type = type_

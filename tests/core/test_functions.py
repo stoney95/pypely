@@ -4,6 +4,7 @@ from typing import Callable, Iterable, List, Optional, Tuple, TypeVar
 import pytest
 
 from pypely import fork, identity, merge, pipeline, to
+from pypely._types import PypelyTuple
 from pypely.core.errors import (
     InvalidParameterAnnotationError,
     OutputInputDoNotMatchError,
@@ -11,6 +12,7 @@ from pypely.core.errors import (
     PipelineStepError,
     ReturnTypeAnnotationMissingError,
 )
+from pypely.core.functions import _flatten
 from pypely.memory import memorizable
 from pypely.memory.wrappers import MemoryEntry
 
@@ -367,3 +369,19 @@ def test_multi_layer_pypely_tuple():
 
     # Compare
     assert result == [4.0, 3.0, 1.0]
+
+
+def test_flatten_raises_ValueError():
+    with pytest.raises(ValueError):
+        _flatten([1, 2, [3, 4]])
+
+
+def test_flatten_can_handle_multiple_levels():
+    # Prepare
+    nested_tuple = PypelyTuple(1, 2, 3, PypelyTuple(PypelyTuple(4, 5), 6, 7), 8, PypelyTuple(9, 10))
+
+    # Act
+    to_test = _flatten(nested_tuple)
+
+    # Compare
+    assert to_test == PypelyTuple(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)

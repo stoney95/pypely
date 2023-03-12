@@ -1,6 +1,6 @@
-from typing import Dict, Iterable, List, TypeVar, Union
+from typing import Dict, Iterable, List, NewType, TypeVar, Union
 
-from pypely._internal.type_matching import is_subtype
+from pypely._internal.type_matching import _do_types_match, _does_resolve_typevar, _get_base_type, is_subtype
 
 
 def test_is_subtype():
@@ -45,3 +45,54 @@ def test_is_subtype():
     # Compare
     for t1, t2, expected in test_cases:
         assert is_subtype(t1, t2) == expected
+
+
+def test_do_types_match_does_not_fail():
+    # Prepare
+    class Test:
+        pass
+
+    test = Test()
+
+    # Act
+    to_test = _do_types_match(int, test)
+
+    # Compare
+    assert to_test == False
+
+
+def test_does_resolve_typevar_works_with_constraints():
+    # Prepare
+    T = TypeVar("T", str, int)
+
+    # Act
+    int_resolves_T = _does_resolve_typevar(int, T)
+    str_resolves_T = _does_resolve_typevar(str, T)
+    list_resolves_T = _does_resolve_typevar(list, T)
+
+    # Compare
+    assert int_resolves_T
+    assert str_resolves_T
+    assert not list_resolves_T
+
+
+def test_does_resolve_typevar_works_with_non_typevar_input():
+    to_test = _does_resolve_typevar(int, str)
+    assert not to_test
+
+
+def test_get_base_type():
+    # Prepare
+    T = TypeVar("T")
+    TestType = NewType("test_type", int)
+
+    class MyDict(dict[str, T]):
+        pass
+
+    # Act
+    base_type_new_type = _get_base_type(TestType)
+    base_type_generic = _get_base_type(MyDict)
+
+    # Compare
+    assert base_type_new_type == int
+    assert base_type_generic == MyDict
