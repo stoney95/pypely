@@ -40,10 +40,10 @@ jobs:
         uses: pavi2410/html-preview-action@v2
         with:
           html_file: './mypy/index.html'
-      - uses: github-actions-up-and-running/pr-comment@v1.0.0
+      - uses: thollander/actions-comment-pull-request@v2
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          message: ${{ format('[Click here to check out the mypy report]({0})', steps.mypy_report.outputs.url) }}
+          message: |
+            ${{ format('[Click here to check out the mypy report]({0})', steps.mypy_report.outputs.url) }}
       - name: Run unit tests
         run: |
           export PYTHONPATH=/home/runner/work/pypely/pypely/src:/home/runner/work/pypely/pypely/examples
