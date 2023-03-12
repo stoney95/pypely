@@ -12,7 +12,6 @@
 #         is_type = func.__qualname__.startswith(_type)
 
 #         return is_type and is_from_core_modul
-
 #     return inner
 
 # is_pipeline = _is("pipeline")

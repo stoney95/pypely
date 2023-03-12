@@ -195,7 +195,6 @@
 #     chart += f"\ndirection LR"
 
 #     return chart
-
 # def _function_name(func: Callable) -> str:
 #     """I retrieve the name of a function.
 

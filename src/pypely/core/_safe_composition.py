@@ -66,7 +66,6 @@ def _check_if_annotations_match(func1: Callable, func2: Callable) -> None:
         OutputInputDoNotMatchError: Is raised if the output type defers from the input type.
     """
     return_types, expected_parameters = _collect_types(func1, func2)
-
     try:
         expected_parameters = _trim_optional_expected_parameters(len(return_types), expected_parameters)
     except RuntimeError as re:
@@ -171,7 +170,6 @@ def _resolve_type_var_usage(types: Iterable[Type], func: Callable) -> List[Type]
         if not type(_type) == TypeVar:
             resolved_types.append(_type)
             continue
-
         if not hasattr(func, "_typevar_usage"):
             resolved_types.append(_type)
             continue

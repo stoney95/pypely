@@ -89,6 +89,16 @@ def test_memorizable_pipeline():
     def add_2(x: float) -> float:
         return x + 2
 
+    @memorizable
+    def add_first(x: float, results: PypelyTuple) -> float:
+        _results = list(results)
+        return x + _results[0]
+
+    forked_add = fork(add_2, add_2) >> "forked"
+
+    def add_2(x: float) -> float:
+        return x + 2
+
     inner = pipeline(add, add_2)
 
     test = pipeline(_add >> "test", inner << "test")
