@@ -8,10 +8,8 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 5
     steps:
-      - uses: ./.github/workflows/composite-action/setup
+      - uses: ./.github/actions/setup-repo
       - name: Clean imports
         run: |
           pycln --check .
@@ -25,7 +23,7 @@ jobs:
   docstrings:
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/workflows/composite-action/setup
+      - uses: ./.github/actions/setup-repo
       - name: Check docstring format
         run: |
           pydocstyle --add-ignore=D107 --match-dir=(?!tests)(.*)
@@ -36,7 +34,7 @@ jobs:
   type-checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/workflows/composite-action/setup
+      - uses: ./.github/actions/setup-repo
       - name: Check types
         run: |
           mypy ./src --ignore-missing-imports --install-types --non-interactive --html-report ./mypy
@@ -49,7 +47,7 @@ jobs:
   unit-tests:
     runs-on: ubuntu-latests
     steps:
-      - uses: ./.github/workflows/composite-action/setup
+      - uses: ./.github/actions/setup-repo
       - name: Run unit tests
         run: |
           export PYTHONPATH=/home/runner/work/pypely/pypely/src:/home/runner/work/pypely/pypely/examples
