@@ -217,6 +217,9 @@ def test_memorizable_fails_with_two_many_ingestions():
     with pytest.raises(NoFreeParameterFound):
         pipeline(add >> sum1, add << sum1 << sum1 << sum1)
 
+    with pytest.raises(NoFreeParameterFound):
+        sum1 >> (add << sum1 << sum1)
+
 
 def test_memorizable_fails_when_types_mismatch():
     @memorizable(allow_ingest=True)

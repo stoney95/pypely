@@ -92,7 +92,9 @@ def test_get_base_type():
     # Act
     base_type_new_type = _get_base_type(TestType)
     base_type_generic = _get_base_type(MyDict)
+    base_type_list = _get_base_type(List[int])
 
     # Compare
     assert base_type_new_type == int
     assert base_type_generic == MyDict
+    assert base_type_list == list

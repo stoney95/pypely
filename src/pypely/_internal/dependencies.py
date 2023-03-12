@@ -31,6 +31,7 @@ Example:
 """
 
 import ast
+import builtins
 import importlib
 import inspect
 import logging
@@ -211,7 +212,7 @@ def identify_dependencies(func: Callable) -> Set[Imports]:
         Set[str]: A collection of all required dependencies
     """
     func_module = inspect.getmodule(func)
-    if not func_module:
+    if not func_module or func_module == builtins:
         return set()
 
     dependency_usages = _identify_module_dependency_usages(func_module, module_is_func_module=True)
@@ -262,9 +263,6 @@ def _parse_import_statements(node: ast.AST, _dict: Dict[str, Imports], direct_im
         return _dict
 
     for name in node.names:
-        if not isinstance(name, ast.alias):
-            continue
-
         _import = DependencyImport(package=name.name, alias=name.asname, direct_import=direct_import)
 
         used_name = name.asname
@@ -303,9 +301,6 @@ def _parse_from_import_statements(node: ast.AST, _dict: Dict[str, Imports], dire
         raise RuntimeError("`node.module` is None. This does not allow to parse the import properly.")
 
     for name in node.names:
-        if not isinstance(name, ast.alias):
-            continue
-
         _import = DependencyFromImport(
             package=package, functionality=name.name, alias=name.asname, direct_import=direct_import
         )
@@ -345,9 +340,6 @@ def _parse_relative_from_import_statements(
     absolute_module = importlib.import_module(f"{'.'*node.level}{node.module}", module.__package__)
     package = absolute_module.__name__
     for name in node.names:
-        if not isinstance(name, ast.alias):
-            continue
-
         _import = DependencyFromImport(
             package=package, functionality=name.name, alias=name.asname, direct_import=direct_import
         )

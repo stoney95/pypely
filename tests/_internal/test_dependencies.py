@@ -1,8 +1,10 @@
+import ast
 from pathlib import Path
 from typing import Iterable
 
 import numpy as np
 import pandas as pd
+import pytest
 import requests
 from dependency_test_modules.module_for_imports import add, process
 
@@ -15,6 +17,7 @@ from pypely._internal.dependencies import (
     StandardLibDependency,
     _identify_version_of_package,
     _is_available_on_pypi,
+    _parse_from_import_statements,
     create_environment,
     identify_dependencies,
     identify_recursive_dependencies,
@@ -43,6 +46,26 @@ def test_identify_dependencies_identifies_all_direct_dependencies():
 
     # Compare
     assert_dependencies_match(expected_dependencies, dependencies)
+
+
+def test_identify_dependencies_works_with_non_module_functions():
+    # Act
+    dependencies_for_builtin_function = identify_dependencies(print)
+
+    # Compare
+    assert dependencies_for_builtin_function == set()
+
+
+def test_parse_from_import_statements_edge_cases():
+    tree = ast.parse("from . import test_dependencies")
+
+    dependency_usages = dict()
+
+    with pytest.raises(RuntimeError):
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ImportFrom):
+                node.level = 0
+            dependency_usages = _parse_from_import_statements(node, dependency_usages, True)
 
 
 def test_identify_dependencies_identifies_local_dependencies():
