@@ -65,7 +65,7 @@ class PipelineMemory:
         if name in self.types.keys():
             raise MemoryAttributeExistsError(f"The attribute {name} already exists")
 
-        if _type == type(None):
+        if _type == type(None) or _type == None:
             raise InvalidMemoryAttributeError(
                 f"It is not allowed to store `None` in memory. Given memory attribute name: {name}"
             )

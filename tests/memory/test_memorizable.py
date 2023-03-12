@@ -3,7 +3,13 @@ import pytest
 from pypely import fork, merge, pipeline
 from pypely._types import PypelyTuple
 from pypely.memory import MemoryEntry, memorizable
-from pypely.memory.errors import MemoryAttributeExistsError, MemoryAttributeNotFoundError, MemoryIngestNotAllowedError
+from pypely.memory.errors import (
+    MemoryAttributeExistsError,
+    MemoryAttributeNotFoundError,
+    MemoryIngestNotAllowedError,
+    MemoryTypeDoesNotMatchError,
+    NoFreeParameterFound,
+)
 
 
 def mul(x: float, y: float) -> float:
@@ -199,3 +205,32 @@ def test_memory_consumption_and_writing():
     test = pipeline(add >> "sum1", add << "sum1" >> "sum2", add << "sum2")
 
     assert test(1, 1) == 8
+
+
+def test_memorizable_fails_with_two_many_ingestions():
+    @memorizable(allow_ingest=True)
+    def add(x: float, y: float) -> float:
+        return x + y
+
+    sum1 = MemoryEntry()
+
+    with pytest.raises(NoFreeParameterFound):
+        pipeline(add >> sum1, add << sum1 << sum1 << sum1)
+
+
+def test_memorizable_fails_when_types_mismatch():
+    @memorizable(allow_ingest=True)
+    def add(x: float, y: float) -> float:
+        return x + y
+
+    def return_none() -> None:
+        pass
+
+    @memorizable
+    def read(val: str) -> str:
+        return val
+
+    output = MemoryEntry()
+
+    with pytest.raises(MemoryTypeDoesNotMatchError):
+        pipeline(add >> output, return_none, read << output)

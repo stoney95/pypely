@@ -353,3 +353,17 @@ def test_pipeline_with_identity():
 
     # Compare
     assert result == 4.0
+
+
+def test_multi_layer_pypely_tuple():
+    def to_list(*args: T) -> list[T]:
+        return list(args)
+
+    # Prepare
+    to_test = pipeline(add, fork(multiply_by(1.5), multiply_by(0.5)), fork(merge(add), identity), merge(to_list))
+
+    # Act
+    result = to_test(1, 1)
+
+    # Compare
+    assert result == [4.0, 3.0, 1.0]

@@ -124,15 +124,6 @@ class Memorizable:
         return self.func.__code__
 
     @property
-    def __closure__(self):
-        """noqa: D105.
-
-        # noqa: DAR101
-        # noqa: DAR201
-        """
-        return self.func.__closure__
-
-    @property
     def __module__(self):
         """noqa: D105.
 
@@ -141,20 +132,11 @@ class Memorizable:
         """
         return self.func.__module__
 
-    @property
-    def read_attributes(self):
-        """noqa: D105.
-
-        # noqa: DAR101
-        # noqa: DAR201
-        """
-        return self.attributes_before + self.attributes_after
-
     def __rshift__(self, memory_attr_name: Union[str, MemoryEntry]) -> "Memorizable":
-        """I am this operator: `func << "name"`.
+        """I am this operator: `func >> "name"`.
 
-        I can be used to ingest parameters from the right side. It is also possible to ingest multiple parameters:
-        `func << "in1" << "in2"`
+        I am used to write the output of `func` into the memory.
+        The output is referenced as "name".
 
         Args:
             memory_attr_name (Union[str, MemoryEntry]): The name of the memory entry that will be ingested into the function
@@ -174,10 +156,10 @@ class Memorizable:
         return self_copy
 
     def __lshift__(self, memory_attr_name: Union[str, MemoryEntry]) -> "Memorizable":
-        """I am this operator: `func >> "name"`.
+        """I am this operator: `func << "name"`.
 
-        I am used to write the output of `func` into the memory.
-        The output is referenced as "name".
+        I can be used to ingest parameters from the right side. It is also possible to ingest multiple parameters:
+        `func << "in1" << "in2"`
 
         Args:
             memory_attr_name (Union[str, MemoryEntry]): The name of the memory entry.
