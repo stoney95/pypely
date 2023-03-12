@@ -7,6 +7,7 @@ dependencies:
     - twine
     - seaborn
     - pytest
+    - pytest-cov
     - pytest-mock
     - pytest-html
     - "-e ."
@@ -19,3 +20,11 @@ dependencies:
     - mlflow
     - tqdm
     - pillow
+    - pydocstyle
+    - darglint
+    - black
+    - isort
+    - pycln
+    - black
+    - mypy
+    - lxml

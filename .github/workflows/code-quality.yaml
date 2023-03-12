@@ -1,0 +1,60 @@
+name: Assure Code Quality
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [review_requested, ready_for_review]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 5
+    steps:
+      - uses: ./.github/workflows/composite-action/setup
+      - name: Clean imports
+        run: |
+          pycln --check .
+      - name: Sort imports
+        run: |
+          isort --check --profile black . --line-length=119
+      - name: Format code
+        run: |
+          black . --check --line-length=119
+
+  docstrings:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/workflows/composite-action/setup
+      - name: Check docstring format
+        run: |
+          pydocstyle --add-ignore=D107 --match-dir=(?!tests)(.*)
+      - name: Check docstring correctness
+        run: |
+          darglint .
+
+  type-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/workflows/composite-action/setup
+      - name: Check types
+        run: |
+          mypy ./src --ignore-missing-imports --install-types --non-interactive --html-report ./mypy
+      - name: Show mypy report
+        id: mypy_report
+        uses: pavi2410/html-preview-action@v2
+        with:
+          html_file: './mypy/index.html'
+
+  unit-tests:
+    runs-on: ubuntu-latests
+    steps:
+      - uses: ./.github/workflows/composite-action/setup
+      - name: Run unit tests
+        run: |
+          export PYTHONPATH=/home/runner/work/pypely/pypely/src:/home/runner/work/pypely/pypely/examples
+          pytest --cov-report xml:package_cov.xml --cov=src tests/
+      - uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./package_cov.xml
