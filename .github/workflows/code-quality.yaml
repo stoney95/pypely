@@ -13,6 +13,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          cache: pip
       - name: Add conda to system path
         run: |
           # $CONDA is an environment variable pointing to the root of the miniconda directory
@@ -31,7 +32,7 @@ jobs:
           black . --check --line-length=119
       - name: Check docstring format
         run: |
-          pydocstyle --add-ignore=D107 --match-dir=(?!tests)(.*)
+          pydocstyle --add-ignore=D107 --match-dir="(?!tests)(.*)"
       - name: Check docstring correctness
         run: |
           darglint .
