@@ -48,7 +48,6 @@ jobs:
   #       files: ./package_cov.xml,./examples_cov.xml
 
   release:
-    needs: lint-and-test
     # https://github.community/t/how-do-i-specify-job-dependency-running-in-another-workflow/16482
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, 'chore(release):')
     runs-on: ubuntu-latest
