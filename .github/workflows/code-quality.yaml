@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Setup python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: 3.9
           cache: pip
@@ -37,9 +37,13 @@ jobs:
           mypy ./src --ignore-missing-imports --install-types --non-interactive --html-report ./mypy
       - name: Show mypy report
         id: mypy_report
-        uses: pavi2410/html-preview-action@v2
+        uses: pavi2410/html-preview-action@v3
         with:
           html_file: './mypy/index.html'
+      - uses: github-actions-up-and-running/pr-comment@v1.0.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          message: ${{ format('[Click here to check out the mypy report]({0})', steps.mypy_report.outputs.url) }}
       - name: Run unit tests
         run: |
           export PYTHONPATH=/home/runner/work/pypely/pypely/src:/home/runner/work/pypely/pypely/examples
