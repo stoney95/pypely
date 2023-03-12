@@ -1,13 +1,17 @@
-from preprocessing.src.feature_engineering import *
 from pandas.api.types import CategoricalDtype
+from preprocessing.src.feature_engineering import (
+    add_first_time_user,
+    clean_data,
+    hips_to_bins,
+    main,
+    remove_unrequired_entries,
+)
 
+from pypely import pipeline
 
 
 def test_main(mocker, data_snippet):
-    mocker.patch(
-        'preprocessing.src.feature_engineering.load_data',
-        return_value=data_snippet
-    )
+    mocker.patch("preprocessing.src.feature_engineering.load_data", return_value=data_snippet)
 
     main()
 
@@ -46,7 +50,7 @@ def test_remove_unrequired_entries(data_snippet):
     assert has_no_NaN_entries(to_test, "quality")
     assert all(column_not_in_to_test)
 
-    
+
 def has_column(df, col):
     return col in df.columns
 

@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 import inspect
 from collections import defaultdict
 from typing import Callable, Tuple, Type, Union, get_args
@@ -22,10 +23,17 @@ def format_return_type_annotation(func: Callable) -> Union[Type, Tuple[Type, ...
     return return_type
 
 
-
 def format_parameter_signature(func: Callable) -> str:
+    """I create a clean representation of the function parameters.
+
+    Args:
+        func (Callable): The function which's parameters will be displayed.
+
+    Returns:
+        str: The function parameters in this form (arg1: int, arg2: str, ...)
+    """
     argspec = inspect.getfullargspec(func)
-    annotations = defaultdict(lambda: None)
+    annotations: defaultdict = defaultdict(lambda: None)
     for k, v in argspec.annotations.items():
         annotations[k] = v
 
@@ -34,10 +42,19 @@ def format_parameter_signature(func: Callable) -> str:
             return ""
         return f": {annotation}"
 
-    args = ', '.join([f'{x}{_annotate(annotations[x])}' for x in argspec.args])
-    return f'({args})'
+    args = ", ".join([f"{x}{_annotate(annotations[x])}" for x in argspec.args])
+    return f"({args})"
 
 
-def func_details(func):
+def func_details(func: Callable) -> str:
+    """I list details of the given function.
+
+    I will especially be used to create clear error messages.
+
+    Args:
+        func (Callable): The function for which the details are required.
+
+    Returns:
+        str: A text describing the function name and location.
+    """
     return f"'{func.__name__}' from File \"{func.__code__.co_filename}\", line {func.__code__.co_firstlineno}"
-

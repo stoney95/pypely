@@ -1,6 +1,8 @@
-from .core.functions import pipeline, identity, merge, fork, to
+"""I am pypely.
 
+Welcome to the py pipeline abstraction language.
+"""
 
-__all__ = [
-    'pipeline', 'identity', 'merge', 'fork', 'to'
-]
+from .core.functions import fork, identity, merge, pipeline, to
+
+__all__ = ["pipeline", "identity", "merge", "fork", "to"]

@@ -1,11 +1,13 @@
-from pytest import fixture
 from pathlib import Path
+
+from pytest import fixture
 
 
 @fixture
 def add():
     def _add(x: int, y: int) -> int:
         return x + y
+
     return _add
 
 
@@ -13,6 +15,7 @@ def add():
 def mul():
     def _mul(x: int, y: int) -> int:
         return x * y
+
     return _mul
 
 
@@ -20,6 +23,7 @@ def mul():
 def sub():
     def _sub(x: int, y: int) -> int:
         return x - y
+
     return _sub
 
 

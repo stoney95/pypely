@@ -1,9 +1,17 @@
+"""I provide all errors that can occur when interacting with the core of pypely."""
+
 from .pipeline import (
-    PipelineCallError, 
-    PipelineForwardError, 
-    PipelineStepError, 
-    ParameterAnnotationsMissingError, 
-    ReturnTypeAnnotationMissingError, 
+    InvalidParameterAnnotationError,
     OutputInputDoNotMatchError,
-    InvalidParameterAnnotationError
+    ParameterAnnotationsMissingError,
+    PipelineStepError,
+    ReturnTypeAnnotationMissingError,
 )
+
+__all__ = [
+    "InvalidParameterAnnotationError",
+    "OutputInputDoNotMatchError",
+    "ParameterAnnotationsMissingError",
+    "PipelineStepError",
+    "ReturnTypeAnnotationMissingError",
+]

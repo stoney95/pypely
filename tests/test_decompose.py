@@ -41,7 +41,7 @@
 #     to_test = Pipeline(steps=[
 #         # _add_to_memory is used to simulate the usage of 'add >> "sum1"'
 #         # add.func is used because that happens inside pypely.memory.wrappers.Memorizable when 'add >> "sum1"' is called
-#         Memorizable(func=Operation(func=_add_to_memory(add.func, "sum1"))), 
+#         Memorizable(func=Operation(func=_add_to_memory(add.func, "sum1"))),
 #         Fork(branches=[
 #             Operation(func=multiply_by(5)),
 #             Operation(func=multiply_by(10)),

@@ -1,11 +1,23 @@
-from typing import Any, Union, get_args, TypeVar, get_origin
-import typing
-from collections.abc import Callable, Mapping, MutableMapping, Iterable
+"""I provide type checking at the buildtime of a pipeline.
+
+This is very important as it catches incompatability bugs early. 
+In addition I provide functionality to enforce typing. 
+Functions without typing won't be allowed. 
+Consecutive functions whichs types don't match will produce an error.
+"""
+
 import collections
 import inspect
-from pypely.core.errors import InvalidParameterAnnotationError, ParameterAnnotationsMissingError, ReturnTypeAnnotationMissingError
-
+import typing
+from collections.abc import Callable, Iterable, Mapping, MutableMapping
 from itertools import zip_longest
+from typing import Any, TypeVar, Union, get_args, get_origin
+
+from pypely.core.errors import (
+    InvalidParameterAnnotationError,
+    ParameterAnnotationsMissingError,
+    ReturnTypeAnnotationMissingError,
+)
 
 
 def check_if_annotations_given(func: Callable) -> None:
@@ -17,6 +29,7 @@ def check_if_annotations_given(func: Callable) -> None:
     Raises:
         ParameterAnnotationsMissingError: if the function has parameters without type annotations.
         ReturnTypeAnnotationMissingError: if the function has no return type annotation.
+        InvalidParameterAnnotationError: if the annotation uses keyword ony arguments (arg, *, kw_only_arg), variable positional arguments (*args,) or variable keyword arguments (**kwargs,)
     """
 
     def _is_parameter_annotated(param: inspect.Parameter) -> bool:
@@ -24,9 +37,9 @@ def check_if_annotations_given(func: Callable) -> None:
 
     def _is_annotation_valid(param: inspect.Parameter) -> bool:
         invalid_types = [
-            inspect.Parameter.KEYWORD_ONLY, # (arg, *, keyword_only_arg)
-            inspect.Parameter.VAR_POSITIONAL, # (*args)
-            inspect.Parameter.VAR_KEYWORD, # (**kwargs)
+            inspect.Parameter.KEYWORD_ONLY,  # (arg, *, keyword_only_arg)
+            inspect.Parameter.VAR_POSITIONAL,  # (*args)
+            inspect.Parameter.VAR_KEYWORD,  # (**kwargs)
         ]
 
         if param.kind in invalid_types:
@@ -47,7 +60,6 @@ def check_if_annotations_given(func: Callable) -> None:
             raise InvalidParameterAnnotationError(func, param)
 
 
-
 def is_subtype(type1: type[Any], type2: type[Any]) -> bool:
     """I check if `type1` is a subtype of `type2`.
 
@@ -60,20 +72,27 @@ def is_subtype(type1: type[Any], type2: type[Any]) -> bool:
     """
     exceptions = [(int, float)]
 
-    if type1 == type2: return True
-    if (type1, type2) in exceptions: return True
+    if type1 == type2:
+        return True
+    if (type1, type2) in exceptions:
+        return True
 
     return _do_types_match(type1, type2)
 
 
-def is_optional(_type: type):
-    return get_origin(_type) is Union and \
-        type(None) in get_args(_type)
-        
+def is_optional(_type: type) -> bool:
+    """I check if a given type is optional.
 
-def _do_types_match(
-    actual: type[typing.Any], expected: type[typing.Any]
-) -> bool:
+    Args:
+        _type (type): The type that is checked
+
+    Returns:
+        bool: True if the type is `Optional`
+    """
+    return get_origin(_type) is Union and type(None) in get_args(_type)
+
+
+def _do_types_match(actual: type[Any], expected: type[Any]) -> bool:
     actual = actual.__supertype__ if _is_newtype(actual) else actual
     expected = expected.__supertype__ if _is_newtype(expected) else expected
     actual = type(None) if actual is None else actual
@@ -84,26 +103,16 @@ def _do_types_match(
     base_type = _get_base_type(expected)
 
     if base_type == typing.Union:
-        return any(
-            _do_types_match(actual, expected_candidate)
-            for expected_candidate in get_args(expected)
-        )
+        return any(_do_types_match(actual, expected_candidate) for expected_candidate in get_args(expected))
 
-    elif base_type in (
-        _SimilarTypes.Dict
-        | _SimilarTypes.List
-        | _SimilarTypes.Tuple
-        | _SimilarTypes.Callable
-    ):
+    elif base_type in (_SimilarTypes.Dict | _SimilarTypes.List | _SimilarTypes.Tuple | _SimilarTypes.Callable):
         actual_args = getattr(actual, "__args__", [])
         expected_args = getattr(expected, "__args__", [])
         return all(
-            _do_types_match(actual, expected)
-            for actual, expected in zip_longest(
-                actual_args, expected_args, fillvalue=Any
-            )
+            _do_types_match(actual, expected)  # type: ignore
+            for actual, expected in zip_longest(actual_args, expected_args, fillvalue=Any)
         )
-    
+
     elif type(base_type) == TypeVar:
         return _does_resolve_typevar(actual, expected)
 
@@ -127,7 +136,7 @@ class _SimilarTypes:
         typing.DefaultDict,
         typing.Mapping,
         typing.MutableMapping,
-        Iterable
+        Iterable,
     }
     List = {set, list, typing.List, typing.Set, Iterable}
     Tuple = {tuple, typing.Tuple, Iterable}
@@ -139,8 +148,6 @@ def _get_base_type(type_: type[typing.Any]) -> type[typing.Any]:
         base_type: type[typing.Any] = type_.__origin__
     elif _is_newtype(type_):
         base_type = type_.__supertype__
-    elif getattr(type_, "__args__", None) or getattr(type_, "__values__", None):
-        base_type = type(type_)
     else:
         base_type = type_
 
@@ -159,7 +166,6 @@ def _does_resolve_typevar(t1: type[typing.Any], t2: type[typing.Any]) -> bool:
     Args:
         t1 (_type_): The type of the given argument
         t2 (_type_): The type of the parameter
-        func2 (Callable): The function to which t2 belongs
 
     Returns:
         bool: True if t1 can be used for t2

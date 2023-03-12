@@ -1,0 +1,50 @@
+name: Assure Code Quality
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [opened, synchronize, reopened, ready_for_review, review_requested]
+
+jobs:
+  assure-code-quality:
+    if: github.event.pull_request.draft == false    
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Clean imports
+        run: |
+          pycln --check .
+      - name: Sort imports
+        run: |
+          isort --check --profile black . --line-length=119
+      - name: Format code
+        run: |
+          black . --check --line-length=119
+      - name: Check docstring format
+        run: |
+          pydocstyle --add-ignore=D107 --match-dir="(?!tests)(.*)"
+      - name: Check docstring correctness
+        run: |
+          darglint .
+      - name: Check types
+        run: |
+          mypy ./src --ignore-missing-imports --install-types --non-interactive
+      - name: Run unit tests
+        run: |
+          export PYTHONPATH=/home/runner/work/pypely/pypely/src:/home/runner/work/pypely/pypely/examples
+          pytest --cov-report xml:package_cov.xml --cov=src tests/
+      - uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./package_cov.xml

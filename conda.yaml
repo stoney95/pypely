@@ -2,18 +2,5 @@ name: pypely
 dependencies:
   - python=3.9
   - pip:
-    - twine
-    - seaborn
-    - pytest
-    - pytest-mock
-    - pytest-html
-    - "-e ."
-    - torch
-    - numpy
-    - pandas
-    - scikit-learn
-    - matplotlib
-    - tensorboard
-    - mlflow
-    - tqdm
-    - pillow
+    - "-r requirements.txt"
+    - pre-commit

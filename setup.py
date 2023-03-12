@@ -1,3 +1,5 @@
+"""I create the package for pypely."""
+
 import setuptools
 
 with open("README.md", "r", encoding="utf-8") as fh:
@@ -21,16 +23,10 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     packages=setuptools.find_packages(where="src"),
-    package_dir={'': 'src'},
-    package_data={'': ["*.html"]},
+    package_dir={"": "src"},
+    package_data={"": ["*.html"]},
     include_package_data=True,
     python_requires=">=3.9",
-    install_requires=[
-        "beautifulsoup4",        
-        "IPython",
-        "isort==5.11.4"
-    ],
-    extras_require={
-        'dev': []
-    },
+    install_requires=["beautifulsoup4", "IPython", "isort==5.11.4"],
+    extras_require={"dev": []},
 )

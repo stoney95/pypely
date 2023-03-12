@@ -12,7 +12,6 @@
 #         is_type = func.__qualname__.startswith(_type)
 
 #         return is_type and is_from_core_modul
-    
 #     return inner
 
 # is_pipeline = _is("pipeline")
@@ -38,8 +37,8 @@
 #     if is_memorizable(pipe):
 #         if pipe.used_memory:
 #             return MemorizableContainer(
-#                 func=decompose(pipe.func), 
-#                 write_attribute=pipe.written_attribute, 
+#                 func=decompose(pipe.func),
+#                 write_attribute=pipe.written_attribute,
 #                 read_attributes=pipe.read_attributes
 #             )
 #         else:
