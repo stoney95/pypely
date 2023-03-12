@@ -14,13 +14,9 @@ jobs:
         with:
           python-version: 3.8
           cache: pip
-      - name: Add conda to system path
-        run: |
-          # $CONDA is an environment variable pointing to the root of the miniconda directory
-          echo $CONDA/bin >> $GITHUB_PATH
       - name: Install dependencies
         run: |
-          conda env update --file conda.yaml --name base
+          pip install -r requirements.txt
       - name: Clean imports
         run: |
           pycln --check .
