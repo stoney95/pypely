@@ -3,9 +3,11 @@ name: Assure Code Quality
 on:
   pull_request:
     branches: [ main ]
+    types: [opened, synchronize, reopened, ready_for_review, review_requested]
 
 jobs:
   assure-code-quality:
+    if: github.event.pull_request.draft == false    
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

@@ -109,6 +109,9 @@ def test_memorizable_pipeline():
 def test_memorizable_fork_merge():
     _add = memorizable(add)
 
+    forked = MemoryEntry()
+    merged = MemoryEntry()
+
     def add_2(x: float) -> float:
         return x + 2
 
@@ -117,9 +120,9 @@ def test_memorizable_fork_merge():
         _results = list(results)
         return x + _results[0]
 
-    forked_add = fork(add_2, add_2) >> "forked"
+    forked_add = fork(add_2, add_2) >> forked
 
-    to_test = pipeline(add, forked_add, merge(add) >> "merged", add_first << "forked", _add << "merged")
+    to_test = pipeline(add, forked_add, merge(add) >> merged, add_first << forked, _add << merged)
 
     assert to_test(1, 1) == 20
 
