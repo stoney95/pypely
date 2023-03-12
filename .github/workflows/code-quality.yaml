@@ -9,12 +9,15 @@ jobs:
   assure-code-quality:
     if: github.event.pull_request.draft == false    
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
     steps:
       - uses: actions/checkout@v3
-      - name: Setup python
+      - name: Setup python ${{ matrix.python-version }}
         uses: actions/setup-python@v3
         with:
-          python-version: 3.9
+          python-version: ${{ matrix.python-version }}
           cache: pip
       - name: Install dependencies
         run: |
