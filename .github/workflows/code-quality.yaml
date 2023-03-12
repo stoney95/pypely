@@ -5,11 +5,21 @@ on:
     branches: [ main ]
 
 jobs:
-  lint:
+  assure-code-quality:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/setup-repo
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Add conda to system path
+        run: |
+          # $CONDA is an environment variable pointing to the root of the miniconda directory
+          echo $CONDA/bin >> $GITHUB_PATH
+      - name: Install dependencies
+        run: |
+          conda env update --file conda.yaml --name base
       - name: Clean imports
         run: |
           pycln --check .
@@ -19,22 +29,12 @@ jobs:
       - name: Format code
         run: |
           black . --check --line-length=119
-
-  docstrings:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ./.github/actions/setup-repo
       - name: Check docstring format
         run: |
           pydocstyle --add-ignore=D107 --match-dir=(?!tests)(.*)
       - name: Check docstring correctness
         run: |
           darglint .
-
-  type-checks:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ./.github/actions/setup-repo
       - name: Check types
         run: |
           mypy ./src --ignore-missing-imports --install-types --non-interactive --html-report ./mypy
@@ -43,11 +43,6 @@ jobs:
         uses: pavi2410/html-preview-action@v2
         with:
           html_file: './mypy/index.html'
-
-  unit-tests:
-    runs-on: ubuntu-latests
-    steps:
-      - uses: ./.github/actions/setup-repo
       - name: Run unit tests
         run: |
           export PYTHONPATH=/home/runner/work/pypely/pypely/src:/home/runner/work/pypely/pypely/examples
