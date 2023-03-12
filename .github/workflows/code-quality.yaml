@@ -36,21 +36,12 @@ jobs:
           darglint .
       - name: Check types
         run: |
-          mypy ./src --ignore-missing-imports --install-types --non-interactive --html-report ./mypy
-      - name: Show mypy report
-        uses: actions/upload-artifact@v3
-        with:
-          name: mypy-report
-          path: mypy/index.html
-      - uses: thollander/actions-comment-pull-request@v2
-        with:
-          message: |
-            ${{ format('[Click here to check out the mypy report]({0})', steps.mypy_report.outputs.url) }}
+          mypy ./src --ignore-missing-imports --install-types --non-interactive
       - name: Run unit tests
         run: |
           export PYTHONPATH=/home/runner/work/pypely/pypely/src:/home/runner/work/pypely/pypely/examples
           pytest --cov-report xml:package_cov.xml --cov=src tests/
-      - uses: codecov/codecov-action@v2
+      - uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./package_cov.xml
