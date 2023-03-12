@@ -21,7 +21,6 @@ jobs:
           black . --check --line-length=119
 
   docstrings:
-    needs: prepare-repo
     runs-on: ubuntu-latest
     steps:
       - uses: ./.github/actions/setup-repo
@@ -33,7 +32,6 @@ jobs:
           darglint .
 
   type-checks:
-    needs: prepare-repo
     runs-on: ubuntu-latest
     steps:
       - uses: ./.github/actions/setup-repo
@@ -47,7 +45,6 @@ jobs:
           html_file: './mypy/index.html'
 
   unit-tests:
-    needs: prepare-repo
     runs-on: ubuntu-latests
     steps:
       - uses: ./.github/actions/setup-repo
