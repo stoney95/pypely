@@ -38,10 +38,10 @@ jobs:
         run: |
           mypy ./src --ignore-missing-imports --install-types --non-interactive --html-report ./mypy
       - name: Show mypy report
-        id: mypy_report
-        uses: pavi2410/html-preview-action@v2
+        uses: actions/upload-artifact@v3
         with:
-          html_file: './mypy/index.html'
+          name: mypy-report
+          path: mypy/index.html
       - uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
