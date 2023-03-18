@@ -8,14 +8,14 @@
 [![GitHub stars](https://img.shields.io/github/stars/stoney95/pypely?style=social)](https://github.com/stoney95/pypely/stargazers)
 [![GitHub followers](https://img.shields.io/github/followers/stoney95.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/stoney95?tab=followers)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/stoney95/pypely)
 [![codecov](https://codecov.io/gh/stoney95/pypely/branch/main/graph/badge.svg?token=7JH2HHJ5CE)](https://codecov.io/gh/stoney95/pypely)
 
 From local functions to cloud deployed pipelines - build pipelines in a functional manner. This package simplifies and streamlines the development of pipelines. You can start locally and deploy the pipelines later using your favorite framework. Further benefits are:
 
-- The dependencies for each step are required automatically
-- The compatability of steps is checked during buildtime. Errors are catch as early as possible
-- You keep your pipelines easily testable
+- You don't lock your pipelines into a framework. You can even convert your `pypely` code to the framework of your desire. 
+- The dependencies for each step are detected automatically. So, you don't need to manage the dependencies.
+- The compatability of steps is checked during buildtime. Errors are catch as early as possible.
+- You keep your pipelines easily testable.
 
 ![](https://media.giphy.com/media/SACoDGYTvVNhZYNb5a/giphy.gif)
 
