@@ -1,0 +1,2372 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../tutorials/">
+      
+      
+        <link rel="next" href="../CONTRIBUTING/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.3">
+    
+    
+      
+        <title>API Reference - pypely</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.c4a75a56.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.a0c5b2b5.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="pypely" class="md-header__button md-logo" aria-label="pypely" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            pypely
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/stoney95/pypely" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href=".." class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../tutorials/" class="md-tabs__link">
+      Tutorials
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  <li class="md-tabs__item">
+    <a href="./" class="md-tabs__link md-tabs__link--active">
+      API Reference
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../CONTRIBUTING/" class="md-tabs__link">
+      Contributing
+    </a>
+  </li>
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="pypely" class="md-nav__button md-logo" aria-label="pypely" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    pypely
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/stoney95/pypely" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/" class="md-nav__link">
+        Tutorials
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        API Reference
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pypely.pipeline" class="md-nav__link">
+    pipeline()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pypely.fork" class="md-nav__link">
+    fork()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pypely.to" class="md-nav__link">
+    to()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pypely.merge" class="md-nav__link">
+    merge()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pypely.identity" class="md-nav__link">
+    identity()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pypely.components" class="md-nav__link">
+    components
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pypely.core" class="md-nav__link">
+    core
+  </a>
+  
+    <nav class="md-nav" aria-label="core">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pypely.core.errors" class="md-nav__link">
+    errors
+  </a>
+  
+    <nav class="md-nav" aria-label="errors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pypely.core.errors.PipelineStepError" class="md-nav__link">
+    PipelineStepError
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pypely.core.errors.ParameterAnnotationsMissingError" class="md-nav__link">
+    ParameterAnnotationsMissingError
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pypely.core.errors.ReturnTypeAnnotationMissingError" class="md-nav__link">
+    ReturnTypeAnnotationMissingError
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pypely.core.errors.InvalidParameterAnnotationError" class="md-nav__link">
+    InvalidParameterAnnotationError
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pypely.core.errors.OutputInputDoNotMatchError" class="md-nav__link">
+    OutputInputDoNotMatchError
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pypely.memory" class="md-nav__link">
+    memory
+  </a>
+  
+    <nav class="md-nav" aria-label="memory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pypely.memory.MemoryEntry" class="md-nav__link">
+    MemoryEntry
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pypely.memory.memorizable" class="md-nav__link">
+    memorizable()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pypely.memory.errors" class="md-nav__link">
+    errors
+  </a>
+  
+    <nav class="md-nav" aria-label="errors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pypely.memory.errors.MemoryAttributeExistsError" class="md-nav__link">
+    MemoryAttributeExistsError
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pypely.memory.errors.MemoryAttributeNotFoundError" class="md-nav__link">
+    MemoryAttributeNotFoundError
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pypely.memory.errors.MemoryIngestNotAllowedError" class="md-nav__link">
+    MemoryIngestNotAllowedError
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pypely.memory.errors.MemoryTypeDoesNotMatchError" class="md-nav__link">
+    MemoryTypeDoesNotMatchError
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pypely.memory.errors.InvalidMemoryAttributeError" class="md-nav__link">
+    InvalidMemoryAttributeError
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pypely.memory.errors.NoFreeParameterFound" class="md-nav__link">
+    NoFreeParameterFound
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTRIBUTING/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="reference">Reference</h1>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+  <div class="doc doc-contents first">
+  
+      <p>I am pypely.</p>
+<p>Welcome to the py pipeline abstraction language.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="pypely.pipeline" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">pipeline</span>
+
+
+</h3>
+<div class="highlight"><pre><span></span><code><span class="n">pipeline</span><span class="p">(</span><span class="o">*</span><span class="n">funcs</span><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>I chain functions together.</p>
+<p>I can deal with any number of provided functions. But I need at least one function.
+Functions that are fead into me need to be typed.
+The types of the provided functions need to match.</p>
+
+<details class="example">
+  <summary>Example</summary>
+  <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pypely</span> <span class="kn">import</span> <span class="n">pipeline</span>
+
+<span class="k">def</span> <span class="nf">open_favourite_ide</span><span class="p">():</span>
+    <span class="o">...</span>
+
+<span class="k">def</span> <span class="nf">create_new_conda_environment</span><span class="p">():</span>
+    <span class="o">...</span>
+
+<span class="o">...</span>
+
+<span class="n">use_pypely</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">(</span>
+    <span class="n">open_favourite_ide</span><span class="p">,</span>
+    <span class="n">create_new_conda_environment</span><span class="p">,</span>
+    <span class="n">activate_environment</span><span class="p">,</span>
+    <span class="n">install_pypely</span><span class="p">,</span>
+    <span class="n">have_fun_building_pipelines</span>
+<span class="p">)</span>
+
+<span class="n">use_pypely</span><span class="p">()</span> <span class="c1"># -&gt; 🥳</span>
+</code></pre></div>
+</details>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>funcs</code></td>
+          <td>
+                <code><span title="typing.Callable">Callable</span></code>
+          </td>
+          <td><p>The functions that will be chained to form the pipeline.</p></td>
+          <td>
+                <code>()</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Callable">Callable</span>[<span title="pypely.core._functions.P">P</span>, <span title="pypely.core._functions.Output">Output</span>]</code>
+          </td>
+          <td><p>Callable[P, Output]: A callable that forwards the input <code>P</code> to the first function. The output of the first function is passed to the second function, etc.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>pypely/core/_functions.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">pipeline</span><span class="p">(</span><span class="o">*</span><span class="n">funcs</span><span class="p">:</span> <span class="n">Unpack</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Callable</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Unpack</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span> <span class="o">...</span><span class="p">]],</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Output</span><span class="p">]]])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">Output</span><span class="p">]:</span>  <span class="c1"># type: ignore</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;I chain functions together.</span>
+
+<span class="sd">    I can deal with any number of provided functions. But I need at least one function.</span>
+<span class="sd">    Functions that are fead into me need to be typed.</span>
+<span class="sd">    The types of the provided functions need to match.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        ```python</span>
+<span class="sd">        from pypely import pipeline</span>
+
+<span class="sd">        def open_favourite_ide():</span>
+<span class="sd">            ...</span>
+
+<span class="sd">        def create_new_conda_environment():</span>
+<span class="sd">            ...</span>
+
+<span class="sd">        ...</span>
+
+<span class="sd">        use_pypely = pipeline(</span>
+<span class="sd">            open_favourite_ide,</span>
+<span class="sd">            create_new_conda_environment,</span>
+<span class="sd">            activate_environment,</span>
+<span class="sd">            install_pypely,</span>
+<span class="sd">            have_fun_building_pipelines</span>
+<span class="sd">        )</span>
+
+<span class="sd">        use_pypely() # -&gt; 🥳</span>
+<span class="sd">        ```</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        funcs (Callable): The functions that will be chained to form the pipeline.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Callable[P, Output]: A callable that forwards the input `P` to the first function. The output of the first function is passed to the second function, etc.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">first</span><span class="p">,</span> <span class="o">*</span><span class="n">remaining</span> <span class="o">=</span> <span class="n">funcs</span>
+    <span class="n">initial</span> <span class="o">=</span> <span class="n">_wrap_with_error_handling</span><span class="p">(</span>
+        <span class="n">first</span>
+    <span class="p">)</span>  <span class="c1"># Only the second function is wrapped with error handling in check_and_compose</span>
+    <span class="n">_pipeline</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">check_and_compose</span><span class="p">,</span> <span class="n">remaining</span><span class="p">,</span> <span class="n">initial</span><span class="p">)</span>
+
+    <span class="nd">@memorizable</span>
+    <span class="k">def</span> <span class="nf">_call</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">P</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">P</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Output</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">PipelineMemoryContext</span><span class="p">()</span> <span class="k">as</span> <span class="n">_</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_pipeline</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">_call</span> <span class="o">=</span> <span class="n">define_annotation</span><span class="p">(</span><span class="n">_call</span><span class="p">,</span> <span class="n">funcs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">funcs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">[</span><span class="s2">&quot;return&quot;</span><span class="p">])</span>
+    <span class="n">_call</span> <span class="o">=</span> <span class="n">define_signature</span><span class="p">(</span><span class="n">_call</span><span class="p">,</span> <span class="n">funcs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">funcs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">[</span><span class="s2">&quot;return&quot;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">_call</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="pypely.fork" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">fork</span>
+
+
+</h3>
+<div class="highlight"><pre><span></span><code><span class="n">fork</span><span class="p">(</span><span class="o">*</span><span class="n">funcs</span><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>I split the output into multiple parallel branches.</p>
+<p>Each branch recieves the same input = the output of the function previous to <code>fork</code>.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>funcs</code></td>
+          <td>
+                <code><span title="typing.Callable">Callable</span></code>
+          </td>
+          <td><p>The functions that consume the output of the previous function in parallel.</p></td>
+          <td>
+                <code>()</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Callable">Callable</span>[<span title="pypely.core._functions.P">P</span>, <span title="pypely._types.PypelyTuple">PypelyTuple</span>]</code>
+          </td>
+          <td><p>Callable[P, PypelyTuple]: A function that provides the output of all provided functions as a tuple</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>pypely/core/_functions.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span>
+<span class="normal">94</span>
+<span class="normal">95</span>
+<span class="normal">96</span>
+<span class="normal">97</span>
+<span class="normal">98</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">fork</span><span class="p">(</span><span class="o">*</span><span class="n">funcs</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">PypelyTuple</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;I split the output into multiple parallel branches.</span>
+
+<span class="sd">    Each branch recieves the same input = the output of the function previous to `fork`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        funcs (Callable): The functions that consume the output of the previous function in parallel.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Callable[P, PypelyTuple]: A function that provides the output of all provided functions as a tuple</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@memorizable</span><span class="p">(</span><span class="n">allow_ingest</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="k">def</span> <span class="nf">_fork</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">P</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">P</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PypelyTuple</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">PypelyTuple</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">funcs</span><span class="p">))</span>
+
+    <span class="n">_fork_annotated</span> <span class="o">=</span> <span class="n">define_annotation</span><span class="p">(</span><span class="n">_fork</span><span class="p">,</span> <span class="n">funcs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">_fork</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">[</span><span class="s2">&quot;return&quot;</span><span class="p">])</span>
+    <span class="n">_fork_signed</span> <span class="o">=</span> <span class="n">define_signature</span><span class="p">(</span><span class="n">_fork_annotated</span><span class="p">,</span> <span class="n">funcs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">_fork</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">[</span><span class="s2">&quot;return&quot;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">_fork_signed</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="pypely.to" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">to</span>
+
+
+</h3>
+<div class="highlight"><pre><span></span><code><span class="n">to</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">set_fields</span><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>I convert multiple branches into an object.</p>
+<p>I can only be used after fork.
+My purpose is to bring the created branches back together.
+The output of each branch will be used to instantiate the object.
+The output of the first branch will be set as the first attribute of <code>obj</code> etc.</p>
+<p><code>set_fields</code> can be used to adjust the order in which the outputs are used for instantiation.
+The following example demonstrates how <code>to</code> can be used with fields to specify to order in which the outputs of <code>fork</code> are used.</p>
+
+<details class="example">
+  <summary>Example</summary>
+  <div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Table</span><span class="p">:</span>
+    <span class="n">tea</span><span class="p">:</span> <span class="n">Tea</span>
+    <span class="n">plate</span><span class="p">:</span> <span class="n">Plate</span>
+    <span class="n">bread</span><span class="p">:</span> <span class="n">Bread</span>
+    <span class="n">eggs</span><span class="p">:</span> <span class="n">Eggs</span>
+
+
+<span class="n">morning_routine</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">(</span>
+    <span class="n">wake_up</span><span class="p">,</span>
+    <span class="n">go_to_kitchen</span><span class="p">,</span>
+    <span class="n">fork</span><span class="p">(</span>
+        <span class="n">make_tea</span><span class="p">,</span>
+        <span class="n">fry_eggs</span><span class="p">,</span>
+        <span class="n">cut_bread</span><span class="p">,</span>
+        <span class="n">get_plate</span>
+    <span class="p">),</span>
+    <span class="n">to</span><span class="p">(</span><span class="n">Table</span><span class="p">,</span> <span class="s2">&quot;tea&quot;</span><span class="p">,</span> <span class="s2">&quot;eggs&quot;</span><span class="p">,</span> <span class="s2">&quot;bread&quot;</span><span class="p">,</span> <span class="s2">&quot;plate&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+</details>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>cls</code></td>
+          <td>
+                <code><span title="typing.Type">Type</span>[<span title="pypely.core._functions.T">T</span>]</code>
+          </td>
+          <td><p>A class that will be instantiated by the outputs of the previous <code>fork</code></p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>set_fields</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>This can be used to define the order in which the fields are set.
+Please check out the example for a better explanation.</p></td>
+          <td>
+                <code>()</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Callable">Callable</span>[[<span title="pypely._types.PypelyTuple">PypelyTuple</span>], <span title="pypely.core._functions.T">T</span>]</code>
+          </td>
+          <td><p>Callable[[PypelyTuple], T]: A function that will instantiate the object when called</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>pypely/core/_functions.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="o">*</span><span class="n">set_fields</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">PypelyTuple</span><span class="p">],</span> <span class="n">T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;I convert multiple branches into an object.</span>
+
+<span class="sd">    I can only be used after fork.</span>
+<span class="sd">    My purpose is to bring the created branches back together.</span>
+<span class="sd">    The output of each branch will be used to instantiate the object.</span>
+<span class="sd">    The output of the first branch will be set as the first attribute of `obj` etc.</span>
+
+<span class="sd">    `set_fields` can be used to adjust the order in which the outputs are used for instantiation.</span>
+<span class="sd">    The following example demonstrates how `to` can be used with fields to specify to order in which the outputs of `fork` are used.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        ```python</span>
+<span class="sd">        @dataclass</span>
+<span class="sd">        class Table:</span>
+<span class="sd">            tea: Tea</span>
+<span class="sd">            plate: Plate</span>
+<span class="sd">            bread: Bread</span>
+<span class="sd">            eggs: Eggs</span>
+
+
+<span class="sd">        morning_routine = pipeline(</span>
+<span class="sd">            wake_up,</span>
+<span class="sd">            go_to_kitchen,</span>
+<span class="sd">            fork(</span>
+<span class="sd">                make_tea,</span>
+<span class="sd">                fry_eggs,</span>
+<span class="sd">                cut_bread,</span>
+<span class="sd">                get_plate</span>
+<span class="sd">            ),</span>
+<span class="sd">            to(Table, &quot;tea&quot;, &quot;eggs&quot;, &quot;bread&quot;, &quot;plate&quot;)</span>
+<span class="sd">        )</span>
+<span class="sd">        ```</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cls (Type[T]): A class that will be instantiated by the outputs of the previous `fork`</span>
+<span class="sd">        set_fields (str): This can be used to define the order in which the fields are set.</span>
+<span class="sd">            Please check out the example for a better explanation.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Callable[[PypelyTuple], T]: A function that will instantiate the object when called</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@memorizable</span><span class="p">(</span><span class="n">allow_ingest</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="k">def</span> <span class="nf">_to</span><span class="p">(</span><span class="n">vals</span><span class="p">:</span> <span class="n">PypelyTuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+        <span class="n">vals_flattened</span> <span class="o">=</span> <span class="n">_flatten</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">set_fields</span> <span class="o">==</span> <span class="p">():</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">vals_flattened</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">set_fields</span><span class="p">)</span>
+            <span class="n">fields_named</span> <span class="o">=</span> <span class="p">{</span><span class="n">field_name</span><span class="p">:</span> <span class="n">val</span> <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">set_fields</span><span class="p">,</span> <span class="n">vals_flattened</span><span class="p">)}</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">fields_named</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">vals_flattened</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_mock_function</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">PypelyTuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="n">_to_annotated</span> <span class="o">=</span> <span class="n">define_annotation</span><span class="p">(</span><span class="n">_to</span><span class="p">,</span> <span class="n">_mock_function</span><span class="p">,</span> <span class="n">_to</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">[</span><span class="s2">&quot;return&quot;</span><span class="p">])</span>
+    <span class="n">_to_signed</span> <span class="o">=</span> <span class="n">define_signature</span><span class="p">(</span><span class="n">_to_annotated</span><span class="p">,</span> <span class="n">_mock_function</span><span class="p">,</span> <span class="n">_to</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">[</span><span class="s2">&quot;return&quot;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">_to_signed</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="pypely.merge" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">merge</span>
+
+
+</h3>
+<div class="highlight"><pre><span></span><code><span class="n">merge</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>I merge multiple branches.</p>
+<p>I can only run after <code>fork</code>. I bring multiple branches back together.
+The given function <code>func</code> will recieve all outputs of the previous <code>fork</code>.
+<code>func</code> will recieve the outputs in order.
+<code>func</code> needs to take as many arguments as there are branches</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>func</code></td>
+          <td>
+                <code><span title="typing.Callable">Callable</span>[<span title="pypely.core._functions.P">P</span>, <span title="pypely.core._functions.T">T</span>]</code>
+          </td>
+          <td><p>The function that defines the logic for how the branches will be merged.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Callable">Callable</span>[[<span title="pypely._types.PypelyTuple">PypelyTuple</span>], <span title="pypely.core._functions.T">T</span>]</code>
+          </td>
+          <td><p>Callable[[PypelyTuple], T]: A function that will apply <code>func</code> to the outputs of the previous <code>fork</code></p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>pypely/core/_functions.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">PypelyTuple</span><span class="p">],</span> <span class="n">T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;I merge multiple branches.</span>
+
+<span class="sd">    I can only run after `fork`. I bring multiple branches back together.</span>
+<span class="sd">    The given function `func` will recieve all outputs of the previous `fork`.</span>
+<span class="sd">    `func` will recieve the outputs in order.</span>
+<span class="sd">    `func` needs to take as many arguments as there are branches</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        func (Callable[P, T]): The function that defines the logic for how the branches will be merged.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Callable[[PypelyTuple], T]: A function that will apply `func` to the outputs of the previous `fork`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@memorizable</span><span class="p">(</span><span class="n">allow_ingest</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="k">def</span> <span class="nf">_merge</span><span class="p">(</span><span class="n">branches</span><span class="p">:</span> <span class="n">PypelyTuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+        <span class="n">flat_branches</span> <span class="o">=</span> <span class="n">_flatten</span><span class="p">(</span><span class="n">branches</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">flat_branches</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_mock_function</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">PypelyTuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="n">_merge_annotated</span> <span class="o">=</span> <span class="n">define_annotation</span><span class="p">(</span><span class="n">_merge</span><span class="p">,</span> <span class="n">_mock_function</span><span class="p">,</span> <span class="n">_merge</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">[</span><span class="s2">&quot;return&quot;</span><span class="p">])</span>
+    <span class="n">_merge_signed</span> <span class="o">=</span> <span class="n">define_signature</span><span class="p">(</span><span class="n">_merge_annotated</span><span class="p">,</span> <span class="n">_mock_function</span><span class="p">,</span> <span class="n">_merge</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">[</span><span class="s2">&quot;return&quot;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">_merge_signed</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="pypely.identity" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">identity</span>
+
+
+</h3>
+<div class="highlight"><pre><span></span><code><span class="n">identity</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>I forward the given input untouched.</p>
+<p>This can be useful if you want to forward a result for a later step.
+As this approach can also make the pipeline hard to understand, it is advised to use <a class="autorefs autorefs-internal" href="#pypely.memory.memorizable">pypely.memory.memorizable</a></p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>x</code></td>
+          <td>
+                <code><span title="pypely.core._functions.T">T</span></code>
+          </td>
+          <td><p>Any input</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>T</code></td>          <td>
+                <code><span title="pypely.core._functions.T">T</span></code>
+          </td>
+          <td><p>The input is unchanged.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>pypely/core/_functions.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">identity</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;I forward the given input untouched.</span>
+
+<span class="sd">    This can be useful if you want to forward a result for a later step.</span>
+<span class="sd">    As this approach can also make the pipeline hard to understand, it is advised to use [pypely.memory.memorizable][]</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        x (T): Any input</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        T: The input is unchanged.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">x</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="pypely.components" class="doc doc-heading">
+          <span class="doc doc-object-name doc-module-name">components</span>
+
+
+</h3>
+
+  <div class="doc doc-contents ">
+  
+      <p>Ignore for now.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="pypely.core" class="doc doc-heading">
+          <span class="doc doc-object-name doc-module-name">core</span>
+
+
+</h3>
+
+  <div class="doc doc-contents ">
+  
+      <p>I provide core functionalities of python.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h4 id="pypely.core.errors" class="doc doc-heading">
+          <span class="doc doc-object-name doc-module-name">errors</span>
+
+
+</h4>
+
+  <div class="doc doc-contents ">
+  
+      <p>I provide all errors that can occur when interacting with the core of pypely.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="pypely.core.errors.PipelineStepError" class="doc doc-heading">
+        <span class="doc doc-object-name doc-class-name">PipelineStepError</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span class="n">PipelineStepError</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">exception</span><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="pypely._types.PypelyError">PypelyError</span></code></p>
+
+  
+      <p>I will be raised when a step inside a pipeline fails.</p>
+
+
+          <details class="quote">
+            <summary>Source code in <code>pypely/core/errors/_pipeline.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">exception</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">):</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__error_message</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">exception</span><span class="p">)</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">PipelineStepError</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="pypely.core.errors.ParameterAnnotationsMissingError" class="doc doc-heading">
+        <span class="doc doc-object-name doc-class-name">ParameterAnnotationsMissingError</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span class="n">ParameterAnnotationsMissingError</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="pypely._types.PypelyError">PypelyError</span></code></p>
+
+  
+      <p>I will be raised if at least one parameter of the function is not type annotated.</p>
+
+
+          <details class="quote">
+            <summary>Source code in <code>pypely/core/errors/_pipeline.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__error_message</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="pypely.core.errors.ReturnTypeAnnotationMissingError" class="doc doc-heading">
+        <span class="doc doc-object-name doc-class-name">ReturnTypeAnnotationMissingError</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span class="n">ReturnTypeAnnotationMissingError</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="pypely._types.PypelyError">PypelyError</span></code></p>
+
+  
+      <p>I will be raised if a function has no return type annotation.</p>
+
+
+          <details class="quote">
+            <summary>Source code in <code>pypely/core/errors/_pipeline.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__error_message</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="pypely.core.errors.InvalidParameterAnnotationError" class="doc doc-heading">
+        <span class="doc doc-object-name doc-class-name">InvalidParameterAnnotationError</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span class="n">InvalidParameterAnnotationError</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="pypely._types.PypelyError">PypelyError</span></code></p>
+
+  
+      <p>I will be rasied when an invalid parameter annotation is used.</p>
+
+
+          <details class="quote">
+            <summary>Source code in <code>pypely/core/errors/_pipeline.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">param</span><span class="p">:</span> <span class="n">inspect</span><span class="o">.</span><span class="n">Parameter</span><span class="p">):</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__error_message</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="pypely.core.errors.OutputInputDoNotMatchError" class="doc doc-heading">
+        <span class="doc doc-object-name doc-class-name">OutputInputDoNotMatchError</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span class="n">OutputInputDoNotMatchError</span><span class="p">(</span>
+    <span class="n">func1</span><span class="p">,</span> <span class="n">func2</span><span class="p">,</span> <span class="n">inner_exception</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="pypely._types.PypelyError">PypelyError</span></code></p>
+
+  
+      <p>I will be raised when the output does not match the input of the following function.</p>
+
+
+          <details class="quote">
+            <summary>Source code in <code>pypely/core/errors/_pipeline.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func1</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">func2</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">inner_exception</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__error_message</span><span class="p">(</span><span class="n">func1</span><span class="p">,</span> <span class="n">func2</span><span class="p">,</span> <span class="n">inner_exception</span><span class="p">)</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="pypely.memory" class="doc doc-heading">
+          <span class="doc doc-object-name doc-module-name">memory</span>
+
+
+</h3>
+
+  <div class="doc doc-contents ">
+  
+      <p>I expose functionality to persist step outputs and use them in later steps.</p>
+<p>This functionality leverages the shift operators <code>&gt;&gt;</code> and <code>&lt;&lt;</code>. 
+This allows you to store the output of a step and use it later in an other step. 
+You can either use a string to define a memory entry or <code>pypely.memory.MemoryEntry</code></p>
+<p>Example:
+<div class="highlight"><pre><span></span><code><span class="n">pipeline</span><span class="p">(</span>
+    <span class="n">func1</span> <span class="o">&gt;&gt;</span> <span class="s2">&quot;result&quot;</span><span class="p">,</span>
+    <span class="n">func2</span><span class="p">,</span>
+    <span class="n">func3</span><span class="p">,</span>
+    <span class="n">func4</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;result&quot;</span>
+<span class="p">)</span>
+</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><span class="n">result</span> <span class="o">=</span> <span class="n">MemoryEntry</span><span class="p">()</span>
+
+<span class="n">pipeline</span><span class="p">(</span>
+    <span class="n">func1</span> <span class="o">&gt;&gt;</span> <span class="n">result</span><span class="p">,</span>
+    <span class="n">func2</span><span class="p">,</span>
+    <span class="n">func3</span><span class="p">,</span>
+    <span class="n">func4</span> <span class="o">&lt;&lt;</span> <span class="n">result</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>The function that consumes the memory entry also consumes the output from the previous step.
+So from the previous example <code>func4</code> would receive the output of <code>func3</code> <strong>and</strong> the memory entry <code>result</code>.</p>
+<p>The types of the memory entries are stored and it is checked if a function is capable to consume
+a memory entry based on the type information. </p>
+<details class="warning">
+<summary>Memory entry names must be unique</summary>
+<p>The names of memory entries must be unique throughout the code base when using strings.
+This limitation is given as there is no way to identify the context in which the memory is used during buildtime.
+The type information is stored during the buildtime. The simplest way to work around this limitation is to use
+<code>pypely.memory.MemoryEntry</code> as shown in the second example.</p>
+</details>
+<details class="warning">
+<summary>The memory is context sensitive</summary>
+<p>The usage of memory entries is context sensitive. This means that you can only consume memory entries
+from that have been created in the same pipeline. Furthermore this means that the usage of memory entries from
+sub- / parent-pipelines is not possible. This is done to prohibit too complex memory usages. </p>
+<p>Due to the context sensitivity, the following example will fail:</p>
+<div class="highlight"><pre><span></span><code><span class="n">pipeline</span><span class="p">(</span>
+    <span class="n">func1</span> <span class="o">&gt;&gt;</span> <span class="s2">&quot;result&quot;</span><span class="p">,</span>
+    <span class="n">pipeline</span><span class="p">(</span>
+        <span class="n">func2</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;result&quot;</span><span class="p">,</span>
+        <span class="n">func3</span><span class="p">,</span>
+        <span class="n">func4</span>
+    <span class="p">),</span>
+    <span class="n">func5</span>
+<span class="p">)</span>
+</code></pre></div>
+</details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="pypely.memory.MemoryEntry" class="doc doc-heading">
+        <span class="doc doc-object-name doc-class-name">MemoryEntry</span>
+
+
+</h4>
+<div class="highlight"><pre><span></span><code><span class="n">MemoryEntry</span><span class="p">()</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+
+  
+      <p>I can be used to describe a memory entry.</p>
+<p>This allows to use a clear name which is internally handled as a uuid.
+In the future <code>memorizable</code> might only support me instead of using strings.
+If you run into naming conflicts use me instead of a string to reference the memory entry.</p>
+
+<details class="example">
+  <summary>Example</summary>
+  <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pypely</span> <span class="kn">import</span> <span class="n">pipeline</span>
+<span class="kn">from</span> <span class="nn">pypely.memory</span> <span class="kn">import</span> <span class="n">memorizable</span><span class="p">,</span> <span class="n">MemoryEntry</span>
+
+<span class="nd">@memorizable</span>
+<span class="k">def</span> <span class="nf">some_func</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="mi">42</span>
+
+<span class="n">intermediate_result</span> <span class="o">=</span> <span class="n">MemoryEntry</span><span class="p">()</span>
+<span class="n">pipeline</span><span class="p">(</span>
+    <span class="o">...</span><span class="p">,</span>
+    <span class="n">some_func</span> <span class="o">&gt;&gt;</span> <span class="n">intermediate_result</span>
+<span class="p">)</span>
+</code></pre></div>
+</details>
+
+          <details class="quote">
+            <summary>Source code in <code>pypely/memory/_wrappers.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">50</span>
+<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="pypely.memory.memorizable" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">memorizable</span>
+
+
+</h4>
+<div class="highlight"><pre><span></span><code><span class="n">memorizable</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_ingest</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>I enable a function to interact with the memory.</p>
+<p>The <code>func</code> parameter is usually not given directly. This is done via decorators. So memorizable can be used in two ways:</p>
+
+<details class="example">
+  <summary>Example</summary>
+  <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pypely.memory</span> <span class="kn">import</span> <span class="n">memorizable</span>
+
+
+<span class="nd">@memorizable</span>
+<span class="k">def</span> <span class="nf">some_func_that_allows_ingest</span><span class="p">(</span><span class="n">arg1</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="o">...</span>
+
+
+<span class="nd">@memorizable</span><span class="p">(</span><span class="n">allow_ingest</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">some_func_that_does_not_allow_ingest</span><span class="p">(</span><span class="n">arg1</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="o">...</span>
+</code></pre></div>
+</details>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>func</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="typing.Callable">Callable</span>[<span title="pypely.memory._wrappers.P">P</span>, <span title="pypely.memory._wrappers.T">T</span>]]</code>
+          </td>
+          <td><p>The function that wants to interact with the memory. Defaults to None.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>allow_ingest</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[bool]</code>
+          </td>
+          <td><p>This describes if data from the memory can be ingested into the function. Defaults to True.</p></td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Union">Union</span>[<span title="typing.Callable">Callable</span>[[<span title="typing.Callable">Callable</span>[<span title="pypely.memory._wrappers.P">P</span>, <span title="pypely.memory._wrappers.T">T</span>]], <span title="typing.Callable">Callable</span>[<span title="pypely.memory._wrappers.P">P</span>, <span title="pypely.memory._wrappers.T">T</span>]], <span title="typing.Callable">Callable</span>[<span title="pypely.memory._wrappers.P">P</span>, <span title="pypely.memory._wrappers.T">T</span>]]</code>
+          </td>
+          <td><p>Union[Callable[[Callable[P, T]], Memorizable], Callable[P, T]]: A callable that allows to use the shift operators (<code>&lt;&lt;</code>, <code>&gt;&gt;</code>)</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>pypely/memory/_wrappers.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">memorizable</span><span class="p">(</span>
+    <span class="n">func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">allow_ingest</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Callable</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">]],</span> <span class="n">Callable</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">]],</span> <span class="n">Callable</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;I enable a function to interact with the memory.</span>
+
+<span class="sd">    The `func` parameter is usually not given directly. This is done via decorators. So memorizable can be used in two ways:</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        ```python</span>
+<span class="sd">        from pypely.memory import memorizable</span>
+
+
+<span class="sd">        @memorizable</span>
+<span class="sd">        def some_func_that_allows_ingest(arg1: int) -&gt; int:</span>
+<span class="sd">            ...</span>
+
+
+<span class="sd">        @memorizable(allow_ingest=False)</span>
+<span class="sd">        def some_func_that_does_not_allow_ingest(arg1: int) -&gt; int:</span>
+<span class="sd">            ...</span>
+<span class="sd">        ```</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        func (Optional[Callable[P, T]], optional): The function that wants to interact with the memory. Defaults to None.</span>
+<span class="sd">        allow_ingest (Optional[bool], optional): This describes if data from the memory can be ingested into the function. Defaults to True.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Union[Callable[[Callable[P, T]], Memorizable], Callable[P, T]]: A callable that allows to use the shift operators (`&lt;&lt;`, `&gt;&gt;`)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="k">def</span> <span class="nf">_wrap</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">Memorizable</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">allow_ingest</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">_wrap</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Memorizable</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">allow_ingest</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h4 id="pypely.memory.errors" class="doc doc-heading">
+          <span class="doc doc-object-name doc-module-name">errors</span>
+
+
+</h4>
+
+  <div class="doc doc-contents ">
+  
+      <p>I describe all errors that can occur during memory interaction.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="pypely.memory.errors.MemoryAttributeExistsError" class="doc doc-heading">
+        <span class="doc doc-object-name doc-class-name">MemoryAttributeExistsError</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span class="n">MemoryAttributeExistsError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code>AttributeError</code>, <code><span title="pypely._types.PypelyError">PypelyError</span></code></p>
+
+  
+      <p>I will be raised if a memory entry already exists.</p>
+
+
+          <details class="quote">
+            <summary>Source code in <code>pypely/memory/errors.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="pypely.memory.errors.MemoryAttributeNotFoundError" class="doc doc-heading">
+        <span class="doc doc-object-name doc-class-name">MemoryAttributeNotFoundError</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span class="n">MemoryAttributeNotFoundError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code>AttributeError</code>, <code><span title="pypely._types.PypelyError">PypelyError</span></code></p>
+
+  
+      <p>I will be raised if no memory entry with a given name exists.</p>
+
+
+          <details class="quote">
+            <summary>Source code in <code>pypely/memory/errors.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="pypely.memory.errors.MemoryIngestNotAllowedError" class="doc doc-heading">
+        <span class="doc doc-object-name doc-class-name">MemoryIngestNotAllowedError</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span class="n">MemoryIngestNotAllowedError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code>RuntimeError</code>, <code><span title="pypely._types.PypelyError">PypelyError</span></code></p>
+
+  
+      <p>I will be raised if a memory entry is ingested into a function that does not allow this.</p>
+
+
+          <details class="quote">
+            <summary>Source code in <code>pypely/memory/errors.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">23</span>
+<span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="pypely.memory.errors.MemoryTypeDoesNotMatchError" class="doc doc-heading">
+        <span class="doc doc-object-name doc-class-name">MemoryTypeDoesNotMatchError</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span class="n">MemoryTypeDoesNotMatchError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code>RuntimeError</code>, <code><span title="pypely._types.PypelyError">PypelyError</span></code></p>
+
+  
+      <p>I will be rasie if the type of a memory entry does not match the parameter type it should be ingested for.</p>
+
+
+          <details class="quote">
+            <summary>Source code in <code>pypely/memory/errors.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">30</span>
+<span class="normal">31</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="pypely.memory.errors.InvalidMemoryAttributeError" class="doc doc-heading">
+        <span class="doc doc-object-name doc-class-name">InvalidMemoryAttributeError</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span class="n">InvalidMemoryAttributeError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code>AttributeError</code>, <code><span title="pypely._types.PypelyError">PypelyError</span></code></p>
+
+  
+      <p>I will be raised if a value that is ingested into the memory has an invalid type.</p>
+
+
+          <details class="quote">
+            <summary>Source code in <code>pypely/memory/errors.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">37</span>
+<span class="normal">38</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="pypely.memory.errors.NoFreeParameterFound" class="doc doc-heading">
+        <span class="doc doc-object-name doc-class-name">NoFreeParameterFound</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span class="n">NoFreeParameterFound</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code>AttributeError</code>, <code><span title="pypely._types.PypelyError">PypelyError</span></code></p>
+
+  
+      <p>I am raised when there are too many ingests into a function.</p>
+
+
+          <details class="quote">
+            <summary>Source code in <code>pypely/memory/errors.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">44</span>
+<span class="normal">45</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "toc.integrate", "navigation.expand", "toc.follow"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.efa0ade1.min.js"></script>
+      
+    
+  </body>
+</html>
