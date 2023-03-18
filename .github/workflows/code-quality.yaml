@@ -39,7 +39,7 @@ jobs:
           darglint .
       - name: Check types
         run: |
-          mypy ./src --ignore-missing-imports --install-types --non-interactive
+          mypy ./pypely --ignore-missing-imports --install-types --non-interactive
       - name: Run unit tests
         run: |
           export PYTHONPATH=/home/runner/work/pypely/pypely/src:/home/runner/work/pypely/pypely/examples
