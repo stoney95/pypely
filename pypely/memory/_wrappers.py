@@ -8,7 +8,7 @@ This allows to read from or write to the memory.
 import inspect
 import uuid
 from copy import deepcopy
-from typing import Any, Callable, Dict, List, Optional, Set, Type, TypeVar, Union
+from typing import Callable, Dict, Generic, List, Optional, Set, Type, TypeVar, Union
 
 from typing_extensions import ParamSpec
 
@@ -29,16 +29,20 @@ class MemoryEntry:
     If you run into naming conflicts use me instead of a string to reference the memory entry.
 
     Example:
-        >>> from pypely import pipeline
-        >>> from pypely.memory import memorizable, MemoryEntry
-        >>> intermediate_result = MemoryEntry()
-        >>> @memorizable
-            def some_func() -> int:
-                return 42
-        >>> pipeline(
-                ...,
-                some_func >> intermediate_result
-            )
+        ```python
+        from pypely import pipeline
+        from pypely.memory import memorizable, MemoryEntry
+
+        @memorizable
+        def some_func() -> int:
+            return 42
+
+        intermediate_result = MemoryEntry()
+        pipeline(
+            ...,
+            some_func >> intermediate_result
+        )
+        ```
     """
 
     id: str
@@ -47,7 +51,7 @@ class MemoryEntry:
         self.id = str(uuid.uuid4())
 
 
-class Memorizable:
+class Memorizable(Generic[P, T]):
     """I am the wrapper that allows interaction with the memory."""
 
     attributes_after: List[str]
@@ -210,7 +214,7 @@ class Memorizable:
         self_copy.attributes_set_by_memory.add(parameter_name)
         return self_copy
 
-    def __call__(self, *args: P.args, **kwargs: P.kwargs) -> Any:
+    def __call__(self, *args: P.args, **kwargs: P.kwargs) -> T:
         """I execute the function with the provided arguments and defined memory entries.
 
         The memory entries are loaded and combined with the given arguments.
@@ -220,7 +224,7 @@ class Memorizable:
             kwargs: The keyword arguments given to the function
 
         Returns:
-            Any: the object returned by the called function.
+            T: the object returned by the called function.
         """
         memory = get_memory()
         memory_attributes_before = [memory.get(attr) for attr in self.attributes_before]
@@ -316,19 +320,25 @@ class Memorizable:
 
 def memorizable(
     func: Optional[Callable[P, T]] = None, allow_ingest: Optional[bool] = True
-) -> Union[Callable[[Callable[P, T]], Memorizable], Memorizable]:
-    """I provide `Memorizable` class as decorator.
+) -> Union[Callable[[Callable[P, T]], Callable[P, T]], Callable[P, T]]:
+    """I enable a function to interact with the memory.
 
-    The function is usually not given directly. This is done via decorators. So memorizable can be used in two ways:
+    The `func` parameter is usually not given directly. This is done via decorators. So memorizable can be used in two ways:
 
     Example:
-        >>> from pypely.memory import memorizable
-        >>> @memorizable
-            def some_func_that_allows_ingest(arg1: int) -> int:
-                ...
-        >>> @memorizable(allow_ingest=False)
-            def some_func_that_does_not_allow_ingest(arg1: int) -> int:
-                ...
+        ```python
+        from pypely.memory import memorizable
+
+
+        @memorizable
+        def some_func_that_allows_ingest(arg1: int) -> int:
+            ...
+
+
+        @memorizable(allow_ingest=False)
+        def some_func_that_does_not_allow_ingest(arg1: int) -> int:
+            ...
+        ```
 
     Args:
         func (Optional[Callable[P, T]], optional): The function that wants to interact with the memory. Defaults to None.
@@ -338,7 +348,11 @@ def memorizable(
         Union[Callable[[Callable[P, T]], Memorizable], Callable[P, T]]: A callable that allows to use the shift operators (`<<`, `>>`)
     """
     if func is None:
-        return lambda func: Memorizable(func, allow_ingest)
+
+        def _wrap(func: Callable[P, T]) -> Callable[P, T]:
+            return Memorizable(func, allow_ingest)
+
+        return _wrap
     else:
         return Memorizable(func, allow_ingest)
 

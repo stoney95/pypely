@@ -17,6 +17,7 @@ We'd also love PRs. If you're thinking of a large PR, we advise opening up an is
 
 1. Fork and clone the repository.
 1. Configure and install the dependencies: `conda env create -f conda.yaml`.
+1. Install the pre-commit hooks: `pre-commit install`. These hooks will format your code, check the typing and ensure that conventional commits are used.
 2. Make sure the tests pass on your machine: `source .path && pytest tests examples` (If you work on Windows it is recommended to use the Linux Sub System. Otherwise you can set the PYTHONPATH manually or use [dot sourcing](https://superuser.com/questions/71446/equivalent-of-bashs-source-command-in-powershell))
 3. Create a new branch: `git checkout -b my-branch-name`.
 4. Make your change, add tests, and make sure the tests still pass.
@@ -43,7 +44,4 @@ Work in Progress pull requests are also welcome to get feedback early on, or if 
 
 > :warning: Be sure to read this section. A bot is installed that will deny your pull request if there are no commits in the format of Conventional Commit.
 
-The project uses [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) to automatically detect project versions. Please read the linked guide to understand [Conventional Commits (CC)](https://www.conventionalcommits.org/en/v1.0.0/). Also you should install a pre-commit hook, that ensures that you are using CC. To do so use the project [sailr](https://github.com/craicoverflow/sailr). The [config](https://github.com/stoney95/pypely/tree/main/sailr.json) is already given in the repository. 
-
-An other alternative is to use [this pre-commit repo](https://github.com/compilerla/conventional-pre-commit). But this only works on systems supporting `grep -P`. It does not work on MacOS. 
-
+The project uses [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) to automatically detect project versions. Please read the linked guide to understand [Conventional Commits (CC)](https://www.conventionalcommits.org/en/v1.0.0/). To ensure that you use conventional commits, install the pre-configured pre-commit hooks. One hook will check that you use conventional commits.

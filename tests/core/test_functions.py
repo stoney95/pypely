@@ -5,6 +5,7 @@ import pytest
 
 from pypely import fork, identity, merge, pipeline, to
 from pypely._types import PypelyTuple
+from pypely.core._functions import _flatten
 from pypely.core.errors import (
     InvalidParameterAnnotationError,
     OutputInputDoNotMatchError,
@@ -12,9 +13,8 @@ from pypely.core.errors import (
     PipelineStepError,
     ReturnTypeAnnotationMissingError,
 )
-from pypely.core.functions import _flatten
 from pypely.memory import memorizable
-from pypely.memory.wrappers import MemoryEntry
+from pypely.memory._wrappers import MemoryEntry
 
 T = TypeVar("T")
 

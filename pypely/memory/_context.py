@@ -9,7 +9,7 @@ from pypely.memory._impl import PipelineMemory, get_memory, set_memory
 class PipelineMemoryContext:
     """I switch between memories depending on the context."""
 
-    previous_memory: PipelineMemory = None
+    previous_memory: PipelineMemory
 
     def __enter__(self) -> None:
         """I provide a freshly initialized memory.

@@ -1,0 +1,50 @@
+site_name: pypely
+
+repo_url: https://github.com/stoney95/pypely
+
+nav:
+  - Home: index.md
+  - Tutorials: tutorials.md
+  - API Reference: reference.md
+  - Contributing: CONTRIBUTING.md
+
+theme:
+  name: 'material'
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - toc.integrate
+    - navigation.expand
+    - toc.follow
+
+plugins:
+  - autorefs
+  - search:
+      lang: en
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_submodules: true
+            members_order: source
+            merge_init_into_class: true
+            separate_signature: true
+            show_signature_annotations: false
+            annotations_path: brief
+            show_root_toc_entry: false
+            heading_level: 3
+
+markdown_extensions:
+  # - pymdownx.superfences:
+  #     custom_fences:
+  #       - name: mermaid
+  #         class: mermaid
+  #         format: !!python/name:pymdownx.superfences.fence_div_format
+  # - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences

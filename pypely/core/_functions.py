@@ -30,6 +30,29 @@ def pipeline(*funcs: Unpack[Tuple[Callable[P, Any], Unpack[Tuple[Callable, ...]]
     Functions that are fead into me need to be typed.
     The types of the provided functions need to match.
 
+    Example:
+        ```python
+        from pypely import pipeline
+
+        def open_favourite_ide():
+            ...
+
+        def create_new_conda_environment():
+            ...
+
+        ...
+
+        use_pypely = pipeline(
+            open_favourite_ide,
+            create_new_conda_environment,
+            activate_environment,
+            install_pypely,
+            have_fun_building_pipelines
+        )
+
+        use_pypely() # -> 🥳
+        ```
+
     Args:
         funcs (Callable): The functions that will be chained to form the pipeline.
 
@@ -65,17 +88,17 @@ def fork(*funcs: Callable[P, Any]) -> Callable[P, PypelyTuple]:
         Callable[P, PypelyTuple]: A function that provides the output of all provided functions as a tuple
     """
 
-    @memorizable(allow_ingest=False)
+    @memorizable(allow_ingest=False)  # type: ignore
     def _fork(*args: P.args, **kwargs: P.kwargs) -> PypelyTuple:
         return PypelyTuple(*(func(*args, **kwargs) for func in funcs))
 
-    _fork = define_annotation(_fork, funcs[0], PypelyTuple)
-    _fork = define_signature(_fork, funcs[0], PypelyTuple)
+    _fork_annotated = define_annotation(_fork, funcs[0], _fork.__annotations__["return"])
+    _fork_signed = define_signature(_fork_annotated, funcs[0], _fork.__annotations__["return"])
 
-    return _fork
+    return _fork_signed
 
 
-def to(obj: Type[T], *set_fields: str) -> Callable[[PypelyTuple], T]:
+def to(cls: Type[T], *set_fields: str) -> Callable[[PypelyTuple], T]:
     """I convert multiple branches into an object.
 
     I can only be used after fork.
@@ -87,27 +110,30 @@ def to(obj: Type[T], *set_fields: str) -> Callable[[PypelyTuple], T]:
     The following example demonstrates how `to` can be used with fields to specify to order in which the outputs of `fork` are used.
 
     Example:
-        >>> @dataclass
-        >>> class Table:
-        >>>     tea: Tea
-        >>>     plate: Plate
-        >>>     bread: Bread
-        >>>     eggs: Eggs
+        ```python
+        @dataclass
+        class Table:
+            tea: Tea
+            plate: Plate
+            bread: Bread
+            eggs: Eggs
 
-        >>> morning_routine = pipeline(
-        >>>     wake_up,
-        >>>     go_to_kitchen,
-        >>>     fork(
-        >>>         make_tea,
-        >>>         fry_eggs,
-        >>>         cut_bread,
-        >>>         get_plate
-        >>>     ),
-        >>>     to(Table, "tea", "eggs", "bread", "plate")
-        >>> )
+
+        morning_routine = pipeline(
+            wake_up,
+            go_to_kitchen,
+            fork(
+                make_tea,
+                fry_eggs,
+                cut_bread,
+                get_plate
+            ),
+            to(Table, "tea", "eggs", "bread", "plate")
+        )
+        ```
 
     Args:
-        obj (Type[T]): A class that will be instantiated by the outputs of the previous `fork`
+        cls (Type[T]): A class that will be instantiated by the outputs of the previous `fork`
         set_fields (str): This can be used to define the order in which the fields are set.
             Please check out the example for a better explanation.
 
@@ -115,17 +141,23 @@ def to(obj: Type[T], *set_fields: str) -> Callable[[PypelyTuple], T]:
         Callable[[PypelyTuple], T]: A function that will instantiate the object when called
     """
 
-    @memorizable(allow_ingest=False)
+    @memorizable(allow_ingest=False)  # type: ignore
     def _to(vals: PypelyTuple) -> T:
         vals_flattened = _flatten(vals)
         if not set_fields == ():
             assert len(vals_flattened) == len(set_fields)
             fields_named = {field_name: val for field_name, val in zip(set_fields, vals_flattened)}
-            return obj(**fields_named)
+            return cls(**fields_named)
         else:
-            return obj(*vals_flattened)
+            return cls(*vals_flattened)
 
-    return _to
+    def _mock_function(p: PypelyTuple) -> None:
+        pass
+
+    _to_annotated = define_annotation(_to, _mock_function, _to.__annotations__["return"])
+    _to_signed = define_signature(_to_annotated, _mock_function, _to.__annotations__["return"])
+
+    return _to_signed
 
 
 def merge(func: Callable[P, T]) -> Callable[[PypelyTuple], T]:
@@ -143,19 +175,25 @@ def merge(func: Callable[P, T]) -> Callable[[PypelyTuple], T]:
         Callable[[PypelyTuple], T]: A function that will apply `func` to the outputs of the previous `fork`
     """
 
-    @memorizable(allow_ingest=False)
+    @memorizable(allow_ingest=False)  # type: ignore
     def _merge(branches: PypelyTuple) -> T:
         flat_branches = _flatten(branches)
         return func(*flat_branches)
 
-    return _merge
+    def _mock_function(p: PypelyTuple) -> None:
+        pass
+
+    _merge_annotated = define_annotation(_merge, _mock_function, _merge.__annotations__["return"])
+    _merge_signed = define_signature(_merge_annotated, _mock_function, _merge.__annotations__["return"])
+
+    return _merge_signed
 
 
 def identity(x: T) -> T:
     """I forward the given input untouched.
 
     This can be useful if you want to forward a result for a later step.
-    As this approach can also make the pipeline hard to understand, it is advised to use `pyeply.memory.memorizable`
+    As this approach can also make the pipeline hard to understand, it is advised to use [pypely.memory.memorizable][]
 
     Args:
         x (T): Any input
