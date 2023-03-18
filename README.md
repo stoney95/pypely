@@ -17,8 +17,6 @@ From local functions to cloud deployed pipelines - build pipelines in a function
 - The compatability of steps is checked during buildtime. Errors are catch as early as possible.
 - You keep your pipelines easily testable.
 
-![](https://media.giphy.com/media/SACoDGYTvVNhZYNb5a/giphy.gif)
-
 ## Installation
 ```shell
 pip install pypely
