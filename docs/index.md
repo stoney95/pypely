@@ -1,4 +1,4 @@
-**Going from local functions to cloud deployed functions in no time :rocket:!** 
+**Going from local functions to cloud deployed pipelines in no time :rocket:!** 
 `pypely` simplifies and streamlines the definition of pipelines. `pypely` pipelines can be converted into many well known pipeline frameworks.
 
 !!! warning

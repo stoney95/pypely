@@ -11,12 +11,13 @@
 [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/stoney95/pypely)
 [![codecov](https://codecov.io/gh/stoney95/pypely/branch/main/graph/badge.svg?token=7JH2HHJ5CE)](https://codecov.io/gh/stoney95/pypely)
 
-Make your data processing easy - build pipelines in a functional manner. In general this package will not make your code faster or necessarily make you write less code. The purpose of this package is to make you think differently about data processing. 
+From local functions to cloud deployed pipelines - build pipelines in a functional manner. This package simplifies and streamlines the development of pipelines. You can start locally and deploy the pipelines later using your favorite framework. Further benefits are:
+
+- The dependencies for each step are required automatically
+- The compatability of steps is checked during buildtime. Errors are catch as early as possible
+- You keep your pipelines easily testable
 
 ![](https://media.giphy.com/media/SACoDGYTvVNhZYNb5a/giphy.gif)
-
-You are encouraged to write your data processing step by step - each step being a function. By naming each step with great awareness and chaining them together you will receive a consise and descriptive scheme of the process. This should give you and your colleagues a nice overview on how the process is structured and makes it easy to understand.
- Addtionally you can test every small step easily.
 
 ## Installation
 ```shell
@@ -43,38 +44,7 @@ If you want to learn more check out the following links.
 ## Links
 - [Documentation](https://stoney95.github.io/pypely/)
 - [Examples](https://github.com/stoney95/pypely/tree/main/examples)
-- [Contributing](#contributing)
-
-## Why functional?
-Functional programming is a data driven approach to building software - so let's move data to the center of our thinking when building data processing pipelines. To illustrate the idea a little more two analogies will be used.
-
-### Railway
-The railway analogy used by Scott Wlaschin in [this talk](https://youtu.be/Nrp_LZ-XGsY?t=2617) is a good way of looking at functional programming. With `pypely` you can easily build a route from start to finish without caring about the stops in between. :steam_locomotive: 
-
-In this analogy you should translate:
-* **railway stop** to **intermediate result**
-* **railway** to **tranformative function**
-
-### Git 
-`git` branching might be an even easier analogy: 
-![](https://raw.githubusercontent.com/stoney95/pypely/main/assets/git_branch.png?raw=true)
-
-Our every day work is managed by `git` and hopefully you don't need to care about special commit hashes etc.. "Shouldn't it be the same for intermediate results in data processing?" :thinking: - "I guess I just care about raw data and processing results". 
-
-In this analogy you should translate:
-* **git commit** to **intermediate result**
-* **you writing & commiting code** to **tranformative function**
-
-### Cites by smart people (Who use functional programming) 
-> "Design is separating into things that can be composed." - Rich Hickey 
-
-## What can I use this for?
-This may be the main question that should be answered. This library focuses on structuring data processing, so consider it for dataframes operations. There are two libraries that need to be mentioned:
-* [pandas](https://pandas.pydata.org/)
-* [pyspark](http://spark.apache.org/docs/latest/api/python/)
-
-But :point_up:.. if you want to build your whole application in a functional style, `pypely` provides you with the basics for this. So get creative 🤩 
-
+- [API Reference](https://stoney95.github.io/pypely/reference/)
 
 # Contributing
 If you want to contribute:
