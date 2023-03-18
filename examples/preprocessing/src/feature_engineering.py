@@ -99,7 +99,7 @@ def hips_to_bins(df: pd.DataFrame) -> pd.DataFrame:
     def set_labels(df: pd.DataFrame) -> pd.DataFrame:
         return pd.cut(df.hips, bins, labels=labels)
 
-    bin_hips = pipeline(fill_na_in_column("hips", -1), set_labels)
+    bin_hips = pipeline(fill_na_in_column("hips", -1), set_labels)  # type: ignore
 
     print("Bin hips column")
     df.hips = bin_hips(df)

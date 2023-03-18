@@ -1,6 +1,6 @@
 """I provide all errors that can occur when interacting with the core of pypely."""
 
-from .pipeline import (
+from ._pipeline import (
     InvalidParameterAnnotationError,
     OutputInputDoNotMatchError,
     ParameterAnnotationsMissingError,

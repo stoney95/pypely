@@ -1,7 +1,6 @@
 """I am a collection of errors that can occur when interacting with the core of pypely."""
 
 import inspect
-from email import message
 from typing import Callable, Optional
 
 from pypely._types import PypelyError

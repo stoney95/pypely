@@ -11,9 +11,6 @@
 [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/stoney95/pypely)
 [![codecov](https://codecov.io/gh/stoney95/pypely/branch/main/graph/badge.svg?token=7JH2HHJ5CE)](https://codecov.io/gh/stoney95/pypely)
 
-## Example
-<script src="https://gist.github.com/stoney95/9fae7c4c84bda47e5df7a2c6ec4c13d3.js"></script>
-
 Make your data processing easy - build pipelines in a functional manner. In general this package will not make your code faster or necessarily make you write less code. The purpose of this package is to make you think differently about data processing. 
 
 ![](https://media.giphy.com/media/SACoDGYTvVNhZYNb5a/giphy.gif)
