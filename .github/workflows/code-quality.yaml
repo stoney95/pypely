@@ -42,8 +42,8 @@ jobs:
           mypy ./pypely --ignore-missing-imports --install-types --non-interactive
       - name: Run unit tests
         run: |
-          export PYTHONPATH=/home/runner/work/pypely/pypely/src:/home/runner/work/pypely/pypely/examples
-          pytest --cov-report xml:package_cov.xml --cov=src tests/
+          export PYTHONPATH=/home/runner/work/pypely/pypely/pypely:/home/runner/work/pypely/pypely/examples
+          pytest --cov-report xml:package_cov.xml --cov=pypely tests/
       - uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
