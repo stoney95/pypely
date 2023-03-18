@@ -12,7 +12,7 @@
 
 From local functions to cloud deployed pipelines - build pipelines in a functional manner. This package simplifies and streamlines the development of pipelines. You can start locally and deploy the pipelines later using your favorite framework. Further benefits are:
 
-- You don't lock your pipelines into a framework. You can even convert your `pypely` code to the framework of your desire. 
+- You don't lock your pipelines into a framework. You can even convert your `pypely` code to the framework of your desire to develop your pipelines further in that framework. 
 - The dependencies for each step are detected automatically. So, you don't need to manage the dependencies.
 - The compatability of steps is checked during buildtime. Errors are catch as early as possible.
 - You keep your pipelines easily testable.
